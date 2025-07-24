@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKPD Interaktif - Sistem Persamaan Linear Dua Variabel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+        .section-card { transition: all 0.3s ease; }
+        .section-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .correct { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .incorrect { background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+        .rating-star { cursor: pointer; transition: all 0.2s; }
+        .rating-star:hover { transform: scale(1.2); }
+        .graph-container { background: white; border: 2px solid #e5e7eb; border-radius: 8px; }
+        .grid-line { stroke: #e5e7eb; stroke-width: 1; }
+        .axis-line { stroke: #374151; stroke-width: 2; }
+        .graph-line { stroke-width: 3; fill: none; }
+        .line1 { stroke: #3b82f6; }
+        .line2 { stroke: #ef4444; }
+        .intersection { fill: #10b981; stroke: #065f46; stroke-width: 2; }
+        @media print {
+            .no-print { display: none !important; }
+            .section-card { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-purple-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 shadow-lg">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-3xl font-bold text-center mb-2">📚 LKPD Interaktif Matematika</h1>
+            <h2 class="text-xl text-center mb-4">Sistem Persamaan Linear Dua Variabel</h2>
+            <div class="bg-white/20 rounded-lg p-4 text-center">
+                <p class="font-semibold">🎯 Tujuan Pembelajaran:</p>
+                <p class="text-sm mt-1">Memahami konsep sistem persamaan linear dua variabel dan menyelesaikan persamaan linear dua variabel dengan metode grafik</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-6xl mx-auto p-6 space-y-8">
+        <!-- Control Buttons -->
+        <div class="flex justify-center space-x-4 no-print">
+            <button onclick="resetAll()" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                🔄 Reset Semua
+            </button>
+            <button onclick="window.print()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                🖨️ Cetak LKPD
+            </button>
+        </div>
+
+        <!-- Section 1: Review -->
+        <section class="section-card bg-gradient-to-r from-orange-100 to-red-100 rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-orange-800 mb-4">🔍 Bagian Review - Materi Prasyarat</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg p-4">
+                    <h4 class="font-semibold text-orange-700 mb-2">📈 Persamaan Linear Dua Variabel</h4>
+                    <p class="text-gray-700 mb-2">Bentuk umum: $ax + by = c$</p>
+                    <p class="text-sm text-gray-600">Contoh: $2x + 3y = 12$</p>
+                    <p class="text-sm text-gray-600">Grafik berupa garis lurus</p>
+                </div>
+                <div class="bg-white rounded-lg p-4">
+                    <h4 class="font-semibold text-orange-700 mb-2">📊 Menggambar Grafik</h4>
+                    <p class="text-gray-700 text-sm">1. Tentukan titik potong sumbu x dan y</p>
+                    <p class="text-gray-700 text-sm">2. Plot kedua titik pada koordinat</p>
+                    <p class="text-gray-700 text-sm">3. Hubungkan dengan garis lurus</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Soal Pematik -->
+        <section class="section-card bg-gradient-to-r from-green-100 to-teal-100 rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-green-800 mb-4">💡 Soal Pematik - Membangun Pemahaman</h3>
+            <div class="space-y-4">
+                <div class="bg-white rounded-lg p-4">
+                    <h4 class="font-semibold text-green-700 mb-2">🎪 Situasi: Warung Pak Budi</h4>
+                    <p class="text-gray-700 mb-2">Pak Budi menjual nasi gudeg dan es teh. Hari ini ada dua pelanggan:</p>
+                    <p class="text-gray-700 mb-1">• Pelanggan A: 2 nasi gudeg + 1 es teh = Rp 15.000</p>
+                    <p class="text-gray-700 mb-3">• Pelanggan B: 1 nasi gudeg + 2 es teh = Rp 12.000</p>
+                    <div class="bg-green-50 p-3 rounded-lg">
+                        <p class="text-sm text-green-600 font-medium">🤔 Pertanyaan Pemicu:</p>
+                        <p class="text-sm text-gray-700">1. Bagaimana cara menentukan harga 1 nasi gudeg dan 1 es teh?</p>
+                        <p class="text-sm text-gray-700">2. Bisakah kita menggunakan grafik untuk menyelesaikan masalah ini?</p>
+                        <p class="text-sm text-gray-700">3. Apa yang terjadi jika kedua garis berpotongan?</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Materi Inti -->
+        <section class="section-card bg-gradient-to-r from-blue-100 to-indigo-100 rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-blue-800 mb-4">📖 Materi Inti - Konsep Utama</h3>
+            <div class="space-y-6">
+                <div class="bg-white rounded-lg p-4">
+                    <h4 class="font-semibold text-blue-700 mb-3">🎯 Sistem Persamaan Linear Dua Variabel</h4>
+                    <div class="bg-blue-50 p-4 rounded-lg mb-3">
+                        <p class="text-center font-semibold">$$\begin{cases} a_1x + b_1y = c_1 \\ a_2x + b_2y = c_2 \end{cases}$$</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Dua persamaan linear yang harus dipenuhi secara bersamaan</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <p class="font-semibold text-blue-600 mb-2">Contoh Sistem:</p>
+                            <p class="text-sm">$2x + y = 8$</p>
+                            <p class="text-sm">$x + 2y = 7$</p>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <p class="font-semibold text-blue-600 mb-2">Solusi:</p>
+                            <p class="text-sm">Nilai x dan y yang memenuhi kedua persamaan</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg p-4">
+                    <h4 class="font-semibold text-blue-700 mb-3">📊 Metode Grafik</h4>
+                    <p class="text-gray-700 mb-3">Menyelesaikan sistem persamaan dengan menggambar grafik kedua persamaan dan mencari titik potongnya.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <p class="font-semibold text-blue-600 mb-2">Langkah-langkah:</p>
+                            <p class="text-sm text-gray-600">1. Gambar grafik persamaan pertama</p>
+                            <p class="text-sm text-gray-600">2. Gambar grafik persamaan kedua</p>
+                            <p class="text-sm text-gray-600">3. Tentukan titik potong kedua garis</p>
+                            <p class="text-sm text-gray-600">4. Titik potong adalah solusi sistem</p>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <p class="font-semibold text-blue-600 mb-2">Kemungkinan Solusi:</p>
+                            <p class="text-sm text-gray-600">• Satu solusi (garis berpotongan)</p>
+                            <p class="text-sm text-gray-600">• Tak hingga solusi (garis berimpit)</p>
+                            <p class="text-sm text-gray-600">• Tidak ada solusi (garis sejajar)</p>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Graph Example -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h5 class="font-semibold text-blue-600 mb-3">Contoh Interaktif: Sistem $\begin{cases} x + y = 5 \\ 2x - y = 1 \end{cases}$</h5>
+                        <div class="graph-container p-4 mx-auto" style="width: 400px;">
+                            <svg width="360" height="360" viewBox="0 0 360 360">
+                                <!-- Grid -->
+                                <defs>
+                                    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+                                        <path d="M 30 0 L 0 0 0 30" fill="none" class="grid-line"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="360" height="360" fill="url(#grid)"/>
+                                
+                                <!-- Axes -->
+                                <line x1="0" y1="180" x2="360" y2="180" class="axis-line"/>
+                                <line x1="180" y1="0" x2="180" y2="360" class="axis-line"/>
+                                
+                                <!-- Axis labels -->
+                                <text x="350" y="175" font-size="12" fill="#374151">x</text>
+                                <text x="185" y="15" font-size="12" fill="#374151">y</text>
+                                
+                                <!-- Grid numbers -->
+                                <text x="210" y="175" font-size="10" fill="#6b7280">1</text>
+                                <text x="240" y="175" font-size="10" fill="#6b7280">2</text>
+                                <text x="270" y="175" font-size="10" fill="#6b7280">3</text>
+                                <text x="300" y="175" font-size="10" fill="#6b7280">4</text>
+                                <text x="330" y="175" font-size="10" fill="#6b7280">5</text>
+                                
+                                <text x="175" y="150" font-size="10" fill="#6b7280">1</text>
+                                <text x="175" y="120" font-size="10" fill="#6b7280">2</text>
+                                <text x="175" y="90" font-size="10" fill="#6b7280">3</text>
+                                <text x="175" y="60" font-size="10" fill="#6b7280">4</text>
+                                <text x="175" y="30" font-size="10" fill="#6b7280">5</text>
+                                
+                                <!-- Line 1: x + y = 5 (from (0,5) to (5,0)) -->
+                                <line x1="180" y1="30" x2="330" y2="180" class="graph-line line1"/>
+                                
+                                <!-- Line 2: 2x - y = 1 (from (0,-1) to (3,5)) -->
+                                <line x1="150" y1="240" x2="300" y2="0" class="graph-line line2"/>
+                                
+                                <!-- Intersection point (2,3) -->
+                                <circle cx="240" cy="90" r="4" class="intersection"/>
+                                
+                                <!-- Point labels -->
+                                <text x="185" y="25" font-size="10" fill="#3b82f6">(0,5)</text>
+                                <text x="335" y="175" font-size="10" fill="#3b82f6">(5,0)</text>
+                                <text x="185" y="220" font-size="10" fill="#ef4444">(0,-1)</text>
+                                <text x="275" y="25" font-size="10" fill="#ef4444">(3,5)</text>
+                                <text x="245" y="85" font-size="12" fill="#10b981" font-weight="bold">(2,3)</text>
+                                
+                                <!-- Legend -->
+                                <line x1="20" y1="320" x2="50" y2="320" class="graph-line line1"/>
+                                <text x="55" y="325" font-size="10" fill="#3b82f6">x + y = 5</text>
+                                
+                                <line x1="20" y1="340" x2="50" y2="340" class="graph-line line2"/>
+                                <text x="55" y="345" font-size="10" fill="#ef4444">2x - y = 1</text>
+                                
+                                <circle cx="35" cy="355" r="3" class="intersection"/>
+                                <text x="45" y="360" font-size="10" fill="#10b981">Solusi: (2,3)</text>
+                            </svg>
+                        </div>
+                        <div class="mt-3 text-sm text-gray-600">
+                            <p><strong>Penjelasan:</strong> Garis biru ($x + y = 5$) dan garis merah ($2x - y = 1$) berpotongan di titik (2,3). Ini berarti $x = 2$ dan $y = 3$ adalah solusi sistem persamaan.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg p-4">
+                    <h4 class="font-semibold text-blue-700 mb-3">🔍 Jenis-jenis Solusi Sistem</h4>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-500">
+                            <h5 class="font-semibold text-green-700 mb-2">Satu Solusi</h5>
+                            <p class="text-sm text-gray-600 mb-2">Kedua garis berpotongan di satu titik</p>
+                            <div class="w-full h-20 bg-white rounded border">
+                                <svg width="100%" height="100%" viewBox="0 0 100 80">
+                                    <line x1="10" y1="60" x2="90" y2="20" stroke="#3b82f6" stroke-width="2"/>
+                                    <line x1="10" y1="20" x2="90" y2="60" stroke="#ef4444" stroke-width="2"/>
+                                    <circle cx="50" cy="40" r="2" fill="#10b981"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                            <h5 class="font-semibold text-yellow-700 mb-2">Tak Hingga Solusi</h5>
+                            <p class="text-sm text-gray-600 mb-2">Kedua garis berimpit (sama)</p>
+                            <div class="w-full h-20 bg-white rounded border">
+                                <svg width="100%" height="100%" viewBox="0 0 100 80">
+                                    <line x1="10" y1="40" x2="90" y2="40" stroke="#3b82f6" stroke-width="4"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                            <h5 class="font-semibold text-red-700 mb-2">Tidak Ada Solusi</h5>
+                            <p class="text-sm text-gray-600 mb-2">Kedua garis sejajar</p>
+                            <div class="w-full h-20 bg-white rounded border">
+                                <svg width="100%" height="100%" viewBox="0 0 100 80">
+                                    <line x1="10" y1="30" x2="90" y2="30" stroke="#3b82f6" stroke-width="2"/>
+                                    <line x1="10" y1="50" x2="90" y2="50" stroke="#ef4444" stroke-width="2"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Contoh Soal -->
+        <section class="section-card bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-purple-800 mb-4">📝 Contoh Soal dengan Pembahasan</h3>
+            <div class="space-y-6">
+                <div class="bg-white rounded-lg p-4">
+                    <h4 class="font-semibold text-purple-700 mb-3">Contoh 1: Menyelesaikan dengan Metode Grafik</h4>
+                    <div class="bg-purple-50 p-4 rounded-lg mb-3">
+                        <p class="font-medium">Selesaikan sistem persamaan berikut dengan metode grafik:</p>
+                        <p class="text-center mt-2">$$\begin{cases} x + 2y = 6 \\ 2x - y = 2 \end{cases}$$</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="text-sm text-gray-700 space-y-2">
+                            <p><strong>Langkah 1:</strong> Gambar garis $x + 2y = 6$</p>
+                            <p>• Jika x = 0: $2y = 6$ → y = 3, titik (0,3)</p>
+                            <p>• Jika y = 0: $x = 6$ → titik (6,0)</p>
+                            
+                            <p><strong>Langkah 2:</strong> Gambar garis $2x - y = 2$</p>
+                            <p>• Jika x = 0: $-y = 2$ → y = -2, titik (0,-2)</p>
+                            <p>• Jika y = 0: $2x = 2$ → x = 1, titik (1,0)</p>
+                            <p>• Jika x = 3: $6 - y = 2$ → y = 4, titik (3,4)</p>
+                            
+                            <p><strong>Langkah 3:</strong> Tentukan titik potong</p>
+                            <p class="font-semibold text-purple-600">Solusi: (2, 2)</p>
+                        </div>
+                        <div class="graph-container p-4">
+                            <svg width="200" height="200" viewBox="0 0 200 200">
+                                <!-- Grid -->
+                                <defs>
+                                    <pattern id="grid2" width="20" height="20" patternUnits="userSpaceOnUse">
+                                        <path d="M 20 0 L 0 0 0 20" fill="none" class="grid-line"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="200" height="200" fill="url(#grid2)"/>
+                                
+                                <!-- Axes -->
+                                <line x1="0" y1="100" x2="200" y2="100" class="axis-line"/>
+                                <line x1="100" y1="0" x2="100" y2="200" class="axis-line"/>
+                                
+                                <!-- Line 1: x + 2y = 6 -->
+                                <line x1="100" y1="40" x2="200" y2="100" class="graph-line line1"/>
+                                
+                                <!-- Line 2: 2x - y = 2 (from (0,-2) to (3,4)) -->
+                                <line x1="100" y1="140" x2="160" y2="20" class="graph-line line2"/>
+                                
+                                <!-- Intersection point (2,2) -->
+                                <circle cx="140" cy="60" r="3" class="intersection"/>
+                                
+                                <!-- Labels -->
+                                <text x="105" y="35" font-size="8" fill="#3b82f6">(0,3)</text>
+                                <text x="170" y="95" font-size="8" fill="#3b82f6">(6,0)</text>
+                                <text x="105" y="150" font-size="8" fill="#ef4444">(0,-2)</text>
+                                <text x="125" y="95" font-size="8" fill="#ef4444">(1,0)</text>
+                                <text x="165" y="15" font-size="8" fill="#ef4444">(3,4)</text>
+                                <text x="145" y="55" font-size="10" fill="#10b981" font-weight="bold">(2,2)</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg p-4">
+                    <h4 class="font-semibold text-purple-700 mb-3">Contoh 2: Aplikasi dalam Kehidupan</h4>
+                    <div class="bg-purple-50 p-4 rounded-lg mb-3">
+                        <p>Harga 2 apel dan 3 jeruk adalah Rp 13.000. Harga 1 apel dan 1 jeruk adalah Rp 5.000. Tentukan harga masing-masing buah!</p>
+                    </div>
+                    <div class="text-sm text-gray-700 space-y-2">
+                        <p><strong>Langkah 1:</strong> Buat sistem persamaan</p>
+                        <p>Misalkan: x = harga apel, y = harga jeruk</p>
+                        <p>$\begin{cases} 2x + 3y = 13000 \\ x + y = 5000 \end{cases}$</p>
+                        
+                        <p><strong>Langkah 2:</strong> Selesaikan dengan metode grafik</p>
+                        <p>Dari grafik diperoleh titik potong (2000, 3000)</p>
+                        
+                        <p><strong>Jawaban:</strong> Harga apel = Rp 2.000, Harga jeruk = Rp 3.000</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Latihan Soal -->
+        <section class="section-card bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-yellow-800 mb-4">🏆 Latihan Soal Interaktif</h3>
+            <div class="mb-4 text-center">
+                <div class="inline-flex space-x-4 bg-white rounded-lg p-2">
+                    <span class="bg-green-200 text-green-800 px-3 py-1 rounded text-sm">Mudah: 4 soal</span>
+                    <span class="bg-yellow-200 text-yellow-800 px-3 py-1 rounded text-sm">Sedang: 6 soal</span>
+                </div>
+            </div>
+
+            <div id="quiz-container" class="space-y-4">
+                <!-- Soal Mudah -->
+                <div class="quiz-question bg-green-50 border-l-4 border-green-500 p-4 rounded-lg" data-level="mudah">
+                    <h4 class="font-semibold text-green-700 mb-2">🟢 Soal 1 (Mudah) - Konsep Dasar</h4>
+                    <p class="mb-3">Sistem persamaan linear dua variabel adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q1" value="a" class="mr-2"> a) Satu persamaan dengan dua variabel</label>
+                        <label class="flex items-center"><input type="radio" name="q1" value="b" class="mr-2"> b) Dua persamaan linear yang harus dipenuhi bersamaan</label>
+                        <label class="flex items-center"><input type="radio" name="q1" value="c" class="mr-2"> c) Persamaan dengan pangkat tertinggi 2</label>
+                        <label class="flex items-center"><input type="radio" name="q1" value="d" class="mr-2"> d) Persamaan yang tidak memiliki solusi</label>
+                    </div>
+                    <button onclick="checkAnswer('q1', 'b', 'Benar! Sistem persamaan linear dua variabel terdiri dari dua persamaan linear yang harus dipenuhi secara bersamaan untuk mencari nilai x dan y.')" class="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Cek Jawaban</button>
+                    <div id="feedback-q1" class="mt-2"></div>
+                </div>
+
+                <div class="quiz-question bg-green-50 border-l-4 border-green-500 p-4 rounded-lg" data-level="mudah">
+                    <h4 class="font-semibold text-green-700 mb-2">🟢 Soal 2 (Mudah) - Metode Grafik</h4>
+                    <p class="mb-3">Dalam metode grafik, solusi sistem persamaan adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q2" value="a" class="mr-2"> a) Titik potong kedua garis dengan sumbu x</label>
+                        <label class="flex items-center"><input type="radio" name="q2" value="b" class="mr-2"> b) Titik potong kedua garis dengan sumbu y</label>
+                        <label class="flex items-center"><input type="radio" name="q2" value="c" class="mr-2"> c) Titik potong antara kedua garis</label>
+                        <label class="flex items-center"><input type="radio" name="q2" value="d" class="mr-2"> d) Titik tengah kedua garis</label>
+                    </div>
+                    <button onclick="checkAnswer('q2', 'c', 'Benar! Dalam metode grafik, solusi sistem persamaan adalah titik potong antara kedua garis, karena di titik tersebut kedua persamaan terpenuhi.')" class="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Cek Jawaban</button>
+                    <div id="feedback-q2" class="mt-2"></div>
+                </div>
+
+                <div class="quiz-question bg-green-50 border-l-4 border-green-500 p-4 rounded-lg" data-level="mudah">
+                    <h4 class="font-semibold text-green-700 mb-2">🟢 Soal 3 (Mudah) - Jenis Solusi</h4>
+                    <p class="mb-3">Jika kedua garis sejajar, maka sistem persamaan...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q3" value="a" class="mr-2"> a) Memiliki satu solusi</label>
+                        <label class="flex items-center"><input type="radio" name="q3" value="b" class="mr-2"> b) Memiliki tak hingga solusi</label>
+                        <label class="flex items-center"><input type="radio" name="q3" value="c" class="mr-2"> c) Tidak memiliki solusi</label>
+                        <label class="flex items-center"><input type="radio" name="q3" value="d" class="mr-2"> d) Memiliki dua solusi</label>
+                    </div>
+                    <button onclick="checkAnswer('q3', 'c', 'Benar! Jika kedua garis sejajar, mereka tidak akan pernah berpotongan, sehingga sistem persamaan tidak memiliki solusi.')" class="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Cek Jawaban</button>
+                    <div id="feedback-q3" class="mt-2"></div>
+                </div>
+
+                <div class="quiz-question bg-green-50 border-l-4 border-green-500 p-4 rounded-lg" data-level="mudah">
+                    <h4 class="font-semibold text-green-700 mb-2">🟢 Soal 4 (Mudah) - Titik Potong</h4>
+                    <p class="mb-3">Untuk menggambar garis $x + y = 4$, titik potong dengan sumbu koordinat adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q4" value="a" class="mr-2"> a) (4,0) dan (0,4)</label>
+                        <label class="flex items-center"><input type="radio" name="q4" value="b" class="mr-2"> b) (2,2) dan (1,3)</label>
+                        <label class="flex items-center"><input type="radio" name="q4" value="c" class="mr-2"> c) (0,0) dan (4,4)</label>
+                        <label class="flex items-center"><input type="radio" name="q4" value="d" class="mr-2"> d) (1,0) dan (0,1)</label>
+                    </div>
+                    <button onclick="checkAnswer('q4', 'a', 'Benar! Titik potong sumbu x (y=0): x + 0 = 4 → x = 4, titik (4,0). Titik potong sumbu y (x=0): 0 + y = 4 → y = 4, titik (0,4).')" class="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Cek Jawaban</button>
+                    <div id="feedback-q4" class="mt-2"></div>
+                </div>
+
+                <!-- Soal Sedang -->
+                <div class="quiz-question bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg" data-level="sedang">
+                    <h4 class="font-semibold text-yellow-700 mb-2">🟡 Soal 5 (Sedang) - Menyelesaikan Sistem</h4>
+                    <p class="mb-3">Solusi dari sistem $\begin{cases} x + y = 5 \\ x - y = 1 \end{cases}$ adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q5" value="a" class="mr-2"> a) (3, 2)</label>
+                        <label class="flex items-center"><input type="radio" name="q5" value="b" class="mr-2"> b) (2, 3)</label>
+                        <label class="flex items-center"><input type="radio" name="q5" value="c" class="mr-2"> c) (4, 1)</label>
+                        <label class="flex items-center"><input type="radio" name="q5" value="d" class="mr-2"> d) (1, 4)</label>
+                    </div>
+                    <button onclick="checkAnswer('q5', 'a', 'Benar! Cek: x + y = 3 + 2 = 5 ✓, x - y = 3 - 2 = 1 ✓. Titik (3,2) memenuhi kedua persamaan.')" class="mt-3 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Cek Jawaban</button>
+                    <div id="feedback-q5" class="mt-2"></div>
+                </div>
+
+                <div class="quiz-question bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg" data-level="sedang">
+                    <h4 class="font-semibold text-yellow-700 mb-2">🟡 Soal 6 (Sedang) - Aplikasi</h4>
+                    <p class="mb-3">Jumlah dua bilangan adalah 10, selisihnya adalah 4. Kedua bilangan tersebut adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q6" value="a" class="mr-2"> a) 6 dan 4</label>
+                        <label class="flex items-center"><input type="radio" name="q6" value="b" class="mr-2"> b) 7 dan 3</label>
+                        <label class="flex items-center"><input type="radio" name="q6" value="c" class="mr-2"> c) 8 dan 2</label>
+                        <label class="flex items-center"><input type="radio" name="q6" value="d" class="mr-2"> d) 9 dan 1</label>
+                    </div>
+                    <button onclick="checkAnswer('q6', 'b', 'Benar! Sistem: x + y = 10 dan x - y = 4. Solusi: x = 7, y = 3. Cek: 7 + 3 = 10 ✓, 7 - 3 = 4 ✓.')" class="mt-3 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Cek Jawaban</button>
+                    <div id="feedback-q6" class="mt-2"></div>
+                </div>
+
+                <div class="quiz-question bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg" data-level="sedang">
+                    <h4 class="font-semibold text-yellow-700 mb-2">🟡 Soal 7 (Sedang) - Grafik</h4>
+                    <p class="mb-3">Sistem $\begin{cases} 2x + y = 6 \\ x - y = 0 \end{cases}$ berpotongan di titik...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q7" value="a" class="mr-2"> a) (1, 1)</label>
+                        <label class="flex items-center"><input type="radio" name="q7" value="b" class="mr-2"> b) (2, 2)</label>
+                        <label class="flex items-center"><input type="radio" name="q7" value="c" class="mr-2"> c) (3, 0)</label>
+                        <label class="flex items-center"><input type="radio" name="q7" value="d" class="mr-2"> d) (0, 6)</label>
+                    </div>
+                    <button onclick="checkAnswer('q7', 'b', 'Benar! Dari x - y = 0 didapat x = y. Substitusi ke 2x + y = 6: 2x + x = 6 → 3x = 6 → x = 2, y = 2.')" class="mt-3 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Cek Jawaban</button>
+                    <div id="feedback-q7" class="mt-2"></div>
+                </div>
+
+                <div class="quiz-question bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg" data-level="sedang">
+                    <h4 class="font-semibold text-yellow-700 mb-2">🟡 Soal 8 (Sedang) - Pemodelan</h4>
+                    <p class="mb-3">Harga 3 buku + 2 pensil = Rp 11.000. Harga 1 buku + 1 pensil = Rp 4.000. Harga 1 buku adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q8" value="a" class="mr-2"> a) Rp 2.000</label>
+                        <label class="flex items-center"><input type="radio" name="q8" value="b" class="mr-2"> b) Rp 2.500</label>
+                        <label class="flex items-center"><input type="radio" name="q8" value="c" class="mr-2"> c) Rp 3.000</label>
+                        <label class="flex items-center"><input type="radio" name="q8" value="d" class="mr-2"> d) Rp 3.500</label>
+                    </div>
+                    <button onclick="checkAnswer('q8', 'c', 'Benar! Sistem: 3x + 2y = 11000 dan x + y = 4000. Dari persamaan kedua: y = 4000 - x. Substitusi: 3x + 2(4000-x) = 11000 → x = 3000.')" class="mt-3 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Cek Jawaban</button>
+                    <div id="feedback-q8" class="mt-2"></div>
+                </div>
+
+                <div class="quiz-question bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg" data-level="sedang">
+                    <h4 class="font-semibold text-yellow-700 mb-2">🟡 Soal 9 (Sedang) - Analisis Grafik Visual</h4>
+                    <p class="mb-3">Perhatikan grafik berikut. Solusi dari sistem persamaan yang digambarkan adalah...</p>
+                    
+                    <!-- Visual Graph for Question -->
+                    <div class="bg-white p-4 rounded-lg mb-3 flex justify-center">
+                        <svg width="200" height="200" viewBox="0 0 200 200">
+                            <!-- Grid -->
+                            <defs>
+                                <pattern id="visualGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+                                </pattern>
+                            </defs>
+                            <rect width="200" height="200" fill="url(#visualGrid)"/>
+                            
+                            <!-- Axes -->
+                            <line x1="0" y1="100" x2="200" y2="100" stroke="#374151" stroke-width="2"/>
+                            <line x1="100" y1="0" x2="100" y2="200" stroke="#374151" stroke-width="2"/>
+                            
+                            <!-- Grid numbers -->
+                            <text x="115" y="95" font-size="10" fill="#6b7280">1</text>
+                            <text x="135" y="95" font-size="10" fill="#6b7280">2</text>
+                            <text x="155" y="95" font-size="10" fill="#6b7280">3</text>
+                            <text x="175" y="95" font-size="10" fill="#6b7280">4</text>
+                            
+                            <text x="95" y="85" font-size="10" fill="#6b7280">1</text>
+                            <text x="95" y="65" font-size="10" fill="#6b7280">2</text>
+                            <text x="95" y="45" font-size="10" fill="#6b7280">3</text>
+                            <text x="95" y="25" font-size="10" fill="#6b7280">4</text>
+                            
+                            <!-- Line 1: y = -x + 4 (from (0,4) to (4,0)) -->
+                            <line x1="100" y1="20" x2="180" y2="100" stroke="#3b82f6" stroke-width="3"/>
+                            
+                            <!-- Line 2: y = x - 2 (from (0,-2) to (4,2)) -->
+                            <line x1="100" y1="140" x2="180" y2="60" stroke="#ef4444" stroke-width="3"/>
+                            
+                            <!-- Intersection point (3,1) -->
+                            <circle cx="160" cy="80" r="4" fill="#10b981" stroke="#065f46" stroke-width="2"/>
+                            
+                            <!-- Point label -->
+                            <text x="165" y="75" font-size="12" fill="#10b981" font-weight="bold">(3,1)</text>
+                            
+                            <!-- Line labels -->
+                            <text x="110" y="15" font-size="10" fill="#3b82f6">y = -x + 4</text>
+                            <text x="110" y="150" font-size="10" fill="#ef4444">y = x - 2</text>
+                        </svg>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q9" value="a" class="mr-2"> a) (1, 3)</label>
+                        <label class="flex items-center"><input type="radio" name="q9" value="b" class="mr-2"> b) (2, 2)</label>
+                        <label class="flex items-center"><input type="radio" name="q9" value="c" class="mr-2"> c) (3, 1)</label>
+                        <label class="flex items-center"><input type="radio" name="q9" value="d" class="mr-2"> d) (4, 0)</label>
+                    </div>
+                    <button onclick="checkAnswer('q9', 'c', 'Benar! Dari grafik terlihat bahwa kedua garis berpotongan di titik (3,1). Ini adalah solusi sistem persamaan y = -x + 4 dan y = x - 2.')" class="mt-3 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Cek Jawaban</button>
+                    <div id="feedback-q9" class="mt-2"></div>
+                </div>
+
+                <div class="quiz-question bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg" data-level="sedang">
+                    <h4 class="font-semibold text-yellow-700 mb-2">🟡 Soal 10 (Sedang) - Interpretasi Grafik</h4>
+                    <p class="mb-3">Berdasarkan grafik di bawah ini, manakah pernyataan yang benar?</p>
+                    
+                    <!-- Visual Graph showing parallel lines -->
+                    <div class="bg-white p-4 rounded-lg mb-3 flex justify-center">
+                        <svg width="200" height="200" viewBox="0 0 200 200">
+                            <!-- Grid -->
+                            <rect width="200" height="200" fill="url(#visualGrid)"/>
+                            
+                            <!-- Axes -->
+                            <line x1="0" y1="100" x2="200" y2="100" stroke="#374151" stroke-width="2"/>
+                            <line x1="100" y1="0" x2="100" y2="200" stroke="#374151" stroke-width="2"/>
+                            
+                            <!-- Grid numbers -->
+                            <text x="115" y="95" font-size="10" fill="#6b7280">1</text>
+                            <text x="135" y="95" font-size="10" fill="#6b7280">2</text>
+                            <text x="155" y="95" font-size="10" fill="#6b7280">3</text>
+                            
+                            <text x="95" y="85" font-size="10" fill="#6b7280">1</text>
+                            <text x="95" y="65" font-size="10" fill="#6b7280">2</text>
+                            <text x="95" y="45" font-size="10" fill="#6b7280">3</text>
+                            
+                            <!-- Parallel Line 1: y = x + 1 -->
+                            <line x1="80" y1="80" x2="180" y2="180" stroke="#3b82f6" stroke-width="3"/>
+                            
+                            <!-- Parallel Line 2: y = x - 1 -->
+                            <line x1="80" y1="20" x2="180" y2="120" stroke="#ef4444" stroke-width="3"/>
+                            
+                            <!-- Line labels -->
+                            <text x="85" y="75" font-size="10" fill="#3b82f6">y = x + 1</text>
+                            <text x="85" y="15" font-size="10" fill="#ef4444">y = x - 1</text>
+                        </svg>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q10" value="a" class="mr-2"> a) Sistem memiliki satu solusi</label>
+                        <label class="flex items-center"><input type="radio" name="q10" value="b" class="mr-2"> b) Sistem memiliki tak hingga solusi</label>
+                        <label class="flex items-center"><input type="radio" name="q10" value="c" class="mr-2"> c) Sistem tidak memiliki solusi</label>
+                        <label class="flex items-center"><input type="radio" name="q10" value="d" class="mr-2"> d) Kedua garis berpotongan di titik (0,0)</label>
+                    </div>
+                    <button onclick="checkAnswer('q10', 'c', 'Benar! Kedua garis sejajar (memiliki gradien yang sama yaitu 1) tetapi tidak berimpit, sehingga tidak akan pernah berpotongan. Sistem tidak memiliki solusi.')" class="mt-3 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Cek Jawaban</button>
+                    <div id="feedback-q10" class="mt-2"></div>
+                </div>
+            </div>
+
+            <!-- Progress Tracker -->
+            <div class="mt-6 bg-white rounded-lg p-4">
+                <h4 class="font-semibold mb-2">📊 Progress Latihan</h4>
+                <div id="progress-tracker" class="grid grid-cols-2 gap-4 text-center">
+                    <div class="bg-green-100 p-2 rounded">
+                        <p class="text-sm font-semibold text-green-700">Mudah</p>
+                        <p id="easy-score" class="text-lg font-bold text-green-600">0/4</p>
+                    </div>
+                    <div class="bg-yellow-100 p-2 rounded">
+                        <p class="text-sm font-semibold text-yellow-700">Sedang</p>
+                        <p id="medium-score" class="text-lg font-bold text-yellow-600">0/5</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Aktivitas Praktik -->
+        <section class="section-card bg-gradient-to-r from-teal-100 to-cyan-100 rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-teal-800 mb-4">🎨 Aktivitas Praktik - Menggambar Grafik Interaktif</h3>
+            
+            <div class="bg-white rounded-lg p-4 mb-6">
+                <h4 class="font-semibold text-teal-700 mb-3">📐 Latihan Menggambar Interaktif</h4>
+                <p class="text-gray-700 mb-4">Gambarlah grafik sistem persamaan berikut menggunakan tools interaktif di bawah ini:</p>
+                
+                <div class="bg-teal-50 p-4 rounded-lg mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h5 class="font-semibold text-teal-700">Soal Latihan:</h5>
+                        <button onclick="generateNewProblem()" class="bg-teal-500 text-white px-3 py-1 rounded text-sm hover:bg-teal-600">🎲 Soal Baru</button>
+                    </div>
+                    <div id="current-problem" class="text-center">
+                        <p class="font-medium">$$\begin{cases} x + y = 6 \\ 2x - y = 3 \end{cases}$$</p>
+                        <p class="text-sm text-gray-600 mt-1">Soal 1 dari 10</p>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h5 class="font-semibold text-teal-600 mb-2">🛠️ Tools Menggambar:</h5>
+                        <div class="space-y-3">
+                            <div class="bg-teal-50 p-3 rounded-lg">
+                                <h6 class="font-medium text-teal-700 mb-2">Mode Aktif:</h6>
+                                <div class="flex space-x-2">
+                                    <button id="point-mode" onclick="setDrawMode('point')" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">📍 Titik</button>
+                                    <button id="line-mode" onclick="setDrawMode('line')" class="bg-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-400">📏 Garis</button>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-teal-50 p-3 rounded-lg">
+                                <h6 class="font-medium text-teal-700 mb-2">Warna Garis:</h6>
+                                <div class="flex space-x-2">
+                                    <button onclick="setLineColor('#3b82f6')" class="w-6 h-6 bg-blue-500 rounded border-2 border-gray-300 hover:border-gray-600"></button>
+                                    <button onclick="setLineColor('#ef4444')" class="w-6 h-6 bg-red-500 rounded border-2 border-gray-300 hover:border-gray-600"></button>
+                                    <button onclick="setLineColor('#10b981')" class="w-6 h-6 bg-green-500 rounded border-2 border-gray-300 hover:border-gray-600"></button>
+                                    <button onclick="setLineColor('#f59e0b')" class="w-6 h-6 bg-yellow-500 rounded border-2 border-gray-300 hover:border-gray-600"></button>
+                                    <button onclick="setLineColor('#8b5cf6')" class="w-6 h-6 bg-purple-500 rounded border-2 border-gray-300 hover:border-gray-600"></button>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-teal-50 p-3 rounded-lg">
+                                <h6 class="font-medium text-teal-700 mb-2">Kontrol:</h6>
+                                <div class="space-y-2">
+                                    <button onclick="clearCanvas()" class="w-full bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">🗑️ Hapus Semua</button>
+                                    <button onclick="undoLast()" class="w-full bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">↶ Undo</button>
+                                    <button onclick="showSolution()" class="w-full bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600">✅ Tampilkan Solusi</button>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-teal-50 p-3 rounded-lg">
+                                <h6 class="font-medium text-teal-700 mb-2">Panduan:</h6>
+                                <div class="text-xs text-gray-600 space-y-1">
+                                    <p>• Mode Titik: Klik pada grafik untuk membuat titik</p>
+                                    <p>• Mode Garis: Klik 2 titik untuk membuat garis</p>
+                                    <p id="line-guide">• Garis 1 (biru): x + y = 6<br>• Garis 2 (merah): 2x - y = 3</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-teal-50 p-3 rounded-lg">
+                                <h6 class="font-medium text-teal-700 mb-2">Progress:</h6>
+                                <div class="text-xs text-gray-600">
+                                    <div class="flex justify-between">
+                                        <span>Soal Diselesaikan:</span>
+                                        <span id="problems-solved">0/10</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                        <div id="progress-bar" class="bg-teal-500 h-2 rounded-full" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h5 class="font-semibold text-teal-600 mb-2">📊 Area Gambar Interaktif:</h5>
+                        <div class="graph-container p-2 cursor-crosshair">
+                            <svg id="interactive-canvas" width="300" height="300" viewBox="0 0 300 300" onclick="handleCanvasClick(event)">
+                                <!-- Grid -->
+                                <defs>
+                                    <pattern id="interactiveGrid" width="30" height="30" patternUnits="userSpaceOnUse">
+                                        <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="300" height="300" fill="url(#interactiveGrid)"/>
+                                
+                                <!-- Axes -->
+                                <line x1="0" y1="150" x2="300" y2="150" stroke="#374151" stroke-width="2"/>
+                                <line x1="150" y1="0" x2="150" y2="300" stroke="#374151" stroke-width="2"/>
+                                
+                                <!-- Axis labels -->
+                                <text x="290" y="145" font-size="12" fill="#374151">x</text>
+                                <text x="155" y="15" font-size="12" fill="#374151">y</text>
+                                
+                                <!-- Grid numbers -->
+                                <text x="175" y="145" font-size="10" fill="#6b7280">1</text>
+                                <text x="205" y="145" font-size="10" fill="#6b7280">2</text>
+                                <text x="235" y="145" font-size="10" fill="#6b7280">3</text>
+                                <text x="265" y="145" font-size="10" fill="#6b7280">4</text>
+                                <text x="295" y="145" font-size="10" fill="#6b7280">5</text>
+                                
+                                <text x="125" y="145" font-size="10" fill="#6b7280">-1</text>
+                                <text x="95" y="145" font-size="10" fill="#6b7280">-2</text>
+                                <text x="65" y="145" font-size="10" fill="#6b7280">-3</text>
+                                
+                                <text x="155" y="125" font-size="10" fill="#6b7280">1</text>
+                                <text x="155" y="95" font-size="10" fill="#6b7280">2</text>
+                                <text x="155" y="65" font-size="10" fill="#6b7280">3</text>
+                                <text x="155" y="35" font-size="10" fill="#6b7280">4</text>
+                                <text x="155" y="5" font-size="10" fill="#6b7280">5</text>
+                                
+                                <text x="155" y="175" font-size="10" fill="#6b7280">-1</text>
+                                <text x="155" y="205" font-size="10" fill="#6b7280">-2</text>
+                                <text x="155" y="235" font-size="10" fill="#6b7280">-3</text>
+                                
+                                <!-- Drawing area for user elements -->
+                                <g id="user-drawings"></g>
+                                
+                                <!-- Solution overlay (hidden initially) -->
+                                <g id="solution-overlay" style="display: none;">
+                                    <!-- Line 1: x + y = 6 (from (0,6) to (6,0)) -->
+                                    <line x1="150" y1="30" x2="330" y2="150" stroke="#3b82f6" stroke-width="3" opacity="0.7"/>
+                                    <!-- Line 2: 2x - y = 3 (from (0,-3) to (4.5,6)) -->
+                                    <line x1="150" y1="240" x2="285" y2="30" stroke="#ef4444" stroke-width="3" opacity="0.7"/>
+                                    <!-- Intersection point (3,3) -->
+                                    <circle cx="240" cy="60" r="5" fill="#10b981" stroke="#065f46" stroke-width="2"/>
+                                    <text x="245" y="55" font-size="12" fill="#10b981" font-weight="bold">(3,3)</text>
+                                </g>
+                            </svg>
+                        </div>
+                        
+                        <div class="mt-3 space-y-2">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Status Mode:</label>
+                                <span id="mode-status" class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">📍 Mode Titik Aktif</span>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Solusi yang diperoleh:</label>
+                                <input id="solution-input" type="text" class="w-full p-2 border rounded" placeholder="Contoh: (3, 3)">
+                                <button onclick="checkSolution()" class="mt-1 w-full bg-teal-500 text-white px-3 py-1 rounded text-sm hover:bg-teal-600">Periksa Jawaban</button>
+                                <div id="solution-feedback" class="mt-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Diskusi & Refleksi -->
+        <section class="section-card bg-gradient-to-r from-indigo-100 to-purple-100 rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-indigo-800 mb-4">💭 Diskusi & Refleksi</h3>
+            
+            <!-- Self-Assessment -->
+            <div class="bg-white rounded-lg p-4 mb-6">
+                <h4 class="font-semibold text-indigo-700 mb-3">⭐ Penilaian Pemahaman Diri (1-5)</h4>
+                <div class="space-y-3">
+                    <div>
+                        <p class="mb-2">Seberapa baik Anda memahami konsep sistem persamaan linear dua variabel?</p>
+                        <div class="flex space-x-2" id="concept-rating">
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating('concept', 1)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating('concept', 2)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating('concept', 3)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating('concept', 4)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating('concept', 5)">⭐</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="mb-2">Seberapa baik Anda dapat menyelesaikan sistem dengan metode grafik?</p>
+                        <div class="flex space-x-2" id="graphical-rating">
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating('graphical', 1)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating('graphical', 2)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating('graphical', 3)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating('graphical', 4)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating('graphical', 5)">⭐</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="mb-2">Seberapa baik Anda dapat mengaplikasikan dalam masalah nyata?</p>
+                        <div class="flex space-x-2" id="application-rating">
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating('application', 1)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating('application', 2)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating('application', 3)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating('application', 4)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400" onclick="setRating('application', 5)">⭐</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discussion Questions -->
+            <div class="bg-white rounded-lg p-4 mb-6">
+                <h4 class="font-semibold text-indigo-700 mb-3">🤔 Pertanyaan Diskusi</h4>
+                <div class="space-y-4">
+                    <div class="border-l-4 border-indigo-300 pl-4">
+                        <p class="font-medium">1. Apa keuntungan menggunakan metode grafik dibanding metode lain?</p>
+                        <textarea class="w-full mt-2 p-2 border rounded-lg" rows="3" placeholder="Tuliskan pendapat Anda..."></textarea>
+                    </div>
+                    <div class="border-l-4 border-indigo-300 pl-4">
+                        <p class="font-medium">2. Dalam situasi apa metode grafik kurang efektif?</p>
+                        <textarea class="w-full mt-2 p-2 border rounded-lg" rows="3" placeholder="Tuliskan analisis Anda..."></textarea>
+                    </div>
+                    <div class="border-l-4 border-indigo-300 pl-4">
+                        <p class="font-medium">3. Bagaimana cara mengetahui apakah sistem memiliki solusi tanpa menggambar grafik?</p>
+                        <textarea class="w-full mt-2 p-2 border rounded-lg" rows="3" placeholder="Tuliskan strategi Anda..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reflection Area -->
+            <div class="bg-white rounded-lg p-4">
+                <h4 class="font-semibold text-indigo-700 mb-3">📝 Area Refleksi</h4>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block font-medium mb-2">Konsep mana yang paling mudah dipahami?</label>
+                        <textarea class="w-full p-3 border rounded-lg" rows="3" placeholder="Refleksikan pemahaman Anda..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-medium mb-2">Bagian mana yang masih membingungkan?</label>
+                        <textarea class="w-full p-3 border rounded-lg" rows="3" placeholder="Identifikasi kesulitan Anda..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-medium mb-2">Bagaimana Anda akan menggunakan pengetahuan ini di kehidupan sehari-hari?</label>
+                        <textarea class="w-full p-3 border rounded-lg" rows="3" placeholder="Buat rencana aplikasi..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="section-card bg-gradient-to-r from-emerald-100 to-teal-100 rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-emerald-800 mb-4">🎯 Ringkasan Pembelajaran</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg p-4">
+                    <h4 class="font-semibold text-emerald-700 mb-2">✅ Yang Telah Dipelajari</h4>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>• Konsep sistem persamaan linear dua variabel</li>
+                        <li>• Metode grafik untuk menyelesaikan sistem</li>
+                        <li>• Jenis-jenis solusi sistem persamaan</li>
+                        <li>• Interpretasi grafik dan titik potong</li>
+                        <li>• Aplikasi dalam masalah kehidupan nyata</li>
+                        <li>• Analisis visual solusi sistem</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-lg p-4">
+                    <h4 class="font-semibold text-emerald-700 mb-2">🚀 Langkah Selanjutnya</h4>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>• Metode substitusi untuk menyelesaikan sistem</li>
+                        <li>• Metode eliminasi dan campuran</li>
+                        <li>• Sistem persamaan dengan tiga variabel</li>
+                        <li>• Aplikasi dalam optimisasi linear</li>
+                        <li>• Sistem persamaan non-linear</li>
+                        <li>• Penggunaan teknologi dalam penyelesaian</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white p-6 mt-12">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="mb-2">📚 LKPD Interaktif Matematika - Kelas 9</p>
+            <p class="text-sm text-gray-400">Sistem Persamaan Linear Dua Variabel</p>
+            <p class="text-xs text-gray-500 mt-2">Fokus: Konsep Sistem dan Metode Grafik</p>
+        </div>
+    </footer>
+
+    <script>
+        // Score tracking
+        let scores = {
+            mudah: 0,
+            sedang: 0
+        };
+
+        let maxScores = {
+            mudah: 4,
+            sedang: 6
+        };
+
+        // Check answer function
+        function checkAnswer(questionId, correctAnswer, explanation) {
+            const selectedAnswer = document.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackDiv = document.getElementById(`feedback-${questionId}`);
+            
+            if (!selectedAnswer) {
+                feedbackDiv.innerHTML = '<p class="text-red-600 font-medium">⚠️ Silakan pilih jawaban terlebih dahulu!</p>';
+                return;
+            }
+
+            const questionElement = document.querySelector(`input[name="${questionId}"]`).closest('.quiz-question');
+            const level = questionElement.getAttribute('data-level');
+            
+            if (selectedAnswer.value === correctAnswer) {
+                feedbackDiv.innerHTML = `<div class="correct p-3 rounded-lg border"><p class="font-medium">✅ Benar!</p><p class="text-sm mt-1">${explanation}</p></div>`;
+                
+                // Update score if not already answered correctly
+                if (!questionElement.classList.contains('answered-correctly')) {
+                    scores[level]++;
+                    questionElement.classList.add('answered-correctly');
+                    updateProgressTracker();
+                }
+            } else {
+                feedbackDiv.innerHTML = `<div class="incorrect p-3 rounded-lg border"><p class="font-medium">❌ Kurang tepat.</p><p class="text-sm mt-1">${explanation}</p></div>`;
+            }
+
+            // Disable all radio buttons for this question
+            document.querySelectorAll(`input[name="${questionId}"]`).forEach(input => {
+                input.disabled = true;
+            });
+        }
+
+        // Update progress tracker
+        function updateProgressTracker() {
+            document.getElementById('easy-score').textContent = `${scores.mudah}/${maxScores.mudah}`;
+            document.getElementById('medium-score').textContent = `${scores.sedang}/${maxScores.sedang}`;
+        }
+
+        // Rating system
+        function setRating(type, rating) {
+            const ratingContainer = document.getElementById(`${type}-rating`);
+            const stars = ratingContainer.querySelectorAll('.rating-star');
+            
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('text-gray-300');
+                    star.classList.add('text-yellow-400');
+                } else {
+                    star.classList.remove('text-yellow-400');
+                    star.classList.add('text-gray-300');
+                }
+            });
+        }
+
+        // Reset all function
+        function resetAll() {
+            if (confirm('Apakah Anda yakin ingin mereset semua jawaban dan progress?')) {
+                // Reset scores
+                scores = {
+                    mudah: 0,
+                    sedang: 0
+                };
+                
+                // Reset all radio buttons
+                document.querySelectorAll('input[type="radio"]').forEach(input => {
+                    input.checked = false;
+                    input.disabled = false;
+                });
+                
+                // Clear all feedback
+                document.querySelectorAll('[id^="feedback-"]').forEach(div => {
+                    div.innerHTML = '';
+                });
+                
+                // Remove answered-correctly class
+                document.querySelectorAll('.quiz-question').forEach(question => {
+                    question.classList.remove('answered-correctly');
+                });
+                
+                // Reset ratings
+                document.querySelectorAll('.rating-star').forEach(star => {
+                    star.classList.remove('text-yellow-400');
+                    star.classList.add('text-gray-300');
+                });
+                
+                // Clear textareas and inputs
+                document.querySelectorAll('textarea, input[type="text"]').forEach(element => {
+                    element.value = '';
+                });
+                
+                // Update progress tracker
+                updateProgressTracker();
+                
+                alert('✅ Semua data telah direset! Anda dapat memulai kembali.');
+            }
+        }
+
+        // Interactive Drawing Variables
+        let drawMode = 'point'; // 'point' or 'line'
+        let currentLineColor = '#3b82f6';
+        let selectedPoints = [];
+        let drawnElements = [];
+        let pointCounter = 0;
+
+        // Problem Generator Variables
+        let currentProblemIndex = 0;
+        let currentProblem = null;
+        let solvedProblems = new Set();
+        
+        const practiceProblems = [
+            {
+                eq1: "x + y = 6",
+                eq2: "2x - y = 3",
+                solution: "(3, 3)",
+                line1Points: [[0, 6], [6, 0]],
+                line2Points: [[0, -3], [4.5, 6]]
+            },
+            {
+                eq1: "x + y = 4",
+                eq2: "x - y = 2",
+                solution: "(3, 1)",
+                line1Points: [[0, 4], [4, 0]],
+                line2Points: [[0, -2], [4, 2]]
+            },
+            {
+                eq1: "2x + y = 8",
+                eq2: "x - y = 1",
+                solution: "(3, 2)",
+                line1Points: [[0, 8], [4, 0]],
+                line2Points: [[0, -1], [3, 2]]
+            },
+            {
+                eq1: "x + 2y = 8",
+                eq2: "3x - y = 2",
+                solution: "(2, 3)",
+                line1Points: [[0, 4], [8, 0]],
+                line2Points: [[0, -2], [2, 4]]
+            },
+            {
+                eq1: "2x + 3y = 12",
+                eq2: "x - y = 1",
+                solution: "(3, 2)",
+                line1Points: [[0, 4], [6, 0]],
+                line2Points: [[0, -1], [4, 3]]
+            },
+            {
+                eq1: "x + y = 5",
+                eq2: "2x + y = 7",
+                solution: "(2, 3)",
+                line1Points: [[0, 5], [5, 0]],
+                line2Points: [[0, 7], [3.5, 0]]
+            },
+            {
+                eq1: "3x + y = 9",
+                eq2: "x + 2y = 8",
+                solution: "(2, 3)",
+                line1Points: [[0, 9], [3, 0]],
+                line2Points: [[0, 4], [8, 0]]
+            },
+            {
+                eq1: "x + 3y = 10",
+                eq2: "2x - y = 1",
+                solution: "(2.5, 2.5)",
+                line1Points: [[0, 3.33], [10, 0]],
+                line2Points: [[0, -1], [3, 5]]
+            },
+            {
+                eq1: "2x - y = 4",
+                eq2: "x + y = 5",
+                solution: "(3, 2)",
+                line1Points: [[0, -4], [2, 0]],
+                line2Points: [[0, 5], [5, 0]]
+            },
+            {
+                eq1: "x - 2y = -2",
+                eq2: "3x + y = 11",
+                solution: "(3, 2.5)",
+                line1Points: [[0, 1], [4, 3]],
+                line2Points: [[0, 11], [3.67, 0]]
+            }
+        ];
+
+        // Drawing Functions
+        function setDrawMode(mode) {
+            drawMode = mode;
+            selectedPoints = []; // Clear selected points when changing mode
+            
+            // Update button styles
+            document.getElementById('point-mode').className = mode === 'point' ? 
+                'bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600' : 
+                'bg-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-400';
+            document.getElementById('line-mode').className = mode === 'line' ? 
+                'bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600' : 
+                'bg-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-400';
+            
+            // Update status
+            document.getElementById('mode-status').innerHTML = mode === 'point' ? 
+                '📍 Mode Titik Aktif' : '📏 Mode Garis Aktif - Pilih 2 titik';
+            document.getElementById('mode-status').className = mode === 'point' ? 
+                'text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded' : 
+                'text-sm bg-green-100 text-green-800 px-2 py-1 rounded';
+        }
+
+        function setLineColor(color) {
+            currentLineColor = color;
+            // Update color button borders
+            document.querySelectorAll('[onclick^="setLineColor"]').forEach(btn => {
+                btn.className = btn.onclick.toString().includes(color) ? 
+                    'w-6 h-6 rounded border-4 border-gray-800 hover:border-gray-600' + ' bg-' + getColorClass(color) : 
+                    'w-6 h-6 rounded border-2 border-gray-300 hover:border-gray-600' + ' bg-' + getColorClass(btn.onclick.toString().match(/#[0-9a-f]{6}/)[0]);
+            });
+        }
+
+        function getColorClass(hex) {
+            const colorMap = {
+                '#3b82f6': 'blue-500',
+                '#ef4444': 'red-500',
+                '#10b981': 'green-500',
+                '#f59e0b': 'yellow-500',
+                '#8b5cf6': 'purple-500'
+            };
+            return colorMap[hex] || 'gray-500';
+        }
+
+        function handleCanvasClick(event) {
+            const svg = document.getElementById('interactive-canvas');
+            const rect = svg.getBoundingClientRect();
+            const x = ((event.clientX - rect.left) / rect.width) * 300;
+            const y = ((event.clientY - rect.top) / rect.height) * 300;
+            
+            // Snap to grid
+            const gridX = Math.round(x / 30) * 30;
+            const gridY = Math.round(y / 30) * 30;
+            
+            if (drawMode === 'point') {
+                createPoint(gridX, gridY);
+            } else if (drawMode === 'line') {
+                handleLineMode(gridX, gridY);
+            }
+        }
+
+        function createPoint(x, y) {
+            const userDrawings = document.getElementById('user-drawings');
+            const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            point.setAttribute('cx', x);
+            point.setAttribute('cy', y);
+            point.setAttribute('r', '4');
+            point.setAttribute('fill', currentLineColor);
+            point.setAttribute('stroke', '#000');
+            point.setAttribute('stroke-width', '1');
+            point.setAttribute('data-type', 'point');
+            point.setAttribute('data-id', 'point-' + pointCounter++);
+            
+            userDrawings.appendChild(point);
+            drawnElements.push(point);
+            
+            // Add coordinate label
+            const coordX = Math.round((x - 150) / 30);
+            const coordY = Math.round((150 - y) / 30);
+            const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            label.setAttribute('x', x + 8);
+            label.setAttribute('y', y - 8);
+            label.setAttribute('font-size', '10');
+            label.setAttribute('fill', currentLineColor);
+            label.setAttribute('font-weight', 'bold');
+            label.textContent = `(${coordX},${coordY})`;
+            label.setAttribute('data-type', 'label');
+            label.setAttribute('data-parent', 'point-' + (pointCounter - 1));
+            
+            userDrawings.appendChild(label);
+            drawnElements.push(label);
+        }
+
+        function handleLineMode(x, y) {
+            selectedPoints.push({x, y});
+            
+            // Create temporary point to show selection
+            createPoint(x, y);
+            
+            if (selectedPoints.length === 2) {
+                createLine(selectedPoints[0], selectedPoints[1]);
+                selectedPoints = [];
+                document.getElementById('mode-status').innerHTML = '📏 Mode Garis Aktif - Pilih 2 titik';
+            } else {
+                document.getElementById('mode-status').innerHTML = '📏 Mode Garis Aktif - Pilih titik kedua';
+            }
+        }
+
+        function createLine(point1, point2) {
+            const userDrawings = document.getElementById('user-drawings');
+            
+            // Extend line to canvas edges
+            const dx = point2.x - point1.x;
+            const dy = point2.y - point1.y;
+            
+            // Calculate line equation and extend to canvas boundaries
+            let x1, y1, x2, y2;
+            
+            if (Math.abs(dx) > Math.abs(dy)) {
+                // More horizontal line
+                x1 = 0;
+                y1 = point1.y - (point1.x * dy / dx);
+                x2 = 300;
+                y2 = point1.y + ((300 - point1.x) * dy / dx);
+            } else {
+                // More vertical line
+                y1 = 0;
+                x1 = point1.x - (point1.y * dx / dy);
+                y2 = 300;
+                x2 = point1.x + ((300 - point1.y) * dx / dy);
+            }
+            
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', x1);
+            line.setAttribute('y1', y1);
+            line.setAttribute('x2', x2);
+            line.setAttribute('y2', y2);
+            line.setAttribute('stroke', currentLineColor);
+            line.setAttribute('stroke-width', '3');
+            line.setAttribute('data-type', 'line');
+            
+            userDrawings.appendChild(line);
+            drawnElements.push(line);
+        }
+
+        function clearCanvas() {
+            const userDrawings = document.getElementById('user-drawings');
+            userDrawings.innerHTML = '';
+            drawnElements = [];
+            selectedPoints = [];
+            pointCounter = 0;
+            document.getElementById('solution-overlay').style.display = 'none';
+            document.getElementById('solution-input').value = '';
+            document.getElementById('solution-feedback').innerHTML = '';
+        }
+
+        function undoLast() {
+            if (drawnElements.length > 0) {
+                const lastElement = drawnElements.pop();
+                lastElement.remove();
+                
+                // If it was a label, also remove its parent point
+                if (lastElement.getAttribute('data-type') === 'label') {
+                    const parentId = lastElement.getAttribute('data-parent');
+                    const parentPoint = document.querySelector(`[data-id="${parentId}"]`);
+                    if (parentPoint) {
+                        parentPoint.remove();
+                        drawnElements = drawnElements.filter(el => el !== parentPoint);
+                    }
+                }
+            }
+        }
+
+        function showSolution() {
+            document.getElementById('solution-overlay').style.display = 'block';
+        }
+
+        function generateNewProblem() {
+            currentProblemIndex = (currentProblemIndex + 1) % practiceProblems.length;
+            currentProblem = practiceProblems[currentProblemIndex];
+            
+            // Update problem display
+            document.getElementById('current-problem').innerHTML = `
+                <p class="font-medium">$$\\begin{cases} ${currentProblem.eq1} \\\\ ${currentProblem.eq2} \\end{cases}$$</p>
+                <p class="text-sm text-gray-600 mt-1">Soal ${currentProblemIndex + 1} dari ${practiceProblems.length}</p>
+            `;
+            
+            // Update line guide
+            document.getElementById('line-guide').innerHTML = `• Garis 1 (biru): ${currentProblem.eq1}<br>• Garis 2 (merah): ${currentProblem.eq2}`;
+            
+            // Clear canvas and reset
+            clearCanvas();
+            
+            // Update solution overlay with new problem
+            updateSolutionOverlay();
+            
+            // Re-render MathJax
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        function updateSolutionOverlay() {
+            if (!currentProblem) return;
+            
+            const overlay = document.getElementById('solution-overlay');
+            overlay.innerHTML = '';
+            
+            // Convert problem coordinates to SVG coordinates
+            const toSVG = (x, y) => [150 + x * 30, 150 - y * 30];
+            
+            // Line 1
+            const [x1_1, y1_1] = toSVG(currentProblem.line1Points[0][0], currentProblem.line1Points[0][1]);
+            const [x2_1, y2_1] = toSVG(currentProblem.line1Points[1][0], currentProblem.line1Points[1][1]);
+            
+            // Extend line 1 to canvas edges
+            const dx1 = x2_1 - x1_1;
+            const dy1 = y2_1 - y1_1;
+            const extendedLine1 = extendLineToCanvas(x1_1, y1_1, dx1, dy1);
+            
+            const line1 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line1.setAttribute('x1', extendedLine1.x1);
+            line1.setAttribute('y1', extendedLine1.y1);
+            line1.setAttribute('x2', extendedLine1.x2);
+            line1.setAttribute('y2', extendedLine1.y2);
+            line1.setAttribute('stroke', '#3b82f6');
+            line1.setAttribute('stroke-width', '3');
+            line1.setAttribute('opacity', '0.7');
+            overlay.appendChild(line1);
+            
+            // Line 2
+            const [x1_2, y1_2] = toSVG(currentProblem.line2Points[0][0], currentProblem.line2Points[0][1]);
+            const [x2_2, y2_2] = toSVG(currentProblem.line2Points[1][0], currentProblem.line2Points[1][1]);
+            
+            // Extend line 2 to canvas edges
+            const dx2 = x2_2 - x1_2;
+            const dy2 = y2_2 - y1_2;
+            const extendedLine2 = extendLineToCanvas(x1_2, y1_2, dx2, dy2);
+            
+            const line2 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line2.setAttribute('x1', extendedLine2.x1);
+            line2.setAttribute('y1', extendedLine2.y1);
+            line2.setAttribute('x2', extendedLine2.x2);
+            line2.setAttribute('y2', extendedLine2.y2);
+            line2.setAttribute('stroke', '#ef4444');
+            line2.setAttribute('stroke-width', '3');
+            line2.setAttribute('opacity', '0.7');
+            overlay.appendChild(line2);
+            
+            // Solution point
+            const solutionCoords = currentProblem.solution.match(/\((.*?)\)/)[1].split(',');
+            const solX = parseFloat(solutionCoords[0].trim());
+            const solY = parseFloat(solutionCoords[1].trim());
+            const [svgX, svgY] = toSVG(solX, solY);
+            
+            const solutionPoint = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            solutionPoint.setAttribute('cx', svgX);
+            solutionPoint.setAttribute('cy', svgY);
+            solutionPoint.setAttribute('r', '5');
+            solutionPoint.setAttribute('fill', '#10b981');
+            solutionPoint.setAttribute('stroke', '#065f46');
+            solutionPoint.setAttribute('stroke-width', '2');
+            overlay.appendChild(solutionPoint);
+            
+            const solutionLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            solutionLabel.setAttribute('x', svgX + 8);
+            solutionLabel.setAttribute('y', svgY - 8);
+            solutionLabel.setAttribute('font-size', '12');
+            solutionLabel.setAttribute('fill', '#10b981');
+            solutionLabel.setAttribute('font-weight', 'bold');
+            solutionLabel.textContent = currentProblem.solution;
+            overlay.appendChild(solutionLabel);
+        }
+
+        function extendLineToCanvas(x1, y1, dx, dy) {
+            // Extend line to canvas boundaries (0 to 300)
+            let startX, startY, endX, endY;
+            
+            if (Math.abs(dx) > Math.abs(dy)) {
+                // More horizontal
+                startX = 0;
+                startY = y1 - (x1 * dy / dx);
+                endX = 300;
+                endY = y1 + ((300 - x1) * dy / dx);
+            } else {
+                // More vertical
+                startY = 0;
+                startX = x1 - (y1 * dx / dy);
+                endY = 300;
+                endX = x1 + ((300 - y1) * dx / dy);
+            }
+            
+            // Clamp to canvas bounds
+            startX = Math.max(0, Math.min(300, startX));
+            startY = Math.max(0, Math.min(300, startY));
+            endX = Math.max(0, Math.min(300, endX));
+            endY = Math.max(0, Math.min(300, endY));
+            
+            return { x1: startX, y1: startY, x2: endX, y2: endY };
+        }
+
+        function checkSolution() {
+            const input = document.getElementById('solution-input').value.trim();
+            const feedback = document.getElementById('solution-feedback');
+            
+            if (!currentProblem) {
+                currentProblem = practiceProblems[0];
+            }
+            
+            // Parse expected solution
+            const expectedSolution = currentProblem.solution;
+            const solutionCoords = expectedSolution.match(/\((.*?)\)/)[1].split(',');
+            const expectedX = parseFloat(solutionCoords[0].trim());
+            const expectedY = parseFloat(solutionCoords[1].trim());
+            
+            // Create possible correct answer formats
+            const correctAnswers = [
+                `(${expectedX},${expectedY})`,
+                `(${expectedX}, ${expectedY})`,
+                `( ${expectedX} , ${expectedY} )`,
+                `(${expectedX};${expectedY})`,
+                `${expectedX},${expectedY}`,
+                `${expectedX}, ${expectedY}`
+            ];
+            
+            if (correctAnswers.some(answer => input.toLowerCase().replace(/\s/g, '') === answer.toLowerCase().replace(/\s/g, ''))) {
+                feedback.innerHTML = `<div class="correct p-2 rounded text-sm"><p class="font-medium">✅ Benar!</p><p>Solusi sistem persamaan adalah ${expectedSolution}. Kedua garis berpotongan di titik ini.</p></div>`;
+                
+                // Track solved problem
+                solvedProblems.add(currentProblemIndex);
+                updateProgress();
+            } else if (input === '') {
+                feedback.innerHTML = '<p class="text-red-600 text-sm">⚠️ Silakan masukkan jawaban terlebih dahulu!</p>';
+            } else {
+                feedback.innerHTML = `<div class="incorrect p-2 rounded text-sm"><p class="font-medium">❌ Kurang tepat.</p><p>Coba periksa kembali titik potong kedua garis. Solusi yang benar adalah ${expectedSolution}.</p></div>`;
+            }
+        }
+
+        function updateProgress() {
+            const solved = solvedProblems.size;
+            const total = practiceProblems.length;
+            const percentage = (solved / total) * 100;
+            
+            document.getElementById('problems-solved').textContent = `${solved}/${total}`;
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+            
+            if (solved === total) {
+                setTimeout(() => {
+                    alert('🎉 Selamat! Anda telah menyelesaikan semua soal latihan menggambar grafik!');
+                }, 500);
+            }
+        }
+
+        // Initialize MathJax and problem generator
+        window.addEventListener('load', function() {
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+            
+            // Initialize first problem
+            currentProblem = practiceProblems[0];
+            updateSolutionOverlay();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'964049ef617a6d03',t:'MTc1MzMyNzMwMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
