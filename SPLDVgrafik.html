@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aktivitas SPLDV - Metode Grafik</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .grid-line {
+            stroke: #e5e7eb;
+            stroke-width: 0.5;
+        }
+        .axis-line {
+            stroke: #374151;
+            stroke-width: 2;
+        }
+        .point {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .point:hover {
+            r: 6;
+        }
+        .line {
+            stroke-width: 2;
+            cursor: pointer;
+        }
+        .intersection-point {
+            fill: #dc2626;
+            stroke: #ffffff;
+            stroke-width: 2;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-4">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold text-center text-indigo-800 mb-8">
+            Aktivitas SPLDV - Metode Grafik
+        </h1>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Panel Info -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Informasi</h2>
+                
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Titik Potong</h3>
+                    <div id="intersectionInfo" class="text-sm text-gray-600">
+                        Belum ada garis yang berpotongan
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <button onclick="clearAll()" class="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">
+                        Hapus Semua
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Area Input Bebas -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Area Kerja Bebas</h2>
+                
+                <div class="mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-lg font-medium text-gray-700">Tulis Persamaan</h3>
+                        <div class="flex space-x-1">
+                            <button onclick="resizeTextarea('small')" class="bg-gray-500 text-white px-2 py-1 rounded text-xs hover:bg-gray-600">
+                                Kecil
+                            </button>
+                            <button onclick="resizeTextarea('medium')" class="bg-gray-500 text-white px-2 py-1 rounded text-xs hover:bg-gray-600">
+                                Sedang
+                            </button>
+                            <button onclick="resizeTextarea('large')" class="bg-gray-500 text-white px-2 py-1 rounded text-xs hover:bg-gray-600">
+                                Besar
+                            </button>
+                        </div>
+                    </div>
+                    <textarea id="equationArea" placeholder="Tulis persamaan Anda di sini...
+Contoh:
+2x + y = 6
+x - y = 1" class="w-full h-20 px-3 py-2 border rounded resize-y"></textarea>
+                </div>
+                
+                <div class="mb-4">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Tabel Evaluasi</h3>
+                    <div class="flex space-x-2 mb-2">
+                        <button onclick="addTableRow()" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+                            + Tambah Baris
+                        </button>
+                        <button onclick="addTableColumn()" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
+                            + Tambah Kolom
+                        </button>
+                        <button onclick="clearTable()" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+                            Hapus Tabel
+                        </button>
+                    </div>
+                    
+                    <div class="overflow-auto max-h-64 border rounded">
+                        <table id="customTable" class="w-full border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="border border-gray-300 px-2 py-2 min-w-16">
+                                        <input type="text" value="Kolom 1" class="w-full bg-transparent text-center font-bold">
+                                    </th>
+                                    <th class="border border-gray-300 px-2 py-2 min-w-16">
+                                        <input type="text" value="Kolom 2" class="w-full bg-transparent text-center font-bold">
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="customTableBody">
+                                <tr>
+                                    <td class="border border-gray-300 px-1 py-1">
+                                        <input type="text" class="w-full text-center border-0 bg-transparent">
+                                    </td>
+                                    <td class="border border-gray-300 px-1 py-1">
+                                        <input type="text" class="w-full text-center border-0 bg-transparent">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Input Titik Koordinat</h3>
+                    <div class="flex space-x-2 mb-2">
+                        <input type="number" id="pointX" placeholder="x" class="w-20 px-2 py-1 border rounded">
+                        <input type="number" id="pointY" placeholder="y" class="w-20 px-2 py-1 border rounded">
+                        <button onclick="addCoordinatePoint()" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+                            Tambah Titik
+                        </button>
+                    </div>
+                    
+                    <div class="mt-2">
+                        <h4 class="text-sm font-medium text-gray-600 mb-1">Titik pada Koordinat:</h4>
+                        <div id="coordinatePoints" class="text-sm text-gray-600 max-h-20 overflow-auto">
+                            Belum ada titik
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Garis yang Digambar</h3>
+                    <div id="linesInfo" class="text-sm text-gray-600">
+                        Belum ada garis
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Koordinat Kartesius -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Koordinat Kartesius</h2>
+                
+                <div class="border border-gray-300 rounded">
+                    <svg id="coordinate-system" width="400" height="400" class="w-full h-auto">
+                        <!-- Grid dan sumbu akan digambar di sini -->
+                    </svg>
+                </div>
+                
+                <div class="mt-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Pengaturan Koordinat</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Batas X</label>
+                            <div class="flex space-x-2">
+                                <input type="number" id="xMin" value="-10" class="w-20 px-2 py-1 border rounded">
+                                <span class="py-1">sampai</span>
+                                <input type="number" id="xMax" value="10" class="w-20 px-2 py-1 border rounded">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Batas Y</label>
+                            <div class="flex space-x-2">
+                                <input type="number" id="yMin" value="-10" class="w-20 px-2 py-1 border rounded">
+                                <span class="py-1">sampai</span>
+                                <input type="number" id="yMax" value="10" class="w-20 px-2 py-1 border rounded">
+                            </div>
+                        </div>
+                        
+                        <button onclick="updateGrid()" class="w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700">
+                            Perbarui Grid
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Mode</h3>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="radio" name="mode" value="point" checked class="mr-2">
+                            <span>Tambah Titik</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="mode" value="line" class="mr-2">
+                            <span>Gambar Garis</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="mt-4 text-sm text-gray-600">
+                    <p><strong>Petunjuk:</strong></p>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Mode Titik: Klik pada koordinat untuk menambah titik</li>
+                        <li>Mode Garis: Klik 2 titik untuk menggambar garis</li>
+                        <li>Titik merah menunjukkan titik potong garis</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let points = [];
+        let lines = [];
+        let selectedPoints = [];
+        let intersections = [];
+        
+        // Pengaturan koordinat
+        let xMin = -10, xMax = 10, yMin = -10, yMax = 10;
+        const svgWidth = 400, svgHeight = 400;
+        const margin = 30;
+        
+        function updateGrid() {
+            xMin = parseInt(document.getElementById('xMin').value);
+            xMax = parseInt(document.getElementById('xMax').value);
+            yMin = parseInt(document.getElementById('yMin').value);
+            yMax = parseInt(document.getElementById('yMax').value);
+            
+            drawCoordinateSystem();
+            updatePointsTable();
+        }
+        
+        function drawCoordinateSystem() {
+            const svg = document.getElementById('coordinate-system');
+            svg.innerHTML = '';
+            
+            // Fungsi konversi koordinat
+            const scaleX = (svgWidth - 2 * margin) / (xMax - xMin);
+            const scaleY = (svgHeight - 2 * margin) / (yMax - yMin);
+            
+            window.toSVGX = (x) => margin + (x - xMin) * scaleX;
+            window.toSVGY = (y) => svgHeight - margin - (y - yMin) * scaleY;
+            window.fromSVGX = (svgX) => xMin + (svgX - margin) / scaleX;
+            window.fromSVGY = (svgY) => yMax - (svgY - margin) / scaleY;
+            
+            // Gambar grid
+            for (let x = xMin; x <= xMax; x++) {
+                const svgX = toSVGX(x);
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', svgX);
+                line.setAttribute('y1', margin);
+                line.setAttribute('x2', svgX);
+                line.setAttribute('y2', svgHeight - margin);
+                line.setAttribute('class', x === 0 ? 'axis-line' : 'grid-line');
+                svg.appendChild(line);
+                
+                // Label X
+                if (x !== 0) {
+                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    text.setAttribute('x', svgX);
+                    text.setAttribute('y', toSVGY(0) + 15);
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('font-size', '11');
+                    text.setAttribute('fill', '#374151');
+                    text.textContent = x;
+                    svg.appendChild(text);
+                }
+            }
+            
+            for (let y = yMin; y <= yMax; y++) {
+                const svgY = toSVGY(y);
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', margin);
+                line.setAttribute('y1', svgY);
+                line.setAttribute('x2', svgWidth - margin);
+                line.setAttribute('y2', svgY);
+                line.setAttribute('class', y === 0 ? 'axis-line' : 'grid-line');
+                svg.appendChild(line);
+                
+                // Label Y
+                if (y !== 0) {
+                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    text.setAttribute('x', toSVGX(0) - 15);
+                    text.setAttribute('y', svgY + 4);
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('font-size', '11');
+                    text.setAttribute('fill', '#374151');
+                    text.textContent = y;
+                    svg.appendChild(text);
+                }
+            }
+            
+            // Gambar ulang semua titik dan garis
+            redrawAll();
+            
+            // Event listener untuk klik
+            svg.addEventListener('click', handleSVGClick);
+        }
+        
+        function handleSVGClick(event) {
+            // Prevent event if clicking on a point element
+            if (event.target.classList.contains('point')) {
+                return;
+            }
+            
+            const rect = event.target.getBoundingClientRect();
+            const svgX = event.clientX - rect.left;
+            const svgY = event.clientY - rect.top;
+            
+            const x = Math.round(fromSVGX(svgX));
+            const y = Math.round(fromSVGY(svgY));
+            
+            const mode = document.querySelector('input[name="mode"]:checked').value;
+            
+            if (mode === 'point') {
+                addPoint(x, y);
+            } else if (mode === 'line') {
+                // Cari titik terdekat dalam radius 20 pixel
+                let closestPoint = null;
+                let minDistance = Infinity;
+                
+                points.forEach(point => {
+                    const pointSvgX = toSVGX(point.x);
+                    const pointSvgY = toSVGY(point.y);
+                    const distance = Math.sqrt(Math.pow(svgX - pointSvgX, 2) + Math.pow(svgY - pointSvgY, 2));
+                    
+                    if (distance < 20 && distance < minDistance) {
+                        minDistance = distance;
+                        closestPoint = point;
+                    }
+                });
+                
+                if (closestPoint) {
+                    selectPointForLine(closestPoint);
+                }
+            }
+        }
+        
+        function addPoint(x, y) {
+            // Cek apakah titik sudah ada
+            if (points.some(p => p.x === x && p.y === y)) {
+                return;
+            }
+            
+            const point = { x, y, id: Date.now() };
+            points.push(point);
+            drawPoint(point);
+            updateCoordinatePointsList();
+        }
+        
+        function addCoordinatePoint() {
+            const x = parseInt(document.getElementById('pointX').value);
+            const y = parseInt(document.getElementById('pointY').value);
+            
+            if (isNaN(x) || isNaN(y)) {
+                alert('Masukkan nilai x dan y yang valid');
+                return;
+            }
+            
+            addPoint(x, y);
+            document.getElementById('pointX').value = '';
+            document.getElementById('pointY').value = '';
+            updateCoordinatePointsList();
+        }
+        
+        function addTableRow() {
+            const tbody = document.getElementById('customTableBody');
+            const headerRow = document.querySelector('#customTable thead tr');
+            const columnCount = headerRow.children.length;
+            
+            const row = document.createElement('tr');
+            for (let i = 0; i < columnCount; i++) {
+                const cell = document.createElement('td');
+                cell.className = 'border border-gray-300 px-1 py-1';
+                cell.innerHTML = '<input type="text" class="w-full text-center border-0 bg-transparent">';
+                row.appendChild(cell);
+            }
+            tbody.appendChild(row);
+        }
+        
+        function addTableColumn() {
+            const table = document.getElementById('customTable');
+            const headerRow = table.querySelector('thead tr');
+            const bodyRows = table.querySelectorAll('tbody tr');
+            
+            // Add header cell
+            const headerCell = document.createElement('th');
+            headerCell.className = 'border border-gray-300 px-2 py-2 min-w-16';
+            headerCell.innerHTML = '<input type="text" value="Kolom" class="w-full bg-transparent text-center font-bold">';
+            headerRow.appendChild(headerCell);
+            
+            // Add cells to existing rows
+            bodyRows.forEach(row => {
+                const cell = document.createElement('td');
+                cell.className = 'border border-gray-300 px-1 py-1';
+                cell.innerHTML = '<input type="text" class="w-full text-center border-0 bg-transparent">';
+                row.appendChild(cell);
+            });
+        }
+        
+        function clearTable() {
+            const tbody = document.getElementById('customTableBody');
+            const headerRow = document.querySelector('#customTable thead tr');
+            
+            // Reset to default 2 columns
+            headerRow.innerHTML = `
+                <th class="border border-gray-300 px-2 py-2 min-w-16">
+                    <input type="text" value="Kolom 1" class="w-full bg-transparent text-center font-bold">
+                </th>
+                <th class="border border-gray-300 px-2 py-2 min-w-16">
+                    <input type="text" value="Kolom 2" class="w-full bg-transparent text-center font-bold">
+                </th>
+            `;
+            
+            // Reset to one empty row
+            tbody.innerHTML = `
+                <tr>
+                    <td class="border border-gray-300 px-1 py-1">
+                        <input type="text" class="w-full text-center border-0 bg-transparent">
+                    </td>
+                    <td class="border border-gray-300 px-1 py-1">
+                        <input type="text" class="w-full text-center border-0 bg-transparent">
+                    </td>
+                </tr>
+            `;
+        }
+        
+        function drawPoint(point) {
+            const svg = document.getElementById('coordinate-system');
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', toSVGX(point.x));
+            circle.setAttribute('cy', toSVGY(point.y));
+            circle.setAttribute('r', 4);
+            circle.setAttribute('fill', '#3b82f6');
+            circle.setAttribute('class', 'point');
+            circle.setAttribute('data-id', point.id);
+            
+            // Add click event for line mode
+            circle.addEventListener('click', function(event) {
+                event.stopPropagation();
+                const mode = document.querySelector('input[name="mode"]:checked').value;
+                if (mode === 'line') {
+                    selectPointForLine(point);
+                }
+            });
+            
+            // Tooltip
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+            title.textContent = `(${point.x}, ${point.y})`;
+            circle.appendChild(title);
+            
+            svg.appendChild(circle);
+            
+            // Add coordinate label
+            const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            label.setAttribute('x', toSVGX(point.x) + 8);
+            label.setAttribute('y', toSVGY(point.y) - 8);
+            label.setAttribute('font-size', '10');
+            label.setAttribute('fill', '#1f2937');
+            label.setAttribute('font-weight', 'bold');
+            label.setAttribute('class', 'point-label');
+            label.setAttribute('data-id', point.id);
+            label.textContent = `(${point.x},${point.y})`;
+            svg.appendChild(label);
+        }
+        
+        function selectPointForLine(point) {
+            if (selectedPoints.length === 0) {
+                selectedPoints.push(point);
+                // Highlight titik yang dipilih
+                const circle = document.querySelector(`[data-id="${point.id}"]`);
+                circle.setAttribute('fill', '#f59e0b');
+            } else if (selectedPoints.length === 1) {
+                if (selectedPoints[0].id !== point.id) {
+                    selectedPoints.push(point);
+                    drawLine(selectedPoints[0], selectedPoints[1]);
+                }
+                // Reset selection
+                selectedPoints.forEach(p => {
+                    const circle = document.querySelector(`[data-id="${p.id}"]`);
+                    circle.setAttribute('fill', '#3b82f6');
+                });
+                selectedPoints = [];
+            }
+        }
+        
+        function drawLine(point1, point2) {
+            const svg = document.getElementById('coordinate-system');
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            
+            // Extend line beyond points
+            const dx = point2.x - point1.x;
+            const dy = point2.y - point1.y;
+            
+            // Calculate line endpoints at grid boundaries
+            let x1, y1, x2, y2;
+            
+            if (dx === 0) { // Vertical line
+                x1 = x2 = point1.x;
+                y1 = yMin;
+                y2 = yMax;
+            } else if (dy === 0) { // Horizontal line
+                y1 = y2 = point1.y;
+                x1 = xMin;
+                x2 = xMax;
+            } else {
+                // Calculate slope
+                const slope = dy / dx;
+                const intercept = point1.y - slope * point1.x;
+                
+                // Find intersections with grid boundaries
+                const leftY = slope * xMin + intercept;
+                const rightY = slope * xMax + intercept;
+                const topX = (yMax - intercept) / slope;
+                const bottomX = (yMin - intercept) / slope;
+                
+                // Choose appropriate endpoints
+                if (leftY >= yMin && leftY <= yMax) {
+                    x1 = xMin;
+                    y1 = leftY;
+                } else if (topX >= xMin && topX <= xMax) {
+                    x1 = topX;
+                    y1 = yMax;
+                } else {
+                    x1 = bottomX;
+                    y1 = yMin;
+                }
+                
+                if (rightY >= yMin && rightY <= yMax) {
+                    x2 = xMax;
+                    y2 = rightY;
+                } else if (topX >= xMin && topX <= xMax && topX !== x1) {
+                    x2 = topX;
+                    y2 = yMax;
+                } else {
+                    x2 = bottomX;
+                    y2 = yMin;
+                }
+            }
+            
+            line.setAttribute('x1', toSVGX(x1));
+            line.setAttribute('y1', toSVGY(y1));
+            line.setAttribute('x2', toSVGX(x2));
+            line.setAttribute('y2', toSVGY(y2));
+            line.setAttribute('stroke', `hsl(${lines.length * 60}, 70%, 50%)`);
+            line.setAttribute('class', 'line');
+            
+            const lineData = {
+                id: Date.now(),
+                point1,
+                point2,
+                color: `hsl(${lines.length * 60}, 70%, 50%)`,
+                equation: getLineEquation(point1, point2)
+            };
+            
+            lines.push(lineData);
+            svg.appendChild(line);
+            
+            updateLinesInfo();
+            findIntersections();
+        }
+        
+        function getLineEquation(p1, p2) {
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
+            
+            if (dx === 0) {
+                return `x = ${p1.x}`;
+            } else if (dy === 0) {
+                return `y = ${p1.y}`;
+            } else {
+                const slope = dy / dx;
+                const intercept = p1.y - slope * p1.x;
+                
+                if (intercept >= 0) {
+                    return `y = ${slope.toFixed(2)}x + ${intercept.toFixed(2)}`;
+                } else {
+                    return `y = ${slope.toFixed(2)}x - ${Math.abs(intercept).toFixed(2)}`;
+                }
+            }
+        }
+        
+        function findIntersections() {
+            intersections = [];
+            
+            for (let i = 0; i < lines.length; i++) {
+                for (let j = i + 1; j < lines.length; j++) {
+                    const intersection = getLineIntersection(lines[i], lines[j]);
+                    if (intersection) {
+                        intersections.push(intersection);
+                    }
+                }
+            }
+            
+            drawIntersections();
+            updateIntersectionInfo();
+        }
+        
+        function getLineIntersection(line1, line2) {
+            const p1 = line1.point1, p2 = line1.point2;
+            const p3 = line2.point1, p4 = line2.point2;
+            
+            const dx1 = p2.x - p1.x, dy1 = p2.y - p1.y;
+            const dx2 = p4.x - p3.x, dy2 = p4.y - p3.y;
+            
+            const denominator = dx1 * dy2 - dy1 * dx2;
+            
+            if (Math.abs(denominator) < 1e-10) {
+                return null; // Lines are parallel
+            }
+            
+            const t = ((p3.x - p1.x) * dy2 - (p3.y - p1.y) * dx2) / denominator;
+            
+            const x = p1.x + t * dx1;
+            const y = p1.y + t * dy1;
+            
+            // Check if intersection is within grid bounds
+            if (x >= xMin && x <= xMax && y >= yMin && y <= yMax) {
+                return { x: parseFloat(x.toFixed(2)), y: parseFloat(y.toFixed(2)) };
+            }
+            
+            return null;
+        }
+        
+        function drawIntersections() {
+            // Remove existing intersection points
+            const existingIntersections = document.querySelectorAll('.intersection-point');
+            existingIntersections.forEach(el => el.remove());
+            
+            const svg = document.getElementById('coordinate-system');
+            
+            intersections.forEach(intersection => {
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', toSVGX(intersection.x));
+                circle.setAttribute('cy', toSVGY(intersection.y));
+                circle.setAttribute('r', 5);
+                circle.setAttribute('class', 'intersection-point');
+                
+                const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+                title.textContent = `Titik Potong: (${intersection.x}, ${intersection.y})`;
+                circle.appendChild(title);
+                
+                svg.appendChild(circle);
+            });
+        }
+        
+        function updateCoordinatePointsList() {
+            const div = document.getElementById('coordinatePoints');
+            if (points.length === 0) {
+                div.innerHTML = 'Belum ada titik';
+                return;
+            }
+            
+            div.innerHTML = points.map((point, index) => 
+                `<div class="flex justify-between items-center mb-1">
+                    <span>(${point.x}, ${point.y})</span>
+                    <button onclick="removePoint(${point.id})" class="bg-red-500 text-white px-1 py-0 rounded text-xs hover:bg-red-600">
+                        ×
+                    </button>
+                </div>`
+            ).join('');
+        }
+        
+        function updateLinesInfo() {
+            const div = document.getElementById('linesInfo');
+            if (lines.length === 0) {
+                div.innerHTML = 'Belum ada garis';
+                return;
+            }
+            
+            div.innerHTML = lines.map((line, index) => 
+                `<div class="mb-2">
+                    <span style="color: ${line.color}">■</span> 
+                    Garis ${index + 1}: ${line.equation}
+                    <br><small>Melalui (${line.point1.x}, ${line.point1.y}) dan (${line.point2.x}, ${line.point2.y})</small>
+                </div>`
+            ).join('');
+        }
+        
+        function updateIntersectionInfo() {
+            const div = document.getElementById('intersectionInfo');
+            if (intersections.length === 0) {
+                div.innerHTML = 'Belum ada garis yang berpotongan';
+                return;
+            }
+            
+            div.innerHTML = intersections.map((intersection, index) => 
+                `<div class="mb-2 p-2 bg-red-50 rounded">
+                    <strong>Titik Potong ${index + 1}:</strong><br>
+                    (${intersection.x}, ${intersection.y})
+                </div>`
+            ).join('');
+        }
+        
+        function removePoint(id) {
+            points = points.filter(p => p.id !== id);
+            // Remove lines that use this point
+            lines = lines.filter(line => line.point1.id !== id && line.point2.id !== id);
+            selectedPoints = selectedPoints.filter(p => p.id !== id);
+            
+            // Remove point and its label from SVG
+            const pointElement = document.querySelector(`circle[data-id="${id}"]`);
+            const labelElement = document.querySelector(`text[data-id="${id}"]`);
+            if (pointElement) pointElement.remove();
+            if (labelElement) labelElement.remove();
+            
+            redrawAll();
+            updateCoordinatePointsList();
+            updateLinesInfo();
+            findIntersections();
+        }
+        
+        function redrawAll() {
+            const svg = document.getElementById('coordinate-system');
+            // Remove all points, lines, and labels
+            const pointsAndLines = svg.querySelectorAll('.point, .line, .intersection-point, .point-label');
+            pointsAndLines.forEach(el => el.remove());
+            
+            // Redraw points
+            points.forEach(point => drawPoint(point));
+            
+            // Redraw lines
+            const tempLines = [...lines];
+            lines = [];
+            tempLines.forEach(lineData => {
+                drawLine(lineData.point1, lineData.point2);
+            });
+        }
+        
+        function clearAll() {
+            points = [];
+            lines = [];
+            selectedPoints = [];
+            intersections = [];
+            
+            updateCoordinatePointsList();
+            updateLinesInfo();
+            updateIntersectionInfo();
+            drawCoordinateSystem();
+        }
+        
+        function resizeTextarea(size) {
+            const textarea = document.getElementById('equationArea');
+            
+            switch(size) {
+                case 'small':
+                    textarea.style.height = '60px';
+                    break;
+                case 'medium':
+                    textarea.style.height = '100px';
+                    break;
+                case 'large':
+                    textarea.style.height = '150px';
+                    break;
+            }
+        }
+        
+        // Initialize
+        drawCoordinateSystem();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96b4516b60d50557',t:'MTc1NDU0Mzk1Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
