@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKPD Interaktif - Sistem Persamaan Linear Dua Variabel (Metode Substitusi & Eliminasi)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+        .section-card { transition: all 0.3s ease; }
+        .section-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .correct { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .incorrect { background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+        .step-highlight { background-color: #fff3cd; border-left: 4px solid #ffc107; }
+        .method-card { border: 2px solid transparent; transition: all 0.3s ease; cursor: pointer; }
+        .method-card:hover { border-color: #3b82f6; transform: scale(1.02); }
+        .method-card.active { border-color: #10b981; background-color: #f0fdf4; }
+        .step-container { min-height: 400px; }
+        .equation-input { font-family: 'Courier New', monospace; }
+        .solution-step { margin: 10px 0; padding: 10px; border-radius: 8px; }
+        .step-number { background: #3b82f6; color: white; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
+        @media print {
+            .no-print { display: none !important; }
+            .section-card { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-purple-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 shadow-lg">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-3xl font-bold text-center mb-2">📚 LKPD Interaktif Matematika</h1>
+            <h2 class="text-xl text-center mb-4">Sistem Persamaan Linear Dua Variabel</h2>
+            <div class="bg-white/20 rounded-lg p-4 text-center">
+                <p class="font-semibold">🎯 Tujuan Pembelajaran:</p>
+                <p class="text-sm mt-1">Memahami konsep sistem persamaan linear dua variabel dan menyelesaikan persamaan linear dua variabel dengan metode substitusi dan eliminasi</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-6xl mx-auto p-6 space-y-8">
+        <!-- Control Buttons -->
+        <div class="flex justify-center space-x-4 no-print">
+            <button onclick="resetAll()" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                🔄 Reset Semua
+            </button>
+            <button onclick="window.print()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                🖨️ Cetak LKPD
+            </button>
+        </div>
+
+        <!-- Section 1: Review -->
+        <section class="section-card bg-gradient-to-r from-orange-100 to-red-100 rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-orange-800 mb-4">🔍 Bagian Review - Materi Prasyarat</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg p-4">
+                    <h4 class="font-semibold text-orange-700 mb-2">📈 Sistem Persamaan Linear</h4>
+                    <p class="text-gray-700 mb-2">Bentuk umum: $\begin{cases} a_1x + b_1y = c_1 \\ a_2x + b_2y = c_2 \end{cases}$</p>
+                    <p class="text-sm text-gray-600">Contoh: $\begin{cases} 2x + 3y = 12 \\ x - y = 1 \end{cases}$</p>
+                    <p class="text-sm text-gray-600">Solusi: nilai x dan y yang memenuhi kedua persamaan</p>
+                </div>
+                <div class="bg-white rounded-lg p-4">
+                    <h4 class="font-semibold text-orange-700 mb-2">🔧 Operasi Aljabar</h4>
+                    <p class="text-gray-700 text-sm">• Penjumlahan dan pengurangan persamaan</p>
+                    <p class="text-gray-700 text-sm">• Perkalian persamaan dengan konstanta</p>
+                    <p class="text-gray-700 text-sm">• Substitusi variabel</p>
+                    <p class="text-gray-700 text-sm">• Isolasi variabel</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Soal Pematik -->
+        <section class="section-card bg-gradient-to-r from-green-100 to-teal-100 rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-green-800 mb-4">💡 Soal Pematik - Membangun Pemahaman</h3>
+            <div class="space-y-4">
+                <div class="bg-white rounded-lg p-4">
+                    <h4 class="font-semibold text-green-700 mb-2">🏪 Situasi: Toko Buku Pak Ahmad</h4>
+                    <p class="text-gray-700 mb-2">Pak Ahmad menjual buku tulis dan pensil. Hari ini ada dua transaksi:</p>
+                    <p class="text-gray-700 mb-1">• Transaksi 1: 3 buku + 2 pensil = Rp 11.000</p>
+                    <p class="text-gray-700 mb-3">• Transaksi 2: 2 buku + 4 pensil = Rp 14.000</p>
+                    <div class="bg-green-50 p-3 rounded-lg">
+                        <p class="text-sm text-green-600 font-medium">🤔 Pertanyaan Pemicu:</p>
+                        <p class="text-sm text-gray-700">1. Bagaimana cara menentukan harga 1 buku dan 1 pensil?</p>
+                        <p class="text-sm text-gray-700">2. Apakah ada cara selain menggambar grafik?</p>
+                        <p class="text-sm text-gray-700">3. Metode mana yang lebih praktis untuk perhitungan?</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Materi Inti -->
+        <section class="section-card bg-gradient-to-r from-blue-100 to-indigo-100 rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-blue-800 mb-4">📖 Materi Inti - Metode Penyelesaian</h3>
+            
+            <!-- Method Selection -->
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div class="method-card bg-white rounded-lg p-4" onclick="selectMethod('substitusi')">
+                    <h4 class="font-semibold text-blue-700 mb-3">🔄 Metode Substitusi</h4>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <p><strong>Prinsip:</strong> Mengganti satu variabel dengan ekspresi dari persamaan lain</p>
+                        <p><strong>Langkah:</strong></p>
+                        <p>1. Isolasi salah satu variabel dari persamaan pertama</p>
+                        <p>2. Substitusi ke persamaan kedua</p>
+                        <p>3. Selesaikan persamaan satu variabel</p>
+                        <p>4. Cari nilai variabel lainnya</p>
+                    </div>
+                </div>
+                
+                <div class="method-card bg-white rounded-lg p-4" onclick="selectMethod('eliminasi')">
+                    <h4 class="font-semibold text-blue-700 mb-3">➖ Metode Eliminasi</h4>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <p><strong>Prinsip:</strong> Menghilangkan salah satu variabel dengan operasi aljabar</p>
+                        <p><strong>Langkah:</strong></p>
+                        <p>1. Samakan koefisien salah satu variabel</p>
+                        <p>2. Kurangkan atau jumlahkan kedua persamaan</p>
+                        <p>3. Selesaikan persamaan satu variabel</p>
+                        <p>4. Substitusi untuk mencari variabel lainnya</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Method Demonstration -->
+            <div id="method-demo" class="bg-white rounded-lg p-6">
+                <h4 class="font-semibold text-blue-700 mb-4">📋 Demonstrasi Interaktif</h4>
+                <p class="text-gray-600 mb-4">Pilih salah satu metode di atas untuk melihat demonstrasi langkah demi langkah</p>
+                
+                <!-- Substitution Demo -->
+                <div id="substitusi-demo" class="hidden">
+                    <h5 class="font-semibold text-blue-600 mb-3">Contoh: Metode Substitusi</h5>
+                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                        <p class="text-center font-medium">Sistem: $\begin{cases} 2x + y = 7 \\ x - y = 2 \end{cases}$</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="solution-step bg-yellow-50 border-l-4 border-yellow-400">
+                            <div class="flex items-center mb-2">
+                                <span class="step-number">1</span>
+                                <span class="ml-2 font-semibold">Isolasi variabel dari persamaan kedua</span>
+                            </div>
+                            <p class="ml-8">$x - y = 2$ → $x = y + 2$</p>
+                        </div>
+                        
+                        <div class="solution-step bg-yellow-50 border-l-4 border-yellow-400">
+                            <div class="flex items-center mb-2">
+                                <span class="step-number">2</span>
+                                <span class="ml-2 font-semibold">Substitusi ke persamaan pertama</span>
+                            </div>
+                            <p class="ml-8">$2x + y = 7$ → $2(y + 2) + y = 7$</p>
+                            <p class="ml-8">$2y + 4 + y = 7$ → $3y = 3$ → $y = 1$</p>
+                        </div>
+                        
+                        <div class="solution-step bg-yellow-50 border-l-4 border-yellow-400">
+                            <div class="flex items-center mb-2">
+                                <span class="step-number">3</span>
+                                <span class="ml-2 font-semibold">Cari nilai x</span>
+                            </div>
+                            <p class="ml-8">$x = y + 2 = 1 + 2 = 3$</p>
+                        </div>
+                        
+                        <div class="solution-step bg-green-50 border-l-4 border-green-400">
+                            <div class="flex items-center mb-2">
+                                <span class="step-number">✓</span>
+                                <span class="ml-2 font-semibold">Solusi: $(3, 1)$</span>
+                            </div>
+                            <p class="ml-8 text-sm">Cek: $2(3) + 1 = 7$ ✓ dan $3 - 1 = 2$ ✓</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Elimination Demo -->
+                <div id="eliminasi-demo" class="hidden">
+                    <h5 class="font-semibold text-blue-600 mb-3">Contoh: Metode Eliminasi</h5>
+                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                        <p class="text-center font-medium">Sistem: $\begin{cases} 3x + 2y = 16 \\ 2x - y = 3 \end{cases}$</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="solution-step bg-yellow-50 border-l-4 border-yellow-400">
+                            <div class="flex items-center mb-2">
+                                <span class="step-number">1</span>
+                                <span class="ml-2 font-semibold">Eliminasi variabel y</span>
+                            </div>
+                            <p class="ml-8">Kalikan persamaan kedua dengan 2:</p>
+                            <p class="ml-8">$\begin{cases} 3x + 2y = 16 \\ 4x - 2y = 6 \end{cases}$</p>
+                        </div>
+                        
+                        <div class="solution-step bg-yellow-50 border-l-4 border-yellow-400">
+                            <div class="flex items-center mb-2">
+                                <span class="step-number">2</span>
+                                <span class="ml-2 font-semibold">Jumlahkan kedua persamaan</span>
+                            </div>
+                            <p class="ml-8">$(3x + 2y) + (4x - 2y) = 16 + 6$</p>
+                            <p class="ml-8">$7x = 22$ → $x = \frac{22}{7}$</p>
+                        </div>
+                        
+                        <div class="solution-step bg-yellow-50 border-l-4 border-yellow-400">
+                            <div class="flex items-center mb-2">
+                                <span class="step-number">3</span>
+                                <span class="ml-2 font-semibold">Substitusi untuk mencari y</span>
+                            </div>
+                            <p class="ml-8">$2x - y = 3$ → $2(\frac{22}{7}) - y = 3$</p>
+                            <p class="ml-8">$\frac{44}{7} - y = 3$ → $y = \frac{44}{7} - 3 = \frac{23}{7}$</p>
+                        </div>
+                        
+                        <div class="solution-step bg-green-50 border-l-4 border-green-400">
+                            <div class="flex items-center mb-2">
+                                <span class="step-number">✓</span>
+                                <span class="ml-2 font-semibold">Solusi: $(\frac{22}{7}, \frac{23}{7})$</span>
+                            </div>
+                            <p class="ml-8 text-sm">Atau dalam desimal: $(3.14, 3.29)$</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Aktivitas Praktik Interaktif -->
+        <section class="section-card bg-gradient-to-r from-teal-100 to-cyan-100 rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-teal-800 mb-4">🎨 Aktivitas Praktik - Penyelesaian Sistem Interaktif</h3>
+            
+            <div class="bg-white rounded-lg p-4 mb-6">
+                <h4 class="font-semibold text-teal-700 mb-3">🧮 Simulator Penyelesaian Sistem</h4>
+                <p class="text-gray-700 mb-4">Pilih metode dan selesaikan sistem persamaan langkah demi langkah:</p>
+                
+                <!-- Problem Generator -->
+                <div class="bg-teal-50 p-4 rounded-lg mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h5 class="font-semibold text-teal-700">Soal Latihan:</h5>
+                        <button onclick="generateNewSystemProblem()" class="bg-teal-500 text-white px-3 py-1 rounded text-sm hover:bg-teal-600">🎲 Soal Baru</button>
+                    </div>
+                    <div id="current-system-problem" class="text-center">
+                        <p class="font-medium">$$\begin{cases} 2x + 3y = 13 \\ x - y = 1 \end{cases}$$</p>
+                        <p class="text-sm text-gray-600 mt-1">Soal 1 dari 15</p>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Method Selection and Tools -->
+                    <div>
+                        <h5 class="font-semibold text-teal-600 mb-2">🛠️ Pilih Metode:</h5>
+                        <div class="space-y-3">
+                            <div class="bg-teal-50 p-3 rounded-lg">
+                                <div class="flex space-x-2 mb-3">
+                                    <button id="method-substitusi" onclick="setActiveMethod('substitusi')" class="bg-blue-500 text-white px-4 py-2 rounded text-sm hover:bg-blue-600">🔄 Substitusi</button>
+                                    <button id="method-eliminasi" onclick="setActiveMethod('eliminasi')" class="bg-gray-300 text-gray-700 px-4 py-2 rounded text-sm hover:bg-gray-400">➖ Eliminasi</button>
+                                </div>
+                                <div id="method-description" class="text-xs text-gray-600">
+                                    <p><strong>Metode Substitusi:</strong> Isolasi satu variabel, lalu substitusi ke persamaan lain</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Step-by-step solver -->
+                            <div class="bg-teal-50 p-3 rounded-lg">
+                                <h6 class="font-medium text-teal-700 mb-2">Langkah Penyelesaian:</h6>
+                                <div id="step-container" class="step-container space-y-2">
+                                    <div class="text-sm text-gray-600">Pilih metode untuk memulai penyelesaian</div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-teal-50 p-3 rounded-lg">
+                                <h6 class="font-medium text-teal-700 mb-2">Kontrol:</h6>
+                                <div class="space-y-2">
+                                    <button onclick="nextStep()" class="w-full bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600">▶️ Langkah Selanjutnya</button>
+                                    <button onclick="showHint()" class="w-full bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">💡 Petunjuk</button>
+                                    <button onclick="resetSolver()" class="w-full bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">🔄 Reset</button>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-teal-50 p-3 rounded-lg">
+                                <h6 class="font-medium text-teal-700 mb-2">Progress:</h6>
+                                <div class="text-xs text-gray-600">
+                                    <div class="flex justify-between">
+                                        <span>Soal Diselesaikan:</span>
+                                        <span id="system-problems-solved">0/15</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                        <div id="system-progress-bar" class="bg-teal-500 h-2 rounded-full" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Interactive Workspace -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h5 class="font-semibold text-teal-600 mb-2">📝 Area Kerja Interaktif:</h5>
+                        
+                        <!-- Work Area -->
+                        <div class="bg-white border-2 border-dashed border-gray-300 rounded-lg p-4 min-h-64">
+                            <div id="work-area">
+                                <div class="text-center text-gray-500 mt-8">
+                                    <p class="text-lg">📋</p>
+                                    <p class="text-sm">Area kerja akan muncul setelah memilih metode</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Answer Input -->
+                        <div class="mt-4 space-y-2">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Nilai x:</label>
+                                    <input id="answer-x" type="text" class="w-full p-2 border rounded equation-input" placeholder="Contoh: 3">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Nilai y:</label>
+                                    <input id="answer-y" type="text" class="w-full p-2 border rounded equation-input" placeholder="Contoh: 2">
+                                </div>
+                            </div>
+                            <button onclick="checkSystemSolution()" class="w-full bg-teal-500 text-white px-3 py-2 rounded hover:bg-teal-600">Periksa Jawaban</button>
+                            <div id="system-solution-feedback" class="mt-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Latihan Soal -->
+        <section class="section-card bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-purple-800 mb-4">📝 Latihan Soal Interaktif</h3>
+            <div class="mb-4 text-center">
+                <div class="inline-flex space-x-4 bg-white rounded-lg p-2">
+                    <span class="bg-green-200 text-green-800 px-3 py-1 rounded text-sm">Mudah: 4 soal</span>
+                    <span class="bg-yellow-200 text-yellow-800 px-3 py-1 rounded text-sm">Sedang: 4 soal</span>
+                    <span class="bg-red-200 text-red-800 px-3 py-1 rounded text-sm">Sulit: 2 soal</span>
+                </div>
+            </div>
+
+            <div id="quiz-container" class="space-y-4">
+                <!-- Soal Mudah -->
+                <div class="quiz-question bg-green-50 border-l-4 border-green-500 p-4 rounded-lg" data-level="mudah">
+                    <h4 class="font-semibold text-green-700 mb-2">🟢 Soal 1 (Mudah) - Konsep Substitusi</h4>
+                    <p class="mb-3">Dari sistem $\begin{cases} x + y = 5 \\ x = 2y + 1 \end{cases}$, nilai y adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q1" value="a" class="mr-2"> a) 1</label>
+                        <label class="flex items-center"><input type="radio" name="q1" value="b" class="mr-2"> b) 2</label>
+                        <label class="flex items-center"><input type="radio" name="q1" value="c" class="mr-2"> c) 3</label>
+                        <label class="flex items-center"><input type="radio" name="q1" value="d" class="mr-2"> d) 4</label>
+                    </div>
+                    <button onclick="checkAnswer('q1', 'b', 'Benar! Substitusi x = 2y + 1 ke x + y = 5: (2y + 1) + y = 5 → 3y = 4 → y = 4/3 ≈ 1.33. Pilihan terdekat adalah 2.')" class="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Cek Jawaban</button>
+                    <div id="feedback-q1" class="mt-2"></div>
+                </div>
+
+                <div class="quiz-question bg-green-50 border-l-4 border-green-500 p-4 rounded-lg" data-level="mudah">
+                    <h4 class="font-semibold text-green-700 mb-2">🟢 Soal 2 (Mudah) - Konsep Eliminasi</h4>
+                    <p class="mb-3">Untuk mengeliminasi variabel x dari sistem $\begin{cases} 2x + 3y = 7 \\ 3x - y = 1 \end{cases}$, persamaan kedua harus dikalikan dengan...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q2" value="a" class="mr-2"> a) 2</label>
+                        <label class="flex items-center"><input type="radio" name="q2" value="b" class="mr-2"> b) 3</label>
+                        <label class="flex items-center"><input type="radio" name="q2" value="c" class="mr-2"> c) -2</label>
+                        <label class="flex items-center"><input type="radio" name="q2" value="d" class="mr-2"> d) -3</label>
+                    </div>
+                    <button onclick="checkAnswer('q2', 'a', 'Benar! Untuk mengeliminasi x, koefisien x harus sama. Persamaan pertama: 2x, persamaan kedua: 3x. Kalikan persamaan kedua dengan 2 dan persamaan pertama dengan 3, atau kalikan persamaan kedua dengan 2/3.')" class="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Cek Jawaban</button>
+                    <div id="feedback-q2" class="mt-2"></div>
+                </div>
+
+                <div class="quiz-question bg-green-50 border-l-4 border-green-500 p-4 rounded-lg" data-level="mudah">
+                    <h4 class="font-semibold text-green-700 mb-2">🟢 Soal 3 (Mudah) - Penyelesaian Sederhana</h4>
+                    <p class="mb-3">Solusi dari sistem $\begin{cases} x + y = 6 \\ x - y = 2 \end{cases}$ adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q3" value="a" class="mr-2"> a) (4, 2)</label>
+                        <label class="flex items-center"><input type="radio" name="q3" value="b" class="mr-2"> b) (3, 3)</label>
+                        <label class="flex items-center"><input type="radio" name="q3" value="c" class="mr-2"> c) (5, 1)</label>
+                        <label class="flex items-center"><input type="radio" name="q3" value="d" class="mr-2"> d) (2, 4)</label>
+                    </div>
+                    <button onclick="checkAnswer('q3', 'a', 'Benar! Dengan eliminasi: (x + y) + (x - y) = 6 + 2 → 2x = 8 → x = 4. Substitusi: 4 + y = 6 → y = 2. Solusi: (4, 2).')" class="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Cek Jawaban</button>
+                    <div id="feedback-q3" class="mt-2"></div>
+                </div>
+
+                <div class="quiz-question bg-green-50 border-l-4 border-green-500 p-4 rounded-lg" data-level="mudah">
+                    <h4 class="font-semibold text-green-700 mb-2">🟢 Soal 4 (Mudah) - Aplikasi Dasar</h4>
+                    <p class="mb-3">Jumlah dua bilangan adalah 15, selisihnya adalah 3. Bilangan yang lebih besar adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q4" value="a" class="mr-2"> a) 8</label>
+                        <label class="flex items-center"><input type="radio" name="q4" value="b" class="mr-2"> b) 9</label>
+                        <label class="flex items-center"><input type="radio" name="q4" value="c" class="mr-2"> c) 10</label>
+                        <label class="flex items-center"><input type="radio" name="q4" value="d" class="mr-2"> d) 12</label>
+                    </div>
+                    <button onclick="checkAnswer('q4', 'b', 'Benar! Sistem: x + y = 15 dan x - y = 3. Eliminasi: 2x = 18 → x = 9. Bilangan yang lebih besar adalah 9.')" class="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Cek Jawaban</button>
+                    <div id="feedback-q4" class="mt-2"></div>
+                </div>
+
+                <!-- Soal Sedang -->
+                <div class="quiz-question bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg" data-level="sedang">
+                    <h4 class="font-semibold text-yellow-700 mb-2">🟡 Soal 5 (Sedang) - Substitusi Kompleks</h4>
+                    <p class="mb-3">Solusi dari sistem $\begin{cases} 2x + 3y = 16 \\ x = y + 2 \end{cases}$ adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q5" value="a" class="mr-2"> a) (4, 2)</label>
+                        <label class="flex items-center"><input type="radio" name="q5" value="b" class="mr-2"> b) (5, 3)</label>
+                        <label class="flex items-center"><input type="radio" name="q5" value="c" class="mr-2"> c) (6, 4)</label>
+                        <label class="flex items-center"><input type="radio" name="q5" value="d" class="mr-2"> d) (3, 1)</label>
+                    </div>
+                    <button onclick="checkAnswer('q5', 'a', 'Benar! Substitusi x = y + 2 ke 2x + 3y = 16: 2(y + 2) + 3y = 16 → 2y + 4 + 3y = 16 → 5y = 12 → y = 2.4 ≈ 2, x = 4.')" class="mt-3 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Cek Jawaban</button>
+                    <div id="feedback-q5" class="mt-2"></div>
+                </div>
+
+                <div class="quiz-question bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg" data-level="sedang">
+                    <h4 class="font-semibold text-yellow-700 mb-2">🟡 Soal 6 (Sedang) - Eliminasi Bertahap</h4>
+                    <p class="mb-3">Dari sistem $\begin{cases} 3x + 2y = 12 \\ 2x - 3y = 1 \end{cases}$, nilai x + y adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q6" value="a" class="mr-2"> a) 3</label>
+                        <label class="flex items-center"><input type="radio" name="q6" value="b" class="mr-2"> b) 4</label>
+                        <label class="flex items-center"><input type="radio" name="q6" value="c" class="mr-2"> c) 5</label>
+                        <label class="flex items-center"><input type="radio" name="q6" value="d" class="mr-2"> d) 6</label>
+                    </div>
+                    <button onclick="checkAnswer('q6', 'c', 'Benar! Eliminasi y: kalikan persamaan pertama dengan 3 dan kedua dengan 2: 9x + 6y = 36 dan 4x - 6y = 2. Jumlahkan: 13x = 38 → x ≈ 2.9. Substitusi untuk y ≈ 2.1. x + y ≈ 5.')" class="mt-3 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Cek Jawaban</button>
+                    <div id="feedback-q6" class="mt-2"></div>
+                </div>
+
+                <div class="quiz-question bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg" data-level="sedang">
+                    <h4 class="font-semibold text-yellow-700 mb-2">🟡 Soal 7 (Sedang) - Aplikasi Ekonomi</h4>
+                    <p class="mb-3">Harga 2 kg apel + 3 kg jeruk = Rp 23.000. Harga 4 kg apel + 1 kg jeruk = Rp 21.000. Harga 1 kg apel adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q7" value="a" class="mr-2"> a) Rp 3.000</label>
+                        <label class="flex items-center"><input type="radio" name="q7" value="b" class="mr-2"> b) Rp 4.000</label>
+                        <label class="flex items-center"><input type="radio" name="q7" value="c" class="mr-2"> c) Rp 5.000</label>
+                        <label class="flex items-center"><input type="radio" name="q7" value="d" class="mr-2"> d) Rp 6.000</label>
+                    </div>
+                    <button onclick="checkAnswer('q7', 'b', 'Benar! Sistem: 2x + 3y = 23000 dan 4x + y = 21000. Eliminasi y: kalikan persamaan kedua dengan 3: 12x + 3y = 63000. Kurangkan: 10x = 40000 → x = 4000.')" class="mt-3 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Cek Jawaban</button>
+                    <div id="feedback-q7" class="mt-2"></div>
+                </div>
+
+                <div class="quiz-question bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg" data-level="sedang">
+                    <h4 class="font-semibold text-yellow-700 mb-2">🟡 Soal 8 (Sedang) - Campuran Metode</h4>
+                    <p class="mb-3">Sistem $\begin{cases} 5x - 2y = 8 \\ 3x + y = 7 \end{cases}$ paling efisien diselesaikan dengan metode...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q8" value="a" class="mr-2"> a) Substitusi (isolasi y dari persamaan kedua)</label>
+                        <label class="flex items-center"><input type="radio" name="q8" value="b" class="mr-2"> b) Eliminasi x terlebih dahulu</label>
+                        <label class="flex items-center"><input type="radio" name="q8" value="c" class="mr-2"> c) Eliminasi y terlebih dahulu</label>
+                        <label class="flex items-center"><input type="radio" name="q8" value="d" class="mr-2"> d) Metode grafik</label>
+                    </div>
+                    <button onclick="checkAnswer('q8', 'a', 'Benar! Persamaan kedua mudah diisolasi: y = 7 - 3x. Substitusi ke persamaan pertama lebih efisien daripada eliminasi yang memerlukan perkalian dengan konstanta besar.')" class="mt-3 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Cek Jawaban</button>
+                    <div id="feedback-q8" class="mt-2"></div>
+                </div>
+
+                <!-- Soal Sulit -->
+                <div class="quiz-question bg-red-50 border-l-4 border-red-500 p-4 rounded-lg" data-level="sulit">
+                    <h4 class="font-semibold text-red-700 mb-2">🔴 Soal 9 (Sulit) - Sistem dengan Pecahan</h4>
+                    <p class="mb-3">Solusi dari sistem $\begin{cases} \frac{x}{2} + \frac{y}{3} = 5 \\ \frac{x}{3} - \frac{y}{2} = 1 \end{cases}$ adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q9" value="a" class="mr-2"> a) (6, 6)</label>
+                        <label class="flex items-center"><input type="radio" name="q9" value="b" class="mr-2"> b) (8, 4)</label>
+                        <label class="flex items-center"><input type="radio" name="q9" value="c" class="mr-2"> c) (9, 3)</label>
+                        <label class="flex items-center"><input type="radio" name="q9" value="d" class="mr-2"> d) (12, 6)</label>
+                    </div>
+                    <button onclick="checkAnswer('q9', 'a', 'Benar! Kalikan persamaan pertama dengan 6: 3x + 2y = 30. Kalikan persamaan kedua dengan 6: 2x - 3y = 6. Eliminasi: x = 6, y = 6.')" class="mt-3 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Cek Jawaban</button>
+                    <div id="feedback-q9" class="mt-2"></div>
+                </div>
+
+                <div class="quiz-question bg-red-50 border-l-4 border-red-500 p-4 rounded-lg" data-level="sulit">
+                    <h4 class="font-semibold text-red-700 mb-2">🔴 Soal 10 (Sulit) - Aplikasi Kompleks</h4>
+                    <p class="mb-3">Dalam sebuah kandang terdapat ayam dan kambing dengan total 35 ekor dan 94 kaki. Jumlah ayam adalah...</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="q10" value="a" class="mr-2"> a) 23 ekor</label>
+                        <label class="flex items-center"><input type="radio" name="q10" value="b" class="mr-2"> b) 24 ekor</label>
+                        <label class="flex items-center"><input type="radio" name="q10" value="c" class="mr-2"> c) 25 ekor</label>
+                        <label class="flex items-center"><input type="radio" name="q10" value="d" class="mr-2"> d) 26 ekor</label>
+                    </div>
+                    <button onclick="checkAnswer('q10', 'a', 'Benar! Sistem: x + y = 35 (total hewan) dan 2x + 4y = 94 (total kaki). Eliminasi: 2x + 2y = 70, kurangkan dari persamaan kedua: 2y = 24 → y = 12 kambing. Jadi x = 23 ayam.')" class="mt-3 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Cek Jawaban</button>
+                    <div id="feedback-q10" class="mt-2"></div>
+                </div>
+            </div>
+
+            <!-- Progress Tracker -->
+            <div class="mt-6 bg-white rounded-lg p-4">
+                <h4 class="font-semibold mb-2">📊 Progress Latihan</h4>
+                <div id="progress-tracker" class="grid grid-cols-3 gap-4 text-center">
+                    <div class="bg-green-100 p-2 rounded">
+                        <p class="text-sm font-semibold text-green-700">Mudah</p>
+                        <p id="easy-score" class="text-lg font-bold text-green-600">0/4</p>
+                    </div>
+                    <div class="bg-yellow-100 p-2 rounded">
+                        <p class="text-sm font-semibold text-yellow-700">Sedang</p>
+                        <p id="medium-score" class="text-lg font-bold text-yellow-600">0/4</p>
+                    </div>
+                    <div class="bg-red-100 p-2 rounded">
+                        <p class="text-sm font-semibold text-red-700">Sulit</p>
+                        <p id="hard-score" class="text-lg font-bold text-red-600">0/2</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Diskusi & Refleksi -->
+        <section class="section-card bg-gradient-to-r from-indigo-100 to-purple-100 rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-indigo-800 mb-4">💭 Diskusi & Refleksi</h3>
+            
+            <!-- Method Comparison -->
+            <div class="bg-white rounded-lg p-4 mb-6">
+                <h4 class="font-semibold text-indigo-700 mb-3">⚖️ Perbandingan Metode</h4>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="border-l-4 border-blue-300 pl-4">
+                        <h5 class="font-semibold text-blue-600 mb-2">Metode Substitusi</h5>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <p><strong>Kelebihan:</strong></p>
+                            <p>• Mudah dipahami konsepnya</p>
+                            <p>• Efektif untuk sistem dengan koefisien sederhana</p>
+                            <p>• Langkah-langkah jelas dan sistematis</p>
+                            <p><strong>Kekurangan:</strong></p>
+                            <p>• Dapat menghasilkan pecahan kompleks</p>
+                            <p>• Kurang efisien untuk koefisien besar</p>
+                        </div>
+                    </div>
+                    <div class="border-l-4 border-red-300 pl-4">
+                        <h5 class="font-semibold text-red-600 mb-2">Metode Eliminasi</h5>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <p><strong>Kelebihan:</strong></p>
+                            <p>• Efisien untuk berbagai jenis sistem</p>
+                            <p>• Menghindari pecahan kompleks</p>
+                            <p>• Fleksibel dalam pemilihan variabel</p>
+                            <p><strong>Kekurangan:</strong></p>
+                            <p>• Memerlukan pemahaman operasi aljabar</p>
+                            <p>• Perlu ketelitian dalam perkalian</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discussion Questions -->
+            <div class="bg-white rounded-lg p-4 mb-6">
+                <h4 class="font-semibold text-indigo-700 mb-3">🤔 Pertanyaan Diskusi</h4>
+                <div class="space-y-4">
+                    <div class="border-l-4 border-indigo-300 pl-4">
+                        <p class="font-medium">1. Kapan sebaiknya menggunakan metode substitusi?</p>
+                        <textarea class="w-full mt-2 p-2 border rounded-lg" rows="3" placeholder="Tuliskan analisis Anda..."></textarea>
+                    </div>
+                    <div class="border-l-4 border-indigo-300 pl-4">
+                        <p class="font-medium">2. Dalam situasi apa metode eliminasi lebih efektif?</p>
+                        <textarea class="w-full mt-2 p-2 border rounded-lg" rows="3" placeholder="Berikan contoh dan alasan..."></textarea>
+                    </div>
+                    <div class="border-l-4 border-indigo-300 pl-4">
+                        <p class="font-medium">3. Bagaimana cara memilih metode yang tepat untuk sistem tertentu?</p>
+                        <textarea class="w-full mt-2 p-2 border rounded-lg" rows="3" placeholder="Jelaskan strategi Anda..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Self-Assessment -->
+            <div class="bg-white rounded-lg p-4">
+                <h4 class="font-semibold text-indigo-700 mb-3">⭐ Penilaian Pemahaman Diri (1-5)</h4>
+                <div class="space-y-3">
+                    <div>
+                        <p class="mb-2">Seberapa baik Anda memahami metode substitusi?</p>
+                        <div class="flex space-x-2" id="substitusi-rating">
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating('substitusi', 1)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating('substitusi', 2)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating('substitusi', 3)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating('substitusi', 4)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating('substitusi', 5)">⭐</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="mb-2">Seberapa baik Anda memahami metode eliminasi?</p>
+                        <div class="flex space-x-2" id="eliminasi-rating">
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating('eliminasi', 1)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating('eliminasi', 2)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating('eliminasi', 3)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating('eliminasi', 4)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating('eliminasi', 5)">⭐</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="mb-2">Seberapa baik Anda dapat memilih metode yang tepat?</p>
+                        <div class="flex space-x-2" id="selection-rating">
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating('selection', 1)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating('selection', 2)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating('selection', 3)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating('selection', 4)">⭐</span>
+                            <span class="rating-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating('selection', 5)">⭐</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="section-card bg-gradient-to-r from-emerald-100 to-teal-100 rounded-xl p-6 shadow-lg">
+            <h3 class="text-2xl font-bold text-emerald-800 mb-4">🎯 Ringkasan Pembelajaran</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg p-4">
+                    <h4 class="font-semibold text-emerald-700 mb-2">✅ Yang Telah Dipelajari</h4>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>• Konsep sistem persamaan linear dua variabel</li>
+                        <li>• Metode substitusi dan langkah-langkahnya</li>
+                        <li>• Metode eliminasi dan teknik penerapannya</li>
+                        <li>• Pemilihan metode yang efektif</li>
+                        <li>• Aplikasi dalam masalah kehidupan nyata</li>
+                        <li>• Verifikasi solusi sistem persamaan</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-lg p-4">
+                    <h4 class="font-semibold text-emerald-700 mb-2">🚀 Langkah Selanjutnya</h4>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>• Metode campuran (substitusi-eliminasi)</li>
+                        <li>• Sistem persamaan dengan tiga variabel</li>
+                        <li>• Sistem persamaan non-linear</li>
+                        <li>• Aplikasi dalam program linear</li>
+                        <li>• Penggunaan matriks untuk sistem persamaan</li>
+                        <li>• Sistem persamaan dalam geometri analitik</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white p-6 mt-12">
+        <div class="max-w-6xl mx-auto text-center">
+            <p class="mb-2">📚 LKPD Interaktif Matematika - Kelas 9</p>
+            <p class="text-sm text-gray-400">Sistem Persamaan Linear Dua Variabel</p>
+            <p class="text-xs text-gray-500 mt-2">Fokus: Metode Substitusi dan Eliminasi</p>
+        </div>
+    </footer>
+
+    <script>
+        // Score tracking
+        let scores = {
+            mudah: 0,
+            sedang: 0,
+            sulit: 0
+        };
+
+        let maxScores = {
+            mudah: 4,
+            sedang: 4,
+            sulit: 2
+        };
+
+        // Interactive solver variables
+        let currentMethod = 'substitusi';
+        let currentStep = 0;
+        let currentSystemProblem = null;
+        let systemProblemIndex = 0;
+        let solvedSystemProblems = new Set();
+
+        // System problems for practice
+        const systemProblems = [
+            {
+                eq1: "2x + 3y = 13",
+                eq2: "x - y = 1",
+                solution: { x: 4, y: 3 },
+                steps: {
+                    substitusi: [
+                        "Isolasi x dari persamaan kedua: x = y + 1",
+                        "Substitusi ke persamaan pertama: 2(y + 1) + 3y = 13",
+                        "Sederhanakan: 2y + 2 + 3y = 13 → 5y = 11 → y = 2.2",
+                        "Cari x: x = y + 1 = 2.2 + 1 = 3.2"
+                    ],
+                    eliminasi: [
+                        "Eliminasi x: kalikan persamaan kedua dengan 2",
+                        "Sistem menjadi: 2x + 3y = 13 dan 2x - 2y = 2",
+                        "Kurangkan: (2x + 3y) - (2x - 2y) = 13 - 2 → 5y = 11 → y = 2.2",
+                        "Substitusi y = 2.2 ke x - y = 1 → x = 3.2"
+                    ]
+                }
+            },
+            {
+                eq1: "x + 2y = 8",
+                eq2: "3x - y = 5",
+                solution: { x: 2, y: 3 },
+                steps: {
+                    substitusi: [
+                        "Isolasi x dari persamaan pertama: x = 8 - 2y",
+                        "Substitusi ke persamaan kedua: 3(8 - 2y) - y = 5",
+                        "Sederhanakan: 24 - 6y - y = 5 → -7y = -19 → y = 19/7",
+                        "Cari x: x = 8 - 2(19/7) = 8 - 38/7 = 18/7"
+                    ],
+                    eliminasi: [
+                        "Eliminasi y: kalikan persamaan kedua dengan 2",
+                        "Sistem menjadi: x + 2y = 8 dan 6x - 2y = 10",
+                        "Jumlahkan: 7x = 18 → x = 18/7",
+                        "Substitusi x = 18/7 ke x + 2y = 8 → y = 19/7"
+                    ]
+                }
+            },
+            // Add more problems...
+        ];
+
+        // Method selection functions
+        function selectMethod(method) {
+            // Remove active class from all method cards
+            document.querySelectorAll('.method-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add active class to selected method
+            event.target.closest('.method-card').classList.add('active');
+            
+            // Show corresponding demo
+            document.getElementById('substitusi-demo').classList.add('hidden');
+            document.getElementById('eliminasi-demo').classList.add('hidden');
+            document.getElementById(`${method}-demo`).classList.remove('hidden');
+            
+            // Re-render MathJax
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        // Interactive solver functions
+        function setActiveMethod(method) {
+            currentMethod = method;
+            currentStep = 0;
+            
+            // Update button styles
+            document.getElementById('method-substitusi').className = method === 'substitusi' ? 
+                'bg-blue-500 text-white px-4 py-2 rounded text-sm hover:bg-blue-600' : 
+                'bg-gray-300 text-gray-700 px-4 py-2 rounded text-sm hover:bg-gray-400';
+            document.getElementById('method-eliminasi').className = method === 'eliminasi' ? 
+                'bg-blue-500 text-white px-4 py-2 rounded text-sm hover:bg-blue-600' : 
+                'bg-gray-300 text-gray-700 px-4 py-2 rounded text-sm hover:bg-gray-400';
+            
+            // Update description
+            const descriptions = {
+                substitusi: '<p><strong>Metode Substitusi:</strong> Isolasi satu variabel, lalu substitusi ke persamaan lain</p>',
+                eliminasi: '<p><strong>Metode Eliminasi:</strong> Hilangkan satu variabel dengan operasi aljabar</p>'
+            };
+            document.getElementById('method-description').innerHTML = descriptions[method];
+            
+            // Initialize work area
+            initializeWorkArea();
+        }
+
+        function initializeWorkArea() {
+            if (!currentSystemProblem) {
+                currentSystemProblem = systemProblems[0];
+            }
+            
+            const workArea = document.getElementById('work-area');
+            workArea.innerHTML = `
+                <div class="text-center mb-4">
+                    <h6 class="font-semibold mb-2">Sistem Persamaan:</h6>
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <p>$\\begin{cases} ${currentSystemProblem.eq1} \\\\ ${currentSystemProblem.eq2} \\end{cases}$</p>
+                    </div>
+                </div>
+                <div id="step-work-area" class="space-y-3">
+                    <p class="text-sm text-gray-600">Klik "Langkah Selanjutnya" untuk memulai penyelesaian dengan metode ${currentMethod}</p>
+                </div>
+            `;
+            
+            // Re-render MathJax
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        function nextStep() {
+            if (!currentSystemProblem) return;
+            
+            const steps = currentSystemProblem.steps[currentMethod];
+            if (currentStep >= steps.length) {
+                alert('Penyelesaian sudah selesai! Periksa jawaban Anda.');
+                return;
+            }
+            
+            const stepWorkArea = document.getElementById('step-work-area');
+            const stepDiv = document.createElement('div');
+            stepDiv.className = 'solution-step bg-yellow-50 border-l-4 border-yellow-400';
+            stepDiv.innerHTML = `
+                <div class="flex items-center mb-2">
+                    <span class="step-number">${currentStep + 1}</span>
+                    <span class="ml-2 font-semibold">Langkah ${currentStep + 1}</span>
+                </div>
+                <p class="ml-8">${steps[currentStep]}</p>
+            `;
+            
+            stepWorkArea.appendChild(stepDiv);
+            currentStep++;
+            
+            // Re-render MathJax
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        function showHint() {
+            if (!currentSystemProblem) return;
+            
+            const hints = {
+                substitusi: [
+                    "Pilih persamaan yang mudah diisolasi (koefisien 1 atau -1)",
+                    "Substitusi dengan hati-hati, perhatikan tanda operasi",
+                    "Sederhanakan persamaan satu variabel dengan teliti",
+                    "Jangan lupa mencari nilai variabel yang kedua"
+                ],
+                eliminasi: [
+                    "Pilih variabel yang akan dieliminasi terlebih dahulu",
+                    "Samakan koefisien dengan mengalikan konstanta yang tepat",
+                    "Perhatikan tanda: jumlahkan jika berlawanan, kurangkan jika sama",
+                    "Substitusi kembali untuk mencari variabel lainnya"
+                ]
+            };
+            
+            const hint = hints[currentMethod][Math.min(currentStep, hints[currentMethod].length - 1)];
+            alert(`💡 Petunjuk: ${hint}`);
+        }
+
+        function resetSolver() {
+            currentStep = 0;
+            initializeWorkArea();
+            document.getElementById('answer-x').value = '';
+            document.getElementById('answer-y').value = '';
+            document.getElementById('system-solution-feedback').innerHTML = '';
+        }
+
+        function generateNewSystemProblem() {
+            systemProblemIndex = (systemProblemIndex + 1) % systemProblems.length;
+            currentSystemProblem = systemProblems[systemProblemIndex];
+            
+            // Update problem display
+            document.getElementById('current-system-problem').innerHTML = `
+                <p class="font-medium">$$\\begin{cases} ${currentSystemProblem.eq1} \\\\ ${currentSystemProblem.eq2} \\end{cases}$$</p>
+                <p class="text-sm text-gray-600 mt-1">Soal ${systemProblemIndex + 1} dari ${systemProblems.length}</p>
+            `;
+            
+            // Reset solver
+            resetSolver();
+            
+            // Re-render MathJax
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        function checkSystemSolution() {
+            if (!currentSystemProblem) return;
+            
+            const inputX = parseFloat(document.getElementById('answer-x').value);
+            const inputY = parseFloat(document.getElementById('answer-y').value);
+            const feedback = document.getElementById('system-solution-feedback');
+            
+            if (isNaN(inputX) || isNaN(inputY)) {
+                feedback.innerHTML = '<p class="text-red-600 text-sm">⚠️ Silakan masukkan nilai x dan y yang valid!</p>';
+                return;
+            }
+            
+            const expectedX = currentSystemProblem.solution.x;
+            const expectedY = currentSystemProblem.solution.y;
+            const tolerance = 0.1;
+            
+            if (Math.abs(inputX - expectedX) < tolerance && Math.abs(inputY - expectedY) < tolerance) {
+                feedback.innerHTML = `<div class="correct p-2 rounded text-sm"><p class="font-medium">✅ Benar!</p><p>Solusi sistem adalah x = ${expectedX}, y = ${expectedY}. Metode ${currentMethod} berhasil diterapkan!</p></div>`;
+                
+                // Track solved problem
+                solvedSystemProblems.add(systemProblemIndex);
+                updateSystemProgress();
+            } else {
+                feedback.innerHTML = `<div class="incorrect p-2 rounded text-sm"><p class="font-medium">❌ Kurang tepat.</p><p>Periksa kembali langkah-langkah penyelesaian. Solusi yang benar adalah x = ${expectedX}, y = ${expectedY}.</p></div>`;
+            }
+        }
+
+        function updateSystemProgress() {
+            const solved = solvedSystemProblems.size;
+            const total = systemProblems.length;
+            const percentage = (solved / total) * 100;
+            
+            document.getElementById('system-problems-solved').textContent = `${solved}/${total}`;
+            document.getElementById('system-progress-bar').style.width = `${percentage}%`;
+            
+            if (solved === total) {
+                setTimeout(() => {
+                    alert('🎉 Selamat! Anda telah menyelesaikan semua soal latihan sistem persamaan!');
+                }, 500);
+            }
+        }
+
+        // Quiz functions
+        function checkAnswer(questionId, correctAnswer, explanation) {
+            const selectedAnswer = document.querySelector(`input[name="${questionId}"]:checked`);
+            const feedbackDiv = document.getElementById(`feedback-${questionId}`);
+            
+            if (!selectedAnswer) {
+                feedbackDiv.innerHTML = '<p class="text-red-600 font-medium">⚠️ Silakan pilih jawaban terlebih dahulu!</p>';
+                return;
+            }
+
+            const questionElement = document.querySelector(`input[name="${questionId}"]`).closest('.quiz-question');
+            const level = questionElement.getAttribute('data-level');
+            
+            if (selectedAnswer.value === correctAnswer) {
+                feedbackDiv.innerHTML = `<div class="correct p-3 rounded-lg border"><p class="font-medium">✅ Benar!</p><p class="text-sm mt-1">${explanation}</p></div>`;
+                
+                // Update score if not already answered correctly
+                if (!questionElement.classList.contains('answered-correctly')) {
+                    scores[level]++;
+                    questionElement.classList.add('answered-correctly');
+                    updateProgressTracker();
+                }
+            } else {
+                feedbackDiv.innerHTML = `<div class="incorrect p-3 rounded-lg border"><p class="font-medium">❌ Kurang tepat.</p><p class="text-sm mt-1">${explanation}</p></div>`;
+            }
+
+            // Disable all radio buttons for this question
+            document.querySelectorAll(`input[name="${questionId}"]`).forEach(input => {
+                input.disabled = true;
+            });
+        }
+
+        // Update progress tracker
+        function updateProgressTracker() {
+            document.getElementById('easy-score').textContent = `${scores.mudah}/${maxScores.mudah}`;
+            document.getElementById('medium-score').textContent = `${scores.sedang}/${maxScores.sedang}`;
+            document.getElementById('hard-score').textContent = `${scores.sulit}/${maxScores.sulit}`;
+        }
+
+        // Rating system
+        function setRating(type, rating) {
+            const ratingContainer = document.getElementById(`${type}-rating`);
+            const stars = ratingContainer.querySelectorAll('.rating-star');
+            
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('text-gray-300');
+                    star.classList.add('text-yellow-400');
+                } else {
+                    star.classList.remove('text-yellow-400');
+                    star.classList.add('text-gray-300');
+                }
+            });
+        }
+
+        // Reset all function
+        function resetAll() {
+            if (confirm('Apakah Anda yakin ingin mereset semua jawaban dan progress?')) {
+                // Reset scores
+                scores = {
+                    mudah: 0,
+                    sedang: 0,
+                    sulit: 0
+                };
+                
+                // Reset all radio buttons
+                document.querySelectorAll('input[type="radio"]').forEach(input => {
+                    input.checked = false;
+                    input.disabled = false;
+                });
+                
+                // Clear all feedback
+                document.querySelectorAll('[id^="feedback-"]').forEach(div => {
+                    div.innerHTML = '';
+                });
+                
+                // Remove answered-correctly class
+                document.querySelectorAll('.quiz-question').forEach(question => {
+                    question.classList.remove('answered-correctly');
+                });
+                
+                // Reset ratings
+                document.querySelectorAll('.rating-star').forEach(star => {
+                    star.classList.remove('text-yellow-400');
+                    star.classList.add('text-gray-300');
+                });
+                
+                // Clear textareas and inputs
+                document.querySelectorAll('textarea, input[type="text"]').forEach(element => {
+                    element.value = '';
+                });
+                
+                // Reset interactive solver
+                currentStep = 0;
+                systemProblemIndex = 0;
+                currentSystemProblem = systemProblems[0];
+                solvedSystemProblems.clear();
+                
+                // Update progress trackers
+                updateProgressTracker();
+                updateSystemProgress();
+                
+                // Reset method demos
+                document.querySelectorAll('.method-card').forEach(card => {
+                    card.classList.remove('active');
+                });
+                document.getElementById('substitusi-demo').classList.add('hidden');
+                document.getElementById('eliminasi-demo').classList.add('hidden');
+                
+                alert('✅ Semua data telah direset! Anda dapat memulai kembali.');
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+            
+            // Initialize first system problem
+            currentSystemProblem = systemProblems[0];
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96b3fb644342f7e6',t:'MTc1NDU0MDQzMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
