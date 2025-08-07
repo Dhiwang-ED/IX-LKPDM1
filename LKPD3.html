@@ -146,46 +146,65 @@
                         <div class="solution-step bg-yellow-50 border-l-4 border-yellow-400">
                             <div class="flex items-center mb-2">
                                 <span class="step-number">1</span>
-                                <span class="ml-2 font-semibold">Isolasi variabel dari persamaan kedua</span>
+                                <span class="ml-2 font-semibold">Pilih persamaan yang mudah diisolasi</span>
                             </div>
-                            <div class="ml-8">
-                                <p>$x - y = 2$</p>
-                                <p>$x = y + 2$</p>
+                            <div class="ml-8 space-y-2">
+                                <p class="text-sm text-gray-600">Persamaan (1): $2x + y = 7$ → untuk isolasi y: $y = 7 - 2x$</p>
+                                <p class="text-sm text-gray-600">Persamaan (2): $x - y = 2$ → untuk isolasi x: $x = y + 2$ ✓ (lebih mudah)</p>
+                                <p class="font-medium text-blue-700">Pilih persamaan (2) karena koefisien x = 1</p>
                             </div>
                         </div>
                         
                         <div class="solution-step bg-yellow-50 border-l-4 border-yellow-400">
                             <div class="flex items-center mb-2">
                                 <span class="step-number">2</span>
-                                <span class="ml-2 font-semibold">Substitusi ke persamaan pertama</span>
+                                <span class="ml-2 font-semibold">Isolasi variabel x dari persamaan kedua</span>
                             </div>
-                            <div class="ml-8">
-                                <p>$2x + y = 7$</p>
-                                <p>$2(y + 2) + y = 7$</p>
-                                <p>$2y + 4 + y = 7$</p>
-                                <p>$3y = 3$</p>
-                                <p>$y = 1$</p>
+                            <div class="ml-8 space-y-2">
+                                <p>Persamaan (2): $x - y = 2$</p>
+                                <p>Pindahkan $-y$ ke ruas kanan: $x = 2 + y$</p>
+                                <p class="font-medium text-blue-700">Hasil: $x = y + 2$</p>
                             </div>
                         </div>
                         
                         <div class="solution-step bg-yellow-50 border-l-4 border-yellow-400">
                             <div class="flex items-center mb-2">
                                 <span class="step-number">3</span>
-                                <span class="ml-2 font-semibold">Cari nilai x</span>
+                                <span class="ml-2 font-semibold">Substitusi $x = y + 2$ ke persamaan pertama</span>
                             </div>
-                            <div class="ml-8">
-                                <p>$x = y + 2$</p>
+                            <div class="ml-8 space-y-2">
+                                <p>Persamaan (1): $2x + y = 7$</p>
+                                <p>Ganti x dengan $(y + 2)$: $2(y + 2) + y = 7$</p>
+                                <p>Distribusikan: $2y + 4 + y = 7$</p>
+                                <p>Gabungkan suku sejenis: $3y + 4 = 7$</p>
+                                <p>Kurangi 4 dari kedua ruas: $3y = 7 - 4$</p>
+                                <p>Sederhanakan: $3y = 3$</p>
+                                <p class="font-medium text-blue-700">Bagi dengan 3: $y = 1$</p>
+                            </div>
+                        </div>
+                        
+                        <div class="solution-step bg-yellow-50 border-l-4 border-yellow-400">
+                            <div class="flex items-center mb-2">
+                                <span class="step-number">4</span>
+                                <span class="ml-2 font-semibold">Cari nilai x dengan substitusi balik</span>
+                            </div>
+                            <div class="ml-8 space-y-2">
+                                <p>Gunakan $x = y + 2$ dan $y = 1$</p>
                                 <p>$x = 1 + 2$</p>
-                                <p>$x = 3$</p>
+                                <p class="font-medium text-blue-700">$x = 3$</p>
                             </div>
                         </div>
                         
                         <div class="solution-step bg-green-50 border-l-4 border-green-400">
                             <div class="flex items-center mb-2">
-                                <span class="step-number">✓</span>
-                                <span class="ml-2 font-semibold">Solusi: $(3, 1)$</span>
+                                <span class="step-number">5</span>
+                                <span class="ml-2 font-semibold">Verifikasi solusi: $(3, 1)$</span>
                             </div>
-                            <p class="ml-8 text-sm">Cek: $2(3) + 1 = 7$ ✓ dan $3 - 1 = 2$ ✓</p>
+                            <div class="ml-8 space-y-2">
+                                <p>Cek persamaan (1): $2x + y = 2(3) + 1 = 6 + 1 = 7$ ✓</p>
+                                <p>Cek persamaan (2): $x - y = 3 - 1 = 2$ ✓</p>
+                                <p class="font-medium text-green-700">Solusi benar: $x = 3, y = 1$</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -201,45 +220,80 @@
                         <div class="solution-step bg-yellow-50 border-l-4 border-yellow-400">
                             <div class="flex items-center mb-2">
                                 <span class="step-number">1</span>
-                                <span class="ml-2 font-semibold">Eliminasi variabel y</span>
+                                <span class="ml-2 font-semibold">Tentukan variabel yang akan dieliminasi</span>
                             </div>
-                            <div class="ml-8">
-                                <p>Kalikan persamaan kedua dengan 2:</p>
-                                <p>$\begin{cases} 3x + 2y = 16 \\ 2x + 2y = 12 \end{cases}$</p>
+                            <div class="ml-8 space-y-2">
+                                <p class="text-sm text-gray-600">Persamaan (1): $3x + 2y = 16$ → koefisien x = 3, y = 2</p>
+                                <p class="text-sm text-gray-600">Persamaan (2): $x + y = 6$ → koefisien x = 1, y = 1</p>
+                                <p class="font-medium text-blue-700">Pilih eliminasi y karena koefisiennya lebih kecil (2 dan 1)</p>
                             </div>
                         </div>
                         
                         <div class="solution-step bg-yellow-50 border-l-4 border-yellow-400">
                             <div class="flex items-center mb-2">
                                 <span class="step-number">2</span>
-                                <span class="ml-2 font-semibold">Kurangkan kedua persamaan</span>
+                                <span class="ml-2 font-semibold">Samakan koefisien variabel y</span>
                             </div>
-                            <div class="ml-8">
-                                <p>$(3x + 2y) - (2x + 2y) = 16 - 12$</p>
-                                <p>$3x + 2y - 2x - 2y = 4$</p>
-                                <p>$x = 4$</p>
+                            <div class="ml-8 space-y-2">
+                                <p>Koefisien y: persamaan (1) = 2, persamaan (2) = 1</p>
+                                <p>KPK dari 2 dan 1 adalah 2</p>
+                                <p>Persamaan (1): $3x + 2y = 16$ → kalikan 1 → $3x + 2y = 16$</p>
+                                <p>Persamaan (2): $x + y = 6$ → kalikan 2 → $2x + 2y = 12$</p>
+                                <p class="font-medium text-blue-700">Sistem baru: $\begin{cases} 3x + 2y = 16 \\ 2x + 2y = 12 \end{cases}$</p>
                             </div>
                         </div>
                         
                         <div class="solution-step bg-yellow-50 border-l-4 border-yellow-400">
                             <div class="flex items-center mb-2">
                                 <span class="step-number">3</span>
-                                <span class="ml-2 font-semibold">Eliminasi variabel x untuk mencari y</span>
+                                <span class="ml-2 font-semibold">Eliminasi variabel y dengan pengurangan</span>
                             </div>
-                            <div class="ml-8">
-                                <p>Kalikan persamaan pertama dengan 1 dan kedua dengan 3:</p>
-                                <p>$\begin{cases} 3x + 2y = 16 \\ 3x + 3y = 18 \end{cases}$</p>
-                                <p>$(3x + 3y) - (3x + 2y) = 18 - 16$</p>
-                                <p>$y = 2$</p>
+                            <div class="ml-8 space-y-2">
+                                <p>Karena koefisien y sama (2y dan 2y), gunakan pengurangan:</p>
+                                <p>$(3x + 2y) - (2x + 2y) = 16 - 12$</p>
+                                <p>$3x + 2y - 2x - 2y = 4$</p>
+                                <p>$(3x - 2x) + (2y - 2y) = 4$</p>
+                                <p>$x + 0 = 4$</p>
+                                <p class="font-medium text-blue-700">$x = 4$</p>
+                            </div>
+                        </div>
+                        
+                        <div class="solution-step bg-yellow-50 border-l-4 border-yellow-400">
+                            <div class="flex items-center mb-2">
+                                <span class="step-number">4</span>
+                                <span class="ml-2 font-semibold">Substitusi untuk mencari nilai y</span>
+                            </div>
+                            <div class="ml-8 space-y-2">
+                                <p>Gunakan persamaan (2): $x + y = 6$ dan $x = 4$</p>
+                                <p>$4 + y = 6$</p>
+                                <p>$y = 6 - 4$</p>
+                                <p class="font-medium text-blue-700">$y = 2$</p>
                             </div>
                         </div>
                         
                         <div class="solution-step bg-green-50 border-l-4 border-green-400">
                             <div class="flex items-center mb-2">
-                                <span class="step-number">✓</span>
-                                <span class="ml-2 font-semibold">Solusi: $(4, 2)$</span>
+                                <span class="step-number">5</span>
+                                <span class="ml-2 font-semibold">Verifikasi solusi: $(4, 2)$</span>
                             </div>
-                            <p class="ml-8 text-sm">Cek: $3(4) + 2(2) = 16$ ✓ dan $4 + 2 = 6$ ✓</p>
+                            <div class="ml-8 space-y-2">
+                                <p>Cek persamaan (1): $3x + 2y = 3(4) + 2(2) = 12 + 4 = 16$ ✓</p>
+                                <p>Cek persamaan (2): $x + y = 4 + 2 = 6$ ✓</p>
+                                <p class="font-medium text-green-700">Solusi benar: $x = 4, y = 2$</p>
+                            </div>
+                        </div>
+                        
+                        <div class="solution-step bg-blue-50 border-l-4 border-blue-400">
+                            <div class="flex items-center mb-2">
+                                <span class="step-number">💡</span>
+                                <span class="ml-2 font-semibold">Alternatif: Eliminasi variabel x</span>
+                            </div>
+                            <div class="ml-8 space-y-2">
+                                <p class="text-sm">Untuk eliminasi x, kalikan persamaan (2) dengan 3:</p>
+                                <p class="text-sm">$\begin{cases} 3x + 2y = 16 \\ 3x + 3y = 18 \end{cases}$</p>
+                                <p class="text-sm">$(3x + 3y) - (3x + 2y) = 18 - 16$ → $y = 2$</p>
+                                <p class="text-sm text-gray-600">Hasilnya sama, pilih cara yang lebih mudah!</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1473,5 +1527,5 @@
             generateMathProblem();
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96b41c5f36023ef7',t:'MTc1NDU0MTc4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96b4785bd4db7324',t:'MTc1NDU0NTU1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
