@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metode Eliminasi SPLDV - Kelas 9 SMP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <style>
+        .step-box {
+            transition: all 0.3s ease;
+        }
+        .step-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+        }
+        .math-display {
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-white min-h-screen">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white py-6 shadow-lg">
+        <div class="container mx-auto px-4">
+            <h1 class="text-3xl font-bold text-center">Metode Eliminasi SPLDV</h1>
+            <p class="text-center text-blue-100 mt-2">Sistem Persamaan Linear Dua Variabel - Kelas 9 SMP</p>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Pengantar -->
+        <section class="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-blue-600 mb-6 flex items-center">
+                <span class="bg-blue-100 rounded-full w-8 h-8 flex items-center justify-center text-sm mr-3">1</span>
+                Pengertian Metode Eliminasi
+            </h2>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    <strong>Metode Eliminasi</strong> adalah cara menyelesaikan sistem persamaan linear dua variabel dengan menghilangkan (mengeliminasi) salah satu variabel terlebih dahulu.
+                </p>
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-white p-4 rounded-lg border border-blue-200">
+                        <h4 class="font-semibold text-blue-600 mb-2">Eliminasi Variabel x:</h4>
+                        <p class="text-sm text-gray-600">Menghilangkan variabel x untuk mencari nilai y</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-blue-200">
+                        <h4 class="font-semibold text-blue-600 mb-2">Eliminasi Variabel y:</h4>
+                        <p class="text-sm text-gray-600">Menghilangkan variabel y untuk mencari nilai x</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contoh Soal -->
+        <section class="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-blue-600 mb-6 flex items-center">
+                <span class="bg-blue-100 rounded-full w-8 h-8 flex items-center justify-center text-sm mr-3">2</span>
+                Contoh Soal dan Pembahasan
+            </h2>
+            
+            <!-- Soal -->
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
+                <h3 class="font-semibold text-gray-800 mb-4">Contoh Soal:</h3>
+                <p class="text-gray-700 mb-4">Tentukan nilai x dan y dari sistem persamaan berikut:</p>
+                <div class="math-display text-center bg-white p-4 rounded border">
+                    $$2x + 3y = 13 \quad \text{...(1)}$$
+                    $$3x - y = 4 \quad \text{...(2)}$$
+                </div>
+            </div>
+
+            <!-- Pembahasan -->
+            <div class="space-y-6">
+                <!-- Metode 1: Eliminasi x -->
+                <div class="step-box bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <h3 class="font-bold text-blue-700 mb-4 text-lg">Metode 1: Eliminasi Variabel x untuk mencari y</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded border">
+                            <p class="font-semibold mb-2">Langkah 1: Samakan koefisien x</p>
+                            <p class="text-sm text-gray-600 mb-3">Koefisien x pada persamaan (1) = 2, pada persamaan (2) = 3</p>
+                            <p class="text-sm text-gray-600 mb-3">KPK dari 2 dan 3 = 6</p>
+                            <div class="math-display">
+                                <p>Persamaan (1) × 3: $6x + 9y = 39$ ...(3)</p>
+                                <p>Persamaan (2) × 2: $6x - 2y = 8$ ...(4)</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded border">
+                            <p class="font-semibold mb-2">Langkah 2: Eliminasi x dengan pengurangan</p>
+                            <div class="math-display text-center">
+                                $$\begin{align}
+                                6x + 9y &= 39 \\
+                                6x - 2y &= 8 \quad (-) \\
+                                \hline
+                                11y &= 31 \\
+                                y &= \frac{31}{11}
+                                \end{align}$$
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metode 2: Eliminasi y -->
+                <div class="step-box bg-green-50 border border-green-200 rounded-lg p-6">
+                    <h3 class="font-bold text-green-700 mb-4 text-lg">Metode 2: Eliminasi Variabel y untuk mencari x</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded border">
+                            <p class="font-semibold mb-2">Langkah 1: Samakan koefisien y</p>
+                            <p class="text-sm text-gray-600 mb-3">Koefisien y pada persamaan (1) = 3, pada persamaan (2) = -1</p>
+                            <p class="text-sm text-gray-600 mb-3">Untuk menyamakan, kalikan persamaan (2) dengan 3</p>
+                            <div class="math-display">
+                                <p>Persamaan (1): $2x + 3y = 13$ ...(1)</p>
+                                <p>Persamaan (2) × 3: $9x - 3y = 12$ ...(5)</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded border">
+                            <p class="font-semibold mb-2">Langkah 2: Eliminasi y dengan penjumlahan</p>
+                            <div class="math-display text-center">
+                                $$\begin{align}
+                                2x + 3y &= 13 \\
+                                9x - 3y &= 12 \quad (+) \\
+                                \hline
+                                11x &= 25 \\
+                                x &= \frac{25}{11}
+                                \end{align}$$
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contoh Baru dengan Bilangan Bulat -->
+                <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-yellow-700">Contoh Soal:</h3>
+                        <div class="flex gap-2">
+                            <select id="exampleType" class="bg-white border border-yellow-400 rounded px-3 py-1 text-sm">
+                                <option value="integer">Bilangan Bulat</option>
+                            </select>
+                            <button onclick="generateExample()" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm transition duration-300">
+                                Generate Soal Baru
+                            </button>
+                        </div>
+                    </div>
+                    <div id="exampleProblem" class="math-display text-center bg-white p-4 rounded border">
+                        $$2x + y = 7 \quad \text{...(1)}$$
+                        $$x + y = 4 \quad \text{...(2)}$$
+                    </div>
+                </div>
+
+                <!-- Pembahasan Lengkap -->
+                <div id="exampleSolution" class="grid md:grid-cols-2 gap-6">
+                    <!-- Eliminasi x -->
+                    <div class="step-box bg-blue-50 border border-blue-200 rounded-lg p-6">
+                        <h4 class="font-bold text-blue-700 mb-4">Eliminasi x untuk mencari y:</h4>
+                        <div class="space-y-3">
+                            <div class="bg-white p-3 rounded text-sm">
+                                <p class="font-semibold">Langkah 1: Samakan koefisien x</p>
+                                <div id="exampleStep1X" class="math-display">
+                                    <p>Persamaan (1) × 1: $2x + y = 7$</p>
+                                    <p>Persamaan (2) × 2: $2x + 2y = 8$</p>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3 rounded text-sm">
+                                <p class="font-semibold">Langkah 2: Kurangkan</p>
+                                <div id="exampleStep2X" class="math-display text-center">
+                                    $$\begin{align}
+                                    2x + 2y &= 8 \\
+                                    2x + y &= 7 \quad (-) \\
+                                    \hline
+                                    y &= 1
+                                    \end{align}$$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Eliminasi y -->
+                    <div class="step-box bg-green-50 border border-green-200 rounded-lg p-6">
+                        <h4 class="font-bold text-green-700 mb-4">Eliminasi y untuk mencari x:</h4>
+                        <div class="space-y-3">
+                            <div class="bg-white p-3 rounded text-sm">
+                                <p class="font-semibold">Langkah 1: Koefisien y sudah sama</p>
+                                <div id="exampleStep1Y" class="math-display">
+                                    <p>Persamaan (1): $2x + y = 7$</p>
+                                    <p>Persamaan (2): $x + y = 4$</p>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3 rounded text-sm">
+                                <p class="font-semibold">Langkah 2: Kurangkan</p>
+                                <div id="exampleStep2Y" class="math-display text-center">
+                                    $$\begin{align}
+                                    2x + y &= 7 \\
+                                    x + y &= 4 \quad (-) \\
+                                    \hline
+                                    x &= 3
+                                    \end{align}$$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kesimpulan -->
+                <div id="exampleConclusion" class="bg-green-100 border border-green-300 rounded-lg p-6">
+                    <h4 class="font-bold text-green-700 mb-2">Kesimpulan:</h4>
+                    <p class="text-green-800">Jadi, nilai x = 3 dan y = 1</p>
+                    <div class="mt-4 p-3 bg-white rounded border">
+                        <p class="font-semibold text-sm">Pemeriksaan:</p>
+                        <div id="exampleVerification" class="math-display text-sm">
+                            <p>Persamaan (1): $2(3) + 1 = 6 + 1 = 7$ ✓</p>
+                            <p>Persamaan (2): $3 + 1 = 4$ ✓</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Latihan Soal -->
+        <section class="bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-blue-600 mb-6 flex items-center">
+                <span class="bg-blue-100 rounded-full w-8 h-8 flex items-center justify-center text-sm mr-3">3</span>
+                Latihan Soal
+            </h2>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-semibold text-gray-800">Soal Latihan:</h3>
+                    <div class="flex gap-2">
+                        <select id="practiceType" class="bg-white border border-gray-400 rounded px-3 py-1 text-sm">
+                            <option value="integer">Bilangan Bulat</option>
+                        </select>
+                        <button onclick="generatePractice()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition duration-300">
+                            Generate Soal Baru
+                        </button>
+                    </div>
+                </div>
+                <p class="text-gray-700 mb-4">Tentukan nilai x dan y dari sistem persamaan berikut:</p>
+                <div id="practiceProblem" class="math-display text-center bg-white p-4 rounded border">
+                    $$3x + 2y = 12 \quad \text{...(1)}$$
+                    $$x + y = 5 \quad \text{...(2)}$$
+                </div>
+            </div>
+
+            <!-- Input Jawaban -->
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                    <label class="block text-blue-700 font-semibold mb-2">Masukkan nilai x:</label>
+                    <input type="number" id="inputX" class="w-full p-3 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Contoh: 2">
+                </div>
+                <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                    <label class="block text-blue-700 font-semibold mb-2">Masukkan nilai y:</label>
+                    <input type="number" id="inputY" class="w-full p-3 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Contoh: 3">
+                </div>
+            </div>
+
+            <div class="text-center mb-6">
+                <button onclick="checkAnswer()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300 shadow-lg">
+                    Periksa Jawaban
+                </button>
+            </div>
+
+            <!-- Feedback -->
+            <div id="feedback" class="hidden"></div>
+
+            <!-- Pembahasan Latihan -->
+            <div id="solution" class="hidden mt-8">
+                <h3 class="text-xl font-bold text-blue-600 mb-4">Pembahasan Lengkap:</h3>
+                
+                <div id="practiceSolutionSteps" class="grid md:grid-cols-2 gap-6">
+                    <!-- Eliminasi x -->
+                    <div class="step-box bg-blue-50 border border-blue-200 rounded-lg p-6">
+                        <h4 class="font-bold text-blue-700 mb-4">Eliminasi x untuk mencari y:</h4>
+                        <div class="space-y-3">
+                            <div class="bg-white p-3 rounded text-sm">
+                                <p class="font-semibold">Langkah 1: Samakan koefisien x</p>
+                                <div id="practiceStep1X" class="math-display">
+                                    <p>Persamaan (1) × 1: $3x + 2y = 12$</p>
+                                    <p>Persamaan (2) × 3: $3x + 3y = 15$</p>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3 rounded text-sm">
+                                <p class="font-semibold">Langkah 2: Kurangkan</p>
+                                <div id="practiceStep2X" class="math-display text-center">
+                                    $$\begin{align}
+                                    3x + 3y &= 15 \\
+                                    3x + 2y &= 12 \quad (-) \\
+                                    \hline
+                                    y &= 3
+                                    \end{align}$$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Eliminasi y -->
+                    <div class="step-box bg-green-50 border border-green-200 rounded-lg p-6">
+                        <h4 class="font-bold text-green-700 mb-4">Eliminasi y untuk mencari x:</h4>
+                        <div class="space-y-3">
+                            <div class="bg-white p-3 rounded text-sm">
+                                <p class="font-semibold">Langkah 1: Samakan koefisien y</p>
+                                <div id="practiceStep1Y" class="math-display">
+                                    <p>Persamaan (1) × 1: $3x + 2y = 12$</p>
+                                    <p>Persamaan (2) × 2: $2x + 2y = 10$</p>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3 rounded text-sm">
+                                <p class="font-semibold">Langkah 2: Kurangkan</p>
+                                <div id="practiceStep2Y" class="math-display text-center">
+                                    $$\begin{align}
+                                    3x + 2y &= 12 \\
+                                    2x + 2y &= 10 \quad (-) \\
+                                    \hline
+                                    x &= 2
+                                    \end{align}$$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="practiceConclusion" class="bg-green-100 border border-green-300 rounded-lg p-6 mt-6">
+                    <h4 class="font-bold text-green-700 mb-2">Kesimpulan:</h4>
+                    <p class="text-green-800">Jadi, nilai x = 2 dan y = 3</p>
+                    <div class="mt-4 p-3 bg-white rounded border">
+                        <p class="font-semibold text-sm">Pemeriksaan:</p>
+                        <div id="practiceVerification" class="math-display text-sm">
+                            <p>Persamaan (1): $3(2) + 2(3) = 6 + 6 = 12$ ✓</p>
+                            <p>Persamaan (2): $2 + 3 = 5$ ✓</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Global variables untuk menyimpan soal saat ini
+        let currentExample = {
+            x: 3, y: 1,
+            eq1: { a: 2, b: 1, c: 7 },
+            eq2: { a: 1, b: 1, c: 4 }
+        };
+        
+        let currentPractice = {
+            x: 2, y: 3,
+            eq1: { a: 3, b: 2, c: 12 },
+            eq2: { a: 1, b: 1, c: 5 }
+        };
+
+        function generateExample() {
+            const type = document.getElementById('exampleType').value;
+            let problem;
+            
+            do {
+                problem = generateProblem(type);
+            } while (areEquationsIdentical(problem.eq1, problem.eq2));
+            
+            currentExample = problem;
+            
+            // Update tampilan soal
+            document.getElementById('exampleProblem').innerHTML = `
+                $$${formatCoefficient(problem.eq1.a, 'x', true)} ${formatCoefficient(problem.eq1.b, 'y')} = ${problem.eq1.c} \\quad \\text{...(1)}$$
+                $$${formatCoefficient(problem.eq2.a, 'x', true)} ${formatCoefficient(problem.eq2.b, 'y')} = ${problem.eq2.c} \\quad \\text{...(2)}$$
+            `;
+            
+            // Answer display removed for cleaner presentation
+            
+            // Update pembahasan
+            updateExampleSolution();
+            
+            // Re-render MathJax
+            MathJax.typesetPromise();
+        }
+
+        function generatePractice() {
+            const type = document.getElementById('practiceType').value;
+            let problem;
+            
+            do {
+                problem = generateProblem(type);
+            } while (areEquationsIdentical(problem.eq1, problem.eq2));
+            
+            currentPractice = problem;
+            
+            // Update tampilan soal
+            document.getElementById('practiceProblem').innerHTML = `
+                $$${formatCoefficient(problem.eq1.a, 'x', true)} ${formatCoefficient(problem.eq1.b, 'y')} = ${problem.eq1.c} \\quad \\text{...(1)}$$
+                $$${formatCoefficient(problem.eq2.a, 'x', true)} ${formatCoefficient(problem.eq2.b, 'y')} = ${problem.eq2.c} \\quad \\text{...(2)}$$
+            `;
+            
+            // Update pembahasan
+            updatePracticeSolution();
+            
+            // Reset input dan feedback
+            document.getElementById('inputX').value = '';
+            document.getElementById('inputY').value = '';
+            document.getElementById('feedback').classList.add('hidden');
+            document.getElementById('solution').classList.add('hidden');
+            
+            // Re-render MathJax
+            MathJax.typesetPromise();
+        }
+
+        function generateProblem(type) {
+            let attempts = 0;
+            let problem;
+            
+            do {
+                attempts++;
+                // Generate bilangan bulat solution (1-5)
+                const x = Math.floor(Math.random() * 5) + 1;
+                const y = Math.floor(Math.random() * 5) + 1;
+                
+                // Generate koefisien acak (1-4) dengan tanda acak
+                let a1 = Math.floor(Math.random() * 4) + 1;
+                let b1 = Math.floor(Math.random() * 4) + 1;
+                let a2 = Math.floor(Math.random() * 4) + 1;
+                let b2 = Math.floor(Math.random() * 4) + 1;
+                
+                // Randomize signs untuk variasi bentuk persamaan
+                if (Math.random() < 0.4) a1 = -a1;
+                if (Math.random() < 0.4) b1 = -b1;
+                if (Math.random() < 0.4) a2 = -a2;
+                if (Math.random() < 0.4) b2 = -b2;
+                
+                // Hitung konstanta berdasarkan x dan y (ini yang benar)
+                const c1 = a1 * x + b1 * y;
+                const c2 = a2 * x + b2 * y;
+                
+                problem = {
+                    x: x, y: y,
+                    eq1: { a: a1, b: b1, c: c1 },
+                    eq2: { a: a2, b: b2, c: c2 }
+                };
+                
+                // Verifikasi bahwa solusi benar
+                const check1 = a1 * x + b1 * y;
+                const check2 = a2 * x + b2 * y;
+                
+                if (check1 !== c1 || check2 !== c2) {
+                    console.error('Solution verification failed!');
+                    continue;
+                }
+                
+            } while (areEquationsIdentical(problem.eq1, problem.eq2) && attempts < 50);
+            
+            return problem;
+        }
+
+        function areEquationsIdentical(eq1, eq2) {
+            // Cek apakah kedua persamaan identik (proporsional)
+            const ratio1 = eq1.a / eq2.a;
+            const ratio2 = eq1.b / eq2.b;
+            const ratio3 = eq1.c / eq2.c;
+            
+            return Math.abs(ratio1 - ratio2) < 0.001 && Math.abs(ratio1 - ratio3) < 0.001;
+        }
+
+        function formatCoefficient(coeff, variable, isFirst = false) {
+            if (coeff === 1) return isFirst ? variable : `+ ${variable}`;
+            if (coeff === -1) return `- ${variable}`;
+            if (coeff > 0) return isFirst ? `${coeff}${variable}` : `+ ${coeff}${variable}`;
+            return `- ${Math.abs(coeff)}${variable}`;
+        }
+
+        function formatFraction(value) {
+            if (typeof value === 'number') {
+                // Konversi desimal ke pecahan
+                const tolerance = 1.0E-6;
+                let h1 = 1, h2 = 0, k1 = 0, k2 = 1;
+                let b = value;
+                do {
+                    let a = Math.floor(b);
+                    let aux = h1; h1 = a * h1 + h2; h2 = aux;
+                    aux = k1; k1 = a * k1 + k2; k2 = aux;
+                    b = 1 / (b - a);
+                } while (Math.abs(value - h1 / k1) > value * tolerance);
+                
+                if (k1 === 1) return h1.toString();
+                return `\\frac{${h1}}{${k1}}`;
+            } else {
+                // Sudah dalam format pecahan - sederhanakan dulu
+                const gcdValue = gcd(Math.abs(value.num), Math.abs(value.den));
+                const simplifiedNum = value.num / gcdValue;
+                const simplifiedDen = value.den / gcdValue;
+                
+                if (simplifiedDen === 1) return simplifiedNum.toString();
+                return `\\frac{${simplifiedNum}}{${simplifiedDen}}`;
+            }
+        }
+
+        function updateExampleSolution() {
+            const { x, y, eq1, eq2 } = currentExample;
+            const isInteger = typeof x === 'number';
+            
+            // ELIMINASI X untuk mencari y
+            let mult1X, mult2X, step1TextX;
+            
+            if (eq1.a === -eq2.a) {
+                // Koefisien bertolak belakang (misal: 2x dan -2x)
+                mult1X = 1;
+                mult2X = 1;
+                step1TextX = "Koefisien x sudah bertolak belakang";
+            } else if (eq1.a === eq2.a) {
+                // Koefisien sama (misal: 2x dan 2x)
+                mult1X = 1;
+                mult2X = 1;
+                step1TextX = "Koefisien x sudah sama";
+            } else {
+                // Perlu menyamakan koefisien
+                const lcmX = Math.abs(eq1.a * eq2.a) / gcd(Math.abs(eq1.a), Math.abs(eq2.a));
+                mult1X = lcmX / Math.abs(eq1.a);
+                mult2X = lcmX / Math.abs(eq2.a);
+                if (eq1.a < 0) mult1X = -mult1X;
+                if (eq2.a < 0) mult2X = -mult2X;
+                step1TextX = "Samakan koefisien x";
+            }
+            
+            // Update langkah eliminasi x
+            document.getElementById('exampleStep1X').innerHTML = `
+                <p class="font-semibold">${step1TextX}</p>
+                <p>Persamaan (1) × ${mult1X}: $${formatCoefficient(eq1.a * mult1X, 'x', true)} ${formatCoefficient(eq1.b * mult1X, 'y')} = ${eq1.c * mult1X}$</p>
+                <p>Persamaan (2) × ${mult2X}: $${formatCoefficient(eq2.a * mult2X, 'x', true)} ${formatCoefficient(eq2.b * mult2X, 'y')} = ${eq2.c * mult2X}$</p>
+            `;
+            
+            const newA1X = eq1.a * mult1X;
+            const newA2X = eq2.a * mult2X;
+            const newB1X = eq1.b * mult1X;
+            const newB2X = eq2.b * mult2X;
+            const newC1X = eq1.c * mult1X;
+            const newC2X = eq2.c * mult2X;
+            
+            let operationX, resultBX, resultCX;
+            if (newA1X === -newA2X) {
+                // Bertolak belakang, jumlahkan
+                operationX = '+';
+                resultBX = newB1X + newB2X;
+                resultCX = newC1X + newC2X;
+            } else {
+                // Sama, kurangkan
+                operationX = '-';
+                resultBX = newB1X - newB2X;
+                resultCX = newC1X - newC2X;
+            }
+            
+            const yValue = isInteger ? y : formatFraction(y);
+            
+            document.getElementById('exampleStep2X').innerHTML = `
+                $$\\begin{align}
+                ${formatCoefficient(newA1X, 'x', true)} ${formatCoefficient(newB1X, 'y')} &= ${newC1X} \\\\
+                ${formatCoefficient(newA2X, 'x', true)} ${formatCoefficient(newB2X, 'y')} &= ${newC2X} \\quad (${operationX}) \\\\
+                \\hline
+                ${formatCoefficient(resultBX, 'y', true)} &= ${resultCX} \\\\
+                y &= ${yValue}
+                \\end{align}$$
+            `;
+            
+            // ELIMINASI Y untuk mencari x
+            let mult1Y, mult2Y, step1TextY;
+            
+            if (eq1.b === -eq2.b) {
+                // Koefisien bertolak belakang
+                mult1Y = 1;
+                mult2Y = 1;
+                step1TextY = "Koefisien y sudah bertolak belakang";
+            } else if (eq1.b === eq2.b) {
+                // Koefisien sama
+                mult1Y = 1;
+                mult2Y = 1;
+                step1TextY = "Koefisien y sudah sama";
+            } else {
+                // Perlu menyamakan koefisien
+                const lcmY = Math.abs(eq1.b * eq2.b) / gcd(Math.abs(eq1.b), Math.abs(eq2.b));
+                mult1Y = lcmY / Math.abs(eq1.b);
+                mult2Y = lcmY / Math.abs(eq2.b);
+                if (eq1.b < 0) mult1Y = -mult1Y;
+                if (eq2.b < 0) mult2Y = -mult2Y;
+                step1TextY = "Samakan koefisien y";
+            }
+            
+            document.getElementById('exampleStep1Y').innerHTML = `
+                <p class="font-semibold">${step1TextY}</p>
+                <p>Persamaan (1) × ${mult1Y}: $${formatCoefficient(eq1.a * mult1Y, 'x', true)} ${formatCoefficient(eq1.b * mult1Y, 'y')} = ${eq1.c * mult1Y}$</p>
+                <p>Persamaan (2) × ${mult2Y}: $${formatCoefficient(eq2.a * mult2Y, 'x', true)} ${formatCoefficient(eq2.b * mult2Y, 'y')} = ${eq2.c * mult2Y}$</p>
+            `;
+            
+            const newA1Y = eq1.a * mult1Y;
+            const newA2Y = eq2.a * mult2Y;
+            const newB1Y = eq1.b * mult1Y;
+            const newB2Y = eq2.b * mult2Y;
+            const newC1Y = eq1.c * mult1Y;
+            const newC2Y = eq2.c * mult2Y;
+            
+            let operationY, resultAY, resultCY;
+            if (newB1Y === -newB2Y) {
+                // Bertolak belakang, jumlahkan
+                operationY = '+';
+                resultAY = newA1Y + newA2Y;
+                resultCY = newC1Y + newC2Y;
+            } else {
+                // Sama, kurangkan
+                operationY = '-';
+                resultAY = newA1Y - newA2Y;
+                resultCY = newC1Y - newC2Y;
+            }
+            
+            const xValue = isInteger ? x : formatFraction(x);
+            
+            document.getElementById('exampleStep2Y').innerHTML = `
+                $$\\begin{align}
+                ${formatCoefficient(newA1Y, 'x', true)} ${formatCoefficient(newB1Y, 'y')} &= ${newC1Y} \\\\
+                ${formatCoefficient(newA2Y, 'x', true)} ${formatCoefficient(newB2Y, 'y')} &= ${newC2Y} \\quad (${operationY}) \\\\
+                \\hline
+                ${formatCoefficient(resultAY, 'x', true)} &= ${resultCY} \\\\
+                x &= ${xValue}
+                \\end{align}$$
+            `;
+            
+            // Update kesimpulan dan verifikasi
+            const xDisplay = x;
+            const yDisplay = y;
+            
+            // Hitung verifikasi dengan benar
+            const verify1 = eq1.a * x + eq1.b * y;
+            const verify2 = eq2.a * x + eq2.b * y;
+            
+            document.getElementById('exampleConclusion').innerHTML = `
+                <h4 class="font-bold text-green-700 mb-2">Kesimpulan:</h4>
+                <p class="text-green-800">Jadi, nilai x = ${xDisplay} dan y = ${yDisplay}</p>
+                <div class="mt-4 p-3 bg-white rounded border">
+                    <p class="font-semibold text-sm">Pemeriksaan:</p>
+                    <div id="exampleVerification" class="math-display text-sm">
+                        <p>Persamaan (1): $${formatCoefficient(eq1.a, '', true)}(${xDisplay}) ${formatCoefficient(eq1.b, '', false)}(${yDisplay}) = ${verify1}$ ✓</p>
+                        <p>Persamaan (2): $${formatCoefficient(eq2.a, '', true)}(${xDisplay}) ${formatCoefficient(eq2.b, '', false)}(${yDisplay}) = ${verify2}$ ✓</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updatePracticeSolution() {
+            const { x, y, eq1, eq2 } = currentPractice;
+            const isInteger = typeof x === 'number';
+            
+            // ELIMINASI X untuk mencari y
+            let mult1X, mult2X, step1TextX;
+            
+            if (eq1.a === -eq2.a) {
+                // Koefisien bertolak belakang (misal: 2x dan -2x)
+                mult1X = 1;
+                mult2X = 1;
+                step1TextX = "Koefisien x sudah bertolak belakang";
+            } else if (eq1.a === eq2.a) {
+                // Koefisien sama (misal: 2x dan 2x)
+                mult1X = 1;
+                mult2X = 1;
+                step1TextX = "Koefisien x sudah sama";
+            } else {
+                // Perlu menyamakan koefisien
+                const lcmX = Math.abs(eq1.a * eq2.a) / gcd(Math.abs(eq1.a), Math.abs(eq2.a));
+                mult1X = lcmX / Math.abs(eq1.a);
+                mult2X = lcmX / Math.abs(eq2.a);
+                if (eq1.a < 0) mult1X = -mult1X;
+                if (eq2.a < 0) mult2X = -mult2X;
+                step1TextX = "Samakan koefisien x";
+            }
+            
+            // Update langkah eliminasi x
+            document.getElementById('practiceStep1X').innerHTML = `
+                <p class="font-semibold">${step1TextX}</p>
+                <p>Persamaan (1) × ${mult1X}: $${formatCoefficient(eq1.a * mult1X, 'x', true)} ${formatCoefficient(eq1.b * mult1X, 'y')} = ${eq1.c * mult1X}$</p>
+                <p>Persamaan (2) × ${mult2X}: $${formatCoefficient(eq2.a * mult2X, 'x', true)} ${formatCoefficient(eq2.b * mult2X, 'y')} = ${eq2.c * mult2X}$</p>
+            `;
+            
+            const newA1X = eq1.a * mult1X;
+            const newA2X = eq2.a * mult2X;
+            const newB1X = eq1.b * mult1X;
+            const newB2X = eq2.b * mult2X;
+            const newC1X = eq1.c * mult1X;
+            const newC2X = eq2.c * mult2X;
+            
+            let operationX, resultBX, resultCX;
+            if (newA1X === -newA2X) {
+                // Bertolak belakang, jumlahkan
+                operationX = '+';
+                resultBX = newB1X + newB2X;
+                resultCX = newC1X + newC2X;
+            } else {
+                // Sama, kurangkan
+                operationX = '-';
+                resultBX = newB1X - newB2X;
+                resultCX = newC1X - newC2X;
+            }
+            
+            const yValue = isInteger ? y : formatFraction(y);
+            
+            document.getElementById('practiceStep2X').innerHTML = `
+                $$\\begin{align}
+                ${formatCoefficient(newA1X, 'x', true)} ${formatCoefficient(newB1X, 'y')} &= ${newC1X} \\\\
+                ${formatCoefficient(newA2X, 'x', true)} ${formatCoefficient(newB2X, 'y')} &= ${newC2X} \\quad (${operationX}) \\\\
+                \\hline
+                ${formatCoefficient(resultBX, 'y', true)} &= ${resultCX} \\\\
+                y &= ${yValue}
+                \\end{align}$$
+            `;
+            
+            // ELIMINASI Y untuk mencari x
+            let mult1Y, mult2Y, step1TextY;
+            
+            if (eq1.b === -eq2.b) {
+                // Koefisien bertolak belakang
+                mult1Y = 1;
+                mult2Y = 1;
+                step1TextY = "Koefisien y sudah bertolak belakang";
+            } else if (eq1.b === eq2.b) {
+                // Koefisien sama
+                mult1Y = 1;
+                mult2Y = 1;
+                step1TextY = "Koefisien y sudah sama";
+            } else {
+                // Perlu menyamakan koefisien
+                const lcmY = Math.abs(eq1.b * eq2.b) / gcd(Math.abs(eq1.b), Math.abs(eq2.b));
+                mult1Y = lcmY / Math.abs(eq1.b);
+                mult2Y = lcmY / Math.abs(eq2.b);
+                if (eq1.b < 0) mult1Y = -mult1Y;
+                if (eq2.b < 0) mult2Y = -mult2Y;
+                step1TextY = "Samakan koefisien y";
+            }
+            
+            document.getElementById('practiceStep1Y').innerHTML = `
+                <p class="font-semibold">${step1TextY}</p>
+                <p>Persamaan (1) × ${mult1Y}: $${formatCoefficient(eq1.a * mult1Y, 'x', true)} ${formatCoefficient(eq1.b * mult1Y, 'y')} = ${eq1.c * mult1Y}$</p>
+                <p>Persamaan (2) × ${mult2Y}: $${formatCoefficient(eq2.a * mult2Y, 'x', true)} ${formatCoefficient(eq2.b * mult2Y, 'y')} = ${eq2.c * mult2Y}$</p>
+            `;
+            
+            const newA1Y = eq1.a * mult1Y;
+            const newA2Y = eq2.a * mult2Y;
+            const newB1Y = eq1.b * mult1Y;
+            const newB2Y = eq2.b * mult2Y;
+            const newC1Y = eq1.c * mult1Y;
+            const newC2Y = eq2.c * mult2Y;
+            
+            let operationY, resultAY, resultCY;
+            if (newB1Y === -newB2Y) {
+                // Bertolak belakang, jumlahkan
+                operationY = '+';
+                resultAY = newA1Y + newA2Y;
+                resultCY = newC1Y + newC2Y;
+            } else {
+                // Sama, kurangkan
+                operationY = '-';
+                resultAY = newA1Y - newA2Y;
+                resultCY = newC1Y - newC2Y;
+            }
+            
+            const xValue = isInteger ? x : formatFraction(x);
+            
+            document.getElementById('practiceStep2Y').innerHTML = `
+                $$\\begin{align}
+                ${formatCoefficient(newA1Y, 'x', true)} ${formatCoefficient(newB1Y, 'y')} &= ${newC1Y} \\\\
+                ${formatCoefficient(newA2Y, 'x', true)} ${formatCoefficient(newB2Y, 'y')} &= ${newC2Y} \\quad (${operationY}) \\\\
+                \\hline
+                ${formatCoefficient(resultAY, 'x', true)} &= ${resultCY} \\\\
+                x &= ${xValue}
+                \\end{align}$$
+            `;
+            
+            // Update kesimpulan dan verifikasi
+            const xDisplay = x;
+            const yDisplay = y;
+            
+            // Hitung verifikasi dengan benar
+            const verify1 = eq1.a * x + eq1.b * y;
+            const verify2 = eq2.a * x + eq2.b * y;
+            
+            document.getElementById('practiceConclusion').innerHTML = `
+                <h4 class="font-bold text-green-700 mb-2">Kesimpulan:</h4>
+                <p class="text-green-800">Jadi, nilai x = ${xDisplay} dan y = ${yDisplay}</p>
+                <div class="mt-4 p-3 bg-white rounded border">
+                    <p class="font-semibold text-sm">Pemeriksaan:</p>
+                    <div id="practiceVerification" class="math-display text-sm">
+                        <p>Persamaan (1): $${formatCoefficient(eq1.a, '', true)}(${xDisplay}) ${formatCoefficient(eq1.b, '', false)}(${yDisplay}) = ${verify1}$ ✓</p>
+                        <p>Persamaan (2): $${formatCoefficient(eq2.a, '', true)}(${xDisplay}) ${formatCoefficient(eq2.b, '', false)}(${yDisplay}) = ${verify2}$ ✓</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function gcd(a, b) {
+            return b === 0 ? a : gcd(b, a % b);
+        }
+
+        function checkAnswer() {
+            const inputX = parseFloat(document.getElementById('inputX').value);
+            const inputY = parseFloat(document.getElementById('inputY').value);
+            const feedback = document.getElementById('feedback');
+            const solution = document.getElementById('solution');
+            
+            // Validasi input
+            if (isNaN(inputX) || isNaN(inputY)) {
+                feedback.classList.remove('hidden');
+                feedback.innerHTML = `
+                    <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-6 py-4 rounded-lg">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-bold">Input Tidak Valid!</h4>
+                                <p>Mohon masukkan nilai numerik untuk x dan y.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Jawaban yang benar dari soal saat ini
+            const correctX = currentPractice.x;
+            const correctY = currentPractice.y;
+            
+            feedback.classList.remove('hidden');
+            
+            // Toleransi untuk pembulatan
+            const tolerance = 0.001;
+            const xCorrect = Math.abs(inputX - correctX) < tolerance;
+            const yCorrect = Math.abs(inputY - correctY) < tolerance;
+            
+            // Verifikasi dengan substitusi ke persamaan asli
+            const { eq1, eq2 } = currentPractice;
+            const check1 = Math.abs((eq1.a * inputX + eq1.b * inputY) - eq1.c) < tolerance;
+            const check2 = Math.abs((eq2.a * inputX + eq2.b * inputY) - eq2.c) < tolerance;
+            
+            if ((xCorrect && yCorrect) || (check1 && check2)) {
+                feedback.innerHTML = `
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-bold">Benar! Selamat!</h4>
+                                <p>Jawaban Anda x = ${inputX} dan y = ${inputY} adalah tepat!</p>
+                                <p class="text-sm mt-1">Jawaban yang benar: x = ${correctX}, y = ${correctY}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                solution.classList.remove('hidden');
+            } else {
+                let message = "Jawaban kurang tepat. ";
+                if (!xCorrect && !yCorrect) {
+                    message += `Nilai x dan y yang Anda masukkan (x = ${inputX}, y = ${inputY}) belum benar.`;
+                } else if (!xCorrect) {
+                    message += `Nilai y sudah benar (${inputY}), tetapi nilai x belum tepat.`;
+                } else {
+                    message += `Nilai x sudah benar (${inputX}), tetapi nilai y belum tepat.`;
+                }
+                message += ` Jawaban yang benar adalah x = ${correctX}, y = ${correctY}.`;
+                
+                feedback.innerHTML = `
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-bold">Coba Lagi!</h4>
+                                <p>${message}</p>
+                                <p class="mt-2 text-sm">Gunakan metode eliminasi seperti pada contoh soal di atas.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Tampilkan pembahasan setelah 2 detik jika jawaban salah
+                setTimeout(() => {
+                    solution.classList.remove('hidden');
+                }, 2000);
+            }
+        }
+
+        // Allow Enter key to check answer
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9727659311f56d16',t:'MTc1NTc1MDY0NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
