@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis SPLDV - Warung Pak Budi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .story-context {
+            background: #f8f9fa;
+            padding: 25px;
+            border-left: 5px solid #4facfe;
+            margin: 20px;
+            border-radius: 10px;
+        }
+        
+        .story-context h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .quiz-container {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        
+        .section-content {
+            padding: 25px;
+        }
+        
+        .question {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #4facfe;
+        }
+        
+        .question-number {
+            background: #4facfe;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .question-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .options {
+            display: grid;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .option {
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            border-color: #4facfe;
+            background: #f0f8ff;
+        }
+        
+        .option.selected {
+            border-color: #4facfe;
+            background: #e3f2fd;
+        }
+        
+        .math-input{min-height:60px;border:2px solid #e5e7eb;border-radius:8px;padding:12px;font-size:18px;line-height:1.5;}
+        .math-input:focus{border-color:#3b82f6;outline:none;}
+        .math-input[data-placeholder]:empty::before{content:attr(data-placeholder);color:#9ca3af;}
+        .virtual-keyboard{display:none;background:white;border:1px solid #d1d5db;border-radius:8px;padding:16px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);margin-top:8px;}
+        .virtual-keyboard.show{display:block;}
+        .btn-math{min-width:50px;height:40px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;border:1px solid #d1d5db;cursor:pointer;transition:all 0.2s;}
+        .btn-math:hover{transform:translateY(-1px);box-shadow:0 2px 4px rgba(0,0,0,0.1);}
+        .matching-container{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+        .matching-item{padding:12px;border:2px solid #e5e7eb;border-radius:8px;cursor:pointer;transition:all 0.2s;}
+        .matching-item:hover{border-color:#3b82f6;}
+        .matching-item.selected{border-color:#3b82f6;background-color:#eff6ff;}
+        .matching-item.matched-green{border-color:#10b981;background-color:#dcfce7;border-width:3px;}
+        .matching-item.matched-blue{border-color:#3b82f6;background-color:#dbeafe;border-width:3px;}
+        .matching-item.matched-orange{border-color:#f97316;background-color:#fed7aa;border-width:3px;}
+        .matching-item.matched-purple{border-color:#8b5cf6;background-color:#ede9fe;border-width:3px;}
+        .matching-item.matched-pink{border-color:#ec4899;background-color:#fce7f3;border-width:3px;}
+        .graph-container{background:white;border:2px solid #e5e7eb;border-radius:8px;padding:20px;margin:10px 0;text-align:center;}
+        
+        .keyboard-btn {
+            background: #4facfe;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .keyboard-btn:hover {
+            background: #3a8bfd;
+        }
+        
+        .graph-image {
+            width: 100%;
+            max-width: 400px;
+            height: 300px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px auto;
+            position: relative;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 30px auto;
+            display: block;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
+        }
+        
+        .complex-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .complex-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .essay-answer {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+        }
+        
+        .essay-answer:focus {
+            border-color: #4facfe;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Kuis SPLDV</h1>
+            <p>Sistem Persamaan Linear Dua Variabel</p>
+        </div>
+        
+        <div class="quiz-container">
+            <!-- PILIHAN GANDA -->
+            <div class="section">
+                <div class="section-header">
+                    📝 Bagian A: Pilihan Ganda
+                </div>
+                <div class="section-content">
+                    <div class="story-context">
+                        <h3>🏪 Warung Pak Budi</h3>
+                        <p>Pak Budi memiliki warung yang menjual dua jenis makanan favorit: <strong>bakso</strong> dan <strong>mie ayam</strong>. Setiap hari, Pak Budi mencatat penjualannya untuk menghitung keuntungan. Harga bakso adalah Rp 15.000 per porsi dan mie ayam Rp 12.000 per porsi. Pak Budi ingin menganalisis penjualannya menggunakan sistem persamaan linear untuk merencanakan strategi bisnis yang lebih baik.</p>
+                        <p><strong>Informasi tambahan:</strong> Pak Budi memiliki target penjualan harian minimal Rp 300.000 dan maksimal dapat menyiapkan 30 porsi makanan per hari karena keterbatasan bahan.</p>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">1</div>
+                        <div class="question-text">
+                            Jika x menyatakan jumlah bakso dan y menyatakan jumlah mie ayam yang terjual, sistem persamaan yang tepat untuk memodelkan situasi "Pak Budi menjual total 25 porsi dengan pendapatan Rp 345.000" adalah...
+                        </div>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this)">A. x + y = 25 dan 15x + 12y = 345</div>
+                            <div class="option" onclick="selectOption(this)">B. x + y = 345 dan 15x + 12y = 25</div>
+                            <div class="option" onclick="selectOption(this)">C. 15x + y = 25 dan x + 12y = 345</div>
+                            <div class="option" onclick="selectOption(this)">D. x + y = 25 dan 15x + 12y = 345000</div>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">2</div>
+                        <div class="question-text">
+                            Dari persamaan 2x + 3y = 18, jika x = 6, maka nilai y adalah...
+                        </div>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this)">A. 2</div>
+                            <div class="option" onclick="selectOption(this)">B. 3</div>
+                            <div class="option" onclick="selectOption(this)">C. 4</div>
+                            <div class="option" onclick="selectOption(this)">D. 6</div>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">3</div>
+                        <div class="question-text">
+                            Titik potong garis 3x + 2y = 12 dengan sumbu y (ketika x = 0) adalah...
+                        </div>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this)">A. (0, 4)</div>
+                            <div class="option" onclick="selectOption(this)">B. (0, 6)</div>
+                            <div class="option" onclick="selectOption(this)">C. (4, 0)</div>
+                            <div class="option" onclick="selectOption(this)">D. (6, 0)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">4</div>
+                        <div class="question-text">
+                            Dari grafik di bawah, sistem persamaan yang memiliki satu penyelesaian adalah ketika kedua garis...
+                            <div class="graph-image">
+                                <svg width="300" height="200" viewBox="0 0 300 200">
+                                    <defs>
+                                        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e0e0e0" stroke-width="1"/>
+                                        </pattern>
+                                    </defs>
+                                    <rect width="300" height="200" fill="url(#grid)"/>
+                                    <line x1="0" y1="100" x2="300" y2="100" stroke="#333" stroke-width="2"/>
+                                    <line x1="150" y1="0" x2="150" y2="200" stroke="#333" stroke-width="2"/>
+                                    <line x1="50" y1="50" x2="250" y2="150" stroke="#ff6b6b" stroke-width="3"/>
+                                    <line x1="50" y1="150" x2="250" y2="50" stroke="#4ecdc4" stroke-width="3"/>
+                                    <circle cx="150" cy="100" r="4" fill="#333"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this)">A. Sejajar</div>
+                            <div class="option" onclick="selectOption(this)">B. Berpotongan di satu titik</div>
+                            <div class="option" onclick="selectOption(this)">C. Berimpit</div>
+                            <div class="option" onclick="selectOption(this)">D. Tidak berpotongan</div>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">5</div>
+                        <div class="question-text">
+                            Pak Budi ingin mengetahui berapa porsi bakso yang harus dijual jika ia menjual 8 porsi mie ayam dan menargetkan pendapatan Rp 270.000. Variabel yang dicari adalah...
+                        </div>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this)">A. Jumlah mie ayam (y)</div>
+                            <div class="option" onclick="selectOption(this)">B. Jumlah bakso (x)</div>
+                            <div class="option" onclick="selectOption(this)">C. Total pendapatan</div>
+                            <div class="option" onclick="selectOption(this)">D. Harga per porsi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ISIAN SINGKAT -->
+            <div class="section">
+                <div class="section-header">
+                    ✏️ Bagian B: Isian Singkat
+                </div>
+                <div class="section-content">
+                    <div class="story-context">
+                        <h3>🏫 Koperasi Sekolah</h3>
+                        <p>Koperasi sekolah menjual dua jenis alat tulis: <strong>pensil</strong> dan <strong>pulpen</strong>. Harga pensil Rp 2.000 per batang dan pulpen Rp 5.000 per batang. Bendahara koperasi ingin menganalisis penjualan menggunakan sistem persamaan linear untuk menentukan stok yang optimal.</p>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">6</div>
+                        <div class="question-text">
+                            Dari persamaan x + 2y = 10, jika y = 3, maka x = ...
+                        </div>
+                        <div id="mathInput1" class="math-input" contenteditable="true" data-placeholder="Ketik jawaban Anda di sini..."></div>
+                        <button class="keyboard-btn" onclick="toggleKeyboard('keyboard1')">Buka Keyboard Matematika</button>
+                        <div id="keyboard1" class="virtual-keyboard">
+                            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;">
+                                <button class="btn-math" data-function="number" data-value="1">1</button>
+                                <button class="btn-math" data-function="number" data-value="2">2</button>
+                                <button class="btn-math" data-function="number" data-value="3">3</button>
+                                <button class="btn-math" data-function="number" data-value="4">4</button>
+                                <button class="btn-math" data-function="number" data-value="5">5</button>
+                                <button class="btn-math" data-function="number" data-value="6">6</button>
+                                <button class="btn-math" data-function="number" data-value="7">7</button>
+                                <button class="btn-math" data-function="number" data-value="8">8</button>
+                                <button class="btn-math" data-function="number" data-value="9">9</button>
+                                <button class="btn-math" data-function="number" data-value="0">0</button>
+                                <button class="btn-math" data-function="operator" data-value="+">+</button>
+                                <button class="btn-math" data-function="operator" data-value="-">-</button>
+                                <button class="btn-math" data-function="operator" data-value="=">=</button>
+                                <button class="btn-math" data-function="backspace">⌫</button>
+                                <button class="btn-math" data-function="clear">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="story-context">
+                        <h3>🏪 Warung Pak Budi</h3>
+                        <p>Pak Budi memiliki warung yang menjual dua jenis makanan favorit: <strong>bakso</strong> dan <strong>mie ayam</strong>. Setiap hari, Pak Budi mencatat penjualannya untuk menghitung keuntungan. Harga bakso adalah Rp 15.000 per porsi dan mie ayam Rp 12.000 per porsi. Pak Budi ingin menganalisis penjualannya menggunakan sistem persamaan linear untuk merencanakan strategi bisnis yang lebih baik.</p>
+                        <p><strong>Informasi tambahan:</strong> Pak Budi memiliki target penjualan harian minimal Rp 300.000 dan maksimal dapat menyiapkan 30 porsi makanan per hari karena keterbatasan bahan.</p>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">7</div>
+                        <div class="question-text">
+                            Pak Budi menjual 12 porsi bakso dan beberapa porsi mie ayam dengan total pendapatan Rp 300.000. Berapa porsi mie ayam yang terjual?
+                        </div>
+                        <div id="mathInput2" class="math-input" contenteditable="true" data-placeholder="Ketik jawaban Anda di sini..."></div>
+                        <button class="keyboard-btn" onclick="toggleKeyboard('keyboard2')">Buka Keyboard Matematika</button>
+                        <div id="keyboard2" class="virtual-keyboard">
+                            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;">
+                                <button class="btn-math" data-function="number" data-value="1">1</button>
+                                <button class="btn-math" data-function="number" data-value="2">2</button>
+                                <button class="btn-math" data-function="number" data-value="3">3</button>
+                                <button class="btn-math" data-function="number" data-value="4">4</button>
+                                <button class="btn-math" data-function="number" data-value="5">5</button>
+                                <button class="btn-math" data-function="number" data-value="6">6</button>
+                                <button class="btn-math" data-function="number" data-value="7">7</button>
+                                <button class="btn-math" data-function="number" data-value="8">8</button>
+                                <button class="btn-math" data-function="number" data-value="9">9</button>
+                                <button class="btn-math" data-function="number" data-value="0">0</button>
+                                <button class="btn-math" data-function="text" data-value=" porsi">porsi</button>
+                                <button class="btn-math" data-function="backspace">⌫</button>
+                                <button class="btn-math" data-function="clear">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">8</div>
+                        <div class="question-text">
+                            Titik potong garis 4x - 2y = 8 dengan sumbu x adalah (a, 0). Nilai a = ...
+                        </div>
+                        <div id="mathInput3" class="math-input" contenteditable="true" data-placeholder="Ketik jawaban Anda di sini..."></div>
+                        <button class="keyboard-btn" onclick="toggleKeyboard('keyboard3')">Buka Keyboard Matematika</button>
+                        <div id="keyboard3" class="virtual-keyboard">
+                            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;">
+                                <button class="btn-math" data-function="number" data-value="1">1</button>
+                                <button class="btn-math" data-function="number" data-value="2">2</button>
+                                <button class="btn-math" data-function="number" data-value="3">3</button>
+                                <button class="btn-math" data-function="number" data-value="4">4</button>
+                                <button class="btn-math" data-function="number" data-value="5">5</button>
+                                <button class="btn-math" data-function="number" data-value="6">6</button>
+                                <button class="btn-math" data-function="number" data-value="7">7</button>
+                                <button class="btn-math" data-function="number" data-value="8">8</button>
+                                <button class="btn-math" data-function="number" data-value="9">9</button>
+                                <button class="btn-math" data-function="number" data-value="0">0</button>
+                                <button class="btn-math" data-function="operator" data-value="-">-</button>
+                                <button class="btn-math" data-function="backspace">⌫</button>
+                                <button class="btn-math" data-function="clear">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">9</div>
+                        <div class="question-text">
+                            Sistem persamaan x + y = 15 dan 2x - y = 3 memiliki penyelesaian x = ... dan y = ...
+                        </div>
+                        <div id="mathInput4" class="math-input" contenteditable="true" data-placeholder="Contoh: x = 6, y = 9"></div>
+                        <button class="keyboard-btn" onclick="toggleKeyboard('keyboard4')">Buka Keyboard Matematika</button>
+                        <div id="keyboard4" class="virtual-keyboard">
+                            <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px;">
+                                <button class="btn-math" data-function="number" data-value="1">1</button>
+                                <button class="btn-math" data-function="number" data-value="2">2</button>
+                                <button class="btn-math" data-function="number" data-value="3">3</button>
+                                <button class="btn-math" data-function="number" data-value="4">4</button>
+                                <button class="btn-math" data-function="number" data-value="5">5</button>
+                                <button class="btn-math" data-function="number" data-value="6">6</button>
+                                <button class="btn-math" data-function="number" data-value="7">7</button>
+                                <button class="btn-math" data-function="number" data-value="8">8</button>
+                                <button class="btn-math" data-function="number" data-value="9">9</button>
+                                <button class="btn-math" data-function="number" data-value="0">0</button>
+                                <button class="btn-math" data-function="letter" data-value="x">x</button>
+                                <button class="btn-math" data-function="letter" data-value="y">y</button>
+                                <button class="btn-math" data-function="operator" data-value="=">=</button>
+                                <button class="btn-math" data-function="text" data-value=", ">,</button>
+                                <button class="btn-math" data-function="backspace">⌫</button>
+                                <button class="btn-math" data-function="clear">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">10</div>
+                        <div class="question-text">
+                            Jika Pak Budi ingin pendapatan minimal Rp 300.000 dengan menjual x porsi bakso dan y porsi mie ayam, maka pertidaksamaan yang tepat adalah...
+                        </div>
+                        <div id="mathInput5" class="math-input" contenteditable="true" data-placeholder="Ketik pertidaksamaan di sini..."></div>
+                        <button class="keyboard-btn" onclick="toggleKeyboard('keyboard5')">Buka Keyboard Matematika</button>
+                        <div id="keyboard5" class="virtual-keyboard">
+                            <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px;">
+                                <button class="btn-math" data-function="number" data-value="1">1</button>
+                                <button class="btn-math" data-function="number" data-value="2">2</button>
+                                <button class="btn-math" data-function="number" data-value="3">3</button>
+                                <button class="btn-math" data-function="number" data-value="0">0</button>
+                                <button class="btn-math" data-function="letter" data-value="x">x</button>
+                                <button class="btn-math" data-function="letter" data-value="y">y</button>
+                                <button class="btn-math" data-function="operator" data-value="+">+</button>
+                                <button class="btn-math" data-function="operator" data-value="≥">≥</button>
+                                <button class="btn-math" data-function="backspace">⌫</button>
+                                <button class="btn-math" data-function="clear">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MENJODOHKAN -->
+            <div class="section">
+                <div class="section-header">
+                    🔗 Bagian C: Menjodohkan
+                </div>
+                <div class="section-content">
+                    <div class="story-context">
+                        <h3>🚗 Rental Mobil Pak Andi</h3>
+                        <p>Pak Andi memiliki usaha rental mobil dengan dua jenis kendaraan: <strong>mobil sedan</strong> (tarif Rp 300.000/hari) dan <strong>mobil SUV</strong> (tarif Rp 500.000/hari). Pak Andi ingin menganalisis kombinasi penyewaan untuk memaksimalkan pendapatan dengan keterbatasan armada yang dimiliki.</p>
+                    </div>
+                    
+                    <p><strong>Petunjuk:</strong> Klik satu item dari kolom kiri, kemudian klik pasangannya di kolom kanan.</p>
+                    
+                    <div class="question">
+                        <div class="question-number">11-15</div>
+                        <div class="question-text">
+                            Jodohkan persamaan dengan grafik atau penyelesaiannya yang tepat:
+                        </div>
+                        
+                        <div class="matching-container">
+                            <div>
+                                <h4>Kolom A (Persamaan/Sistem)</h4>
+                                <div class="matching-item" data-id="left1" onclick="selectMatching(this)">
+                                    x + y = 10<br>x - y = 2
+                                </div>
+                                <div class="matching-item" data-id="left2" onclick="selectMatching(this)">
+                                    2x + 3y = 12<br>(titik potong sumbu y)
+                                </div>
+                                <div class="matching-item" data-id="left3" onclick="selectMatching(this)">
+                                    x + 2y = 8<br>2x + 4y = 16
+                                </div>
+                                <div class="matching-item" data-id="left4" onclick="selectMatching(this)">
+                                    3x + y = 9<br>3x + y = 6
+                                </div>
+                                <div class="matching-item" data-id="left5" onclick="selectMatching(this)">
+                                    15x + 12y = 300<br>x + y = 25
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4>Kolom B (Jawaban)</h4>
+                                <div class="matching-item" data-id="right1" onclick="selectMatching(this)">
+                                    (0, 4)
+                                </div>
+                                <div class="matching-item" data-id="right2" onclick="selectMatching(this)">
+                                    Tidak ada penyelesaian
+                                </div>
+                                <div class="matching-item" data-id="right3" onclick="selectMatching(this)">
+                                    x = 6, y = 4
+                                </div>
+                                <div class="matching-item" data-id="right4" onclick="selectMatching(this)">
+                                    Tak hingga penyelesaian
+                                </div>
+                                <div class="matching-item" data-id="right5" onclick="selectMatching(this)">
+                                    x = 20, y = 5<br>(20 bakso, 5 mie ayam)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PILIHAN GANDA KOMPLEKS -->
+            <div class="section">
+                <div class="section-header">
+                    ☑️ Bagian D: Pilihan Ganda Kompleks
+                </div>
+                <div class="section-content">
+                    <div class="story-context">
+                        <h3>🌾 Toko Beras Bu Sari</h3>
+                        <p>Bu Sari memiliki toko beras yang menjual dua jenis beras: <strong>beras premium</strong> (Rp 15.000/kg) dan <strong>beras medium</strong> (Rp 12.000/kg). Bu Sari ingin menganalisis penjualan hariannya untuk menentukan strategi stok dan target penjualan yang optimal.</p>
+                    </div>
+                    
+                    <p><strong>Petunjuk:</strong> Pilih semua pernyataan yang benar untuk setiap soal.</p>
+                    
+                    <div class="question">
+                        <div class="question-number">16</div>
+                        <div class="question-text">
+                            Dari sistem persamaan x + y = 20 dan 15x + 12y = 300, pernyataan yang benar adalah...
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q16a"> 
+                            <label for="q16a">Sistem ini memodelkan penjualan bakso dan mie ayam Pak Budi</label>
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q16b"> 
+                            <label for="q16b">Penyelesaiannya adalah x = 20, y = 0</label>
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q16c"> 
+                            <label for="q16c">Grafik kedua persamaan berpotongan di satu titik</label>
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q16d"> 
+                            <label for="q16d">Sistem ini memiliki penyelesaian tunggal</label>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">17</div>
+                        <div class="question-text">
+                            Metode yang dapat digunakan untuk menyelesaikan sistem persamaan 2x + y = 7 dan x - y = 2 adalah...
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q17a"> 
+                            <label for="q17a">Metode substitusi</label>
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q17b"> 
+                            <label for="q17b">Metode eliminasi</label>
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q17c"> 
+                            <label for="q17c">Metode grafik</label>
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q17d"> 
+                            <label for="q17d">Metode campuran (eliminasi-substitusi)</label>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">18</div>
+                        <div class="question-text">
+                            Dari grafik sistem persamaan linear, yang menunjukkan sistem memiliki tak hingga penyelesaian adalah...
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q18a"> 
+                            <label for="q18a">Kedua garis sejajar</label>
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q18b"> 
+                            <label for="q18b">Kedua garis berimpit</label>
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q18c"> 
+                            <label for="q18c">Kedua garis berpotongan di satu titik</label>
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q18d"> 
+                            <label for="q18d">Kedua garis memiliki gradien yang sama dan konstanta yang sama</label>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">19</div>
+                        <div class="question-text">
+                            Bu Sari ingin menganalisis sistem persamaan 2x + 3y = 18 dan x - 2y = -4. Pernyataan yang benar tentang sistem ini adalah...
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q19a"> 
+                            <label for="q19a">Sistem memiliki penyelesaian tunggal</label>
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q19b"> 
+                            <label for="q19b">Kedua persamaan dapat diselesaikan dengan metode eliminasi</label>
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q19c"> 
+                            <label for="q19c">Grafik kedua persamaan berpotongan di satu titik</label>
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q19d"> 
+                            <label for="q19d">Penyelesaiannya adalah x = 6, y = 2</label>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">20</div>
+                        <div class="question-text">
+                            Dalam menyelesaikan SPLDV dengan metode eliminasi pada sistem 3x + 2y = 16 dan 2x - y = 3, langkah yang benar adalah...
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q20a"> 
+                            <label for="q20a">Mengalikan persamaan kedua dengan 2 untuk mengeliminasi y</label>
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q20b"> 
+                            <label for="q20b">Mengalikan persamaan pertama dengan 2 dan kedua dengan 3 untuk mengeliminasi x</label>
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q20c"> 
+                            <label for="q20c">Menjumlahkan kedua persamaan setelah dikalikan dengan konstanta yang tepat</label>
+                        </div>
+                        <div class="complex-option">
+                            <input type="checkbox" id="q20d"> 
+                            <label for="q20d">Mengurangkan kedua persamaan setelah dikalikan dengan konstanta yang tepat</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- URAIAN -->
+            <div class="section">
+                <div class="section-header">
+                    📝 Bagian E: Uraian
+                </div>
+                <div class="section-content">
+                    <div class="story-context">
+                        <h3>🏪 Warung Pak Budi</h3>
+                        <p>Pak Budi memiliki warung yang menjual dua jenis makanan favorit: <strong>bakso</strong> dan <strong>mie ayam</strong>. Setiap hari, Pak Budi mencatat penjualannya untuk menghitung keuntungan. Harga bakso adalah Rp 15.000 per porsi dan mie ayam Rp 12.000 per porsi. Pak Budi ingin menganalisis penjualannya menggunakan sistem persamaan linear untuk merencanakan strategi bisnis yang lebih baik.</p>
+                        <p><strong>Informasi tambahan:</strong> Pak Budi memiliki target penjualan harian minimal Rp 300.000 dan maksimal dapat menyiapkan 30 porsi makanan per hari karena keterbatasan bahan.</p>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">21</div>
+                        <div class="question-text">
+                            Pak Budi mencatat bahwa pada hari Senin ia menjual 18 porsi makanan dengan pendapatan Rp 258.000, dan pada hari Selasa ia menjual 22 porsi dengan pendapatan Rp 318.000. Tentukan berapa porsi bakso dan mie ayam yang terjual pada masing-masing hari! Gunakan metode substitusi dan tunjukkan langkah-langkahnya dengan lengkap.
+                        </div>
+                        <textarea class="essay-answer" placeholder="Tuliskan langkah-langkah penyelesaian dengan lengkap..."></textarea>
+                    </div>
+                    
+                    <div class="story-context">
+                        <h3>🏪 Warung Pak Budi</h3>
+                        <p>Pak Budi memiliki warung yang menjual dua jenis makanan favorit: <strong>bakso</strong> dan <strong>mie ayam</strong>. Setiap hari, Pak Budi mencatat penjualannya untuk menghitung keuntungan. Harga bakso adalah Rp 15.000 per porsi dan mie ayam Rp 12.000 per porsi. Pak Budi ingin menganalisis penjualannya menggunakan sistem persamaan linear untuk merencanakan strategi bisnis yang lebih baik.</p>
+                        <p><strong>Informasi tambahan:</strong> Pak Budi memiliki target penjualan harian minimal Rp 300.000 dan maksimal dapat menyiapkan 30 porsi makanan per hari karena keterbatasan bahan.</p>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">22</div>
+                        <div class="question-text">
+                            Gambarlah grafik sistem persamaan x + y = 15 dan 2x - y = 3 pada bidang koordinat! Tentukan titik potongnya dan jelaskan apa arti titik potong tersebut dalam konteks masalah Pak Budi jika x menyatakan bakso dan y menyatakan mie ayam.
+                        </div>
+                        <div class="graph-container">
+                            <svg width="400" height="300" viewBox="0 0 400 300">
+                                <defs>
+                                    <pattern id="grid2" width="20" height="20" patternUnits="userSpaceOnUse">
+                                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e0e0e0" stroke-width="1"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="400" height="300" fill="url(#grid2)"/>
+                                <line x1="0" y1="150" x2="400" y2="150" stroke="#333" stroke-width="2"/>
+                                <line x1="200" y1="0" x2="200" y2="300" stroke="#333" stroke-width="2"/>
+                                <text x="390" y="145" font-size="12">x</text>
+                                <text x="205" y="15" font-size="12">y</text>
+                                <text x="205" y="170" font-size="12">0</text>
+                            </svg>
+                        </div>
+                        <textarea class="essay-answer" placeholder="Jelaskan cara menggambar grafik dan interpretasi titik potong..."></textarea>
+                    </div>
+                    
+                    <div class="story-context">
+                        <h3>🏪 Warung Pak Budi</h3>
+                        <p>Pak Budi memiliki warung yang menjual dua jenis makanan favorit: <strong>bakso</strong> dan <strong>mie ayam</strong>. Setiap hari, Pak Budi mencatat penjualannya untuk menghitung keuntungan. Harga bakso adalah Rp 15.000 per porsi dan mie ayam Rp 12.000 per porsi. Pak Budi ingin menganalisis penjualannya menggunakan sistem persamaan linear untuk merencanakan strategi bisnis yang lebih baik.</p>
+                        <p><strong>Informasi tambahan:</strong> Pak Budi memiliki target penjualan harian minimal Rp 300.000 dan maksimal dapat menyiapkan 30 porsi makanan per hari karena keterbatasan bahan.</p>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">23</div>
+                        <div class="question-text">
+                            Selesaikan sistem persamaan berikut dengan metode eliminasi:<br>
+                            3x + 2y = 20<br>
+                            2x + 3y = 15<br>
+                            Kemudian verifikasi jawaban Anda dengan metode substitusi!
+                        </div>
+                        <textarea class="essay-answer" placeholder="Tunjukkan penyelesaian dengan metode eliminasi dan verifikasi dengan substitusi..."></textarea>
+                    </div>
+                    
+                    <div class="story-context">
+                        <h3>🏪 Warung Pak Budi</h3>
+                        <p>Pak Budi memiliki warung yang menjual dua jenis makanan favorit: <strong>bakso</strong> dan <strong>mie ayam</strong>. Setiap hari, Pak Budi mencatat penjualannya untuk menghitung keuntungan. Harga bakso adalah Rp 15.000 per porsi dan mie ayam Rp 12.000 per porsi. Pak Budi ingin menganalisis penjualannya menggunakan sistem persamaan linear untuk merencanakan strategi bisnis yang lebih baik.</p>
+                        <p><strong>Informasi tambahan:</strong> Pak Budi memiliki target penjualan harian minimal Rp 300.000 dan maksimal dapat menyiapkan 30 porsi makanan per hari karena keterbatasan bahan.</p>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">24</div>
+                        <div class="question-text">
+                            Pak Budi ingin merencanakan penjualan untuk minggu depan. Ia memiliki keterbatasan: maksimal dapat menyiapkan 30 porsi per hari, minimal harus meraih pendapatan Rp 300.000 per hari, dan ingin menjual minimal 5 porsi bakso setiap hari. Buatlah model matematika (sistem pertidaksamaan) dan tentukan daerah penyelesaiannya! Berikan rekomendasi kombinasi penjualan yang optimal.
+                        </div>
+                        <textarea class="essay-answer" placeholder="Buatlah model matematika dan analisis daerah penyelesaian..."></textarea>
+                    </div>
+                    
+                    <div class="story-context">
+                        <h3>🏪 Warung Pak Budi</h3>
+                        <p>Pak Budi memiliki warung yang menjual dua jenis makanan favorit: <strong>bakso</strong> dan <strong>mie ayam</strong>. Setiap hari, Pak Budi mencatat penjualannya untuk menghitung keuntungan. Harga bakso adalah Rp 15.000 per porsi dan mie ayam Rp 12.000 per porsi. Pak Budi ingin menganalisis penjualannya menggunakan sistem persamaan linear untuk merencanakan strategi bisnis yang lebih baik.</p>
+                        <p><strong>Informasi tambahan:</strong> Pak Budi memiliki target penjualan harian minimal Rp 300.000 dan maksimal dapat menyiapkan 30 porsi makanan per hari karena keterbatasan bahan.</p>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-number">25</div>
+                        <div class="question-text">
+                            Analisis kasus berikut: Pak Budi mendapat informasi bahwa harga bahan baku naik, sehingga ia harus menaikkan harga bakso menjadi Rp 18.000 dan mie ayam menjadi Rp 15.000. Jika target pendapatan tetap Rp 300.000 dengan maksimal 25 porsi per hari, bagaimana perubahan ini mempengaruhi sistem persamaan dan penyelesaiannya? Bandingkan dengan kondisi sebelumnya dan berikan analisis lengkap!
+                        </div>
+                        <textarea class="essay-answer" placeholder="Berikan analisis perbandingan kondisi sebelum dan sesudah kenaikan harga..."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="submit-btn" onclick="submitQuiz()">🚀 Kirim Jawaban</button>
+        </div>
+    </div>
+
+    <script>
+        //Virtual keyboard functionality
+        let currentInput=null;function toggleKeyboard(keyboardId){const keyboard=document.getElementById(keyboardId);const inputId=keyboardId.replace('keyboard','mathInput');currentInput=document.getElementById(inputId);keyboard.classList.toggle('show');if(keyboard.classList.contains('show')){currentInput.focus();}}
+        //Math input functions
+        function insertTextAtCursor(mathInput,text){mathInput.focus();const selection=window.getSelection();if(selection.rangeCount>0){const range=selection.getRangeAt(0);range.deleteContents();range.insertNode(document.createTextNode(text));range.collapse(false);selection.removeAllRanges();selection.addRange(range);}else{mathInput.appendChild(document.createTextNode(text));}}
+        //Keyboard event handlers
+        document.addEventListener('click',function(e){if(e.target.classList.contains('btn-math')){if(!currentInput)return;const func=e.target.getAttribute('data-function');const value=e.target.getAttribute('data-value');switch(func){case'number':case'operator':case'letter':case'text':insertTextAtCursor(currentInput,value);break;case'backspace':const selection=window.getSelection();if(selection.rangeCount>0){const range=selection.getRangeAt(0);if(range.collapsed){range.setStart(range.startContainer,Math.max(0,range.startOffset-1));}range.deleteContents();}break;case'clear':currentInput.innerHTML='';break;}}});
+        //Matching functionality
+        let selectedLeft=null;let selectedRight=null;let matches={};
+        
+        // Multiple choice functionality
+        function selectOption(element) {
+            // Remove selection from siblings
+            const siblings = element.parentNode.children;
+            for (let sibling of siblings) {
+                sibling.classList.remove('selected');
+            }
+            // Add selection to clicked element
+            element.classList.add('selected');
+        }
+        
+        // Matching functionality
+        function selectMatching(element) {
+            const isLeft = element.dataset.id.startsWith('left');
+            
+            if (isLeft) {
+                // Clear previous left selection
+                if (selectedLeft) {
+                    selectedLeft.classList.remove('selected');
+                }
+                selectedLeft = element;
+                element.classList.add('selected');
+            } else {
+                // Clear previous right selection
+                if (selectedRight) {
+                    selectedRight.classList.remove('selected');
+                }
+                selectedRight = element;
+                element.classList.add('selected');
+            }
+            
+            // If both sides are selected, create match
+            if (selectedLeft && selectedRight) {
+                const colors = ['matched-green', 'matched-blue', 'matched-orange', 'matched-purple', 'matched-pink'];
+                const colorIndex = Object.keys(matches).length % colors.length;
+                const matchColor = colors[colorIndex];
+                
+                // Remove previous matches for these elements
+                for (let color of colors) {
+                    selectedLeft.classList.remove(color);
+                    selectedRight.classList.remove(color);
+                }
+                
+                // Add new match color
+                selectedLeft.classList.add(matchColor);
+                selectedRight.classList.add(matchColor);
+                selectedLeft.classList.remove('selected');
+                selectedRight.classList.remove('selected');
+                
+                // Store match
+                matches[selectedLeft.dataset.id] = selectedRight.dataset.id;
+                
+                // Clear selections
+                selectedLeft = null;
+                selectedRight = null;
+            }
+        }
+        
+        // Submit functionality
+        function submitQuiz() {
+            alert('🎉 Terima kasih telah mengerjakan kuis SPLDV!\n\nJawaban Anda telah tersimpan. Guru akan mengoreksi dan memberikan feedback segera.\n\n📊 Kuis ini mencakup:\n✅ Pemodelan masalah ke SPLDV\n✅ Penyelesaian dengan berbagai metode\n✅ Interpretasi grafik\n✅ Analisis literasi dan numerasi\n\nSemoga bermanfaat untuk pemahaman Anda tentang Sistem Persamaan Linear Dua Variabel!');
+        }
+        
+        // Auto-hide keyboards when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.virtual-keyboard') && !e.target.classList.contains('keyboard-btn')) {
+                const keyboards = document.querySelectorAll('.virtual-keyboard');
+                keyboards.forEach(kb => kb.classList.remove('show'));
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9760561ea013e782',t:'MTc1NjM0NzY5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
